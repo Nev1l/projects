@@ -1,3 +1,27 @@
 Server is ready to accept connections on port 1527.
 Connection number: 1.
-Shutdown successful.
+----------------------------------------------------------------
+2014-12-16 09:04:35.142 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.1.1.0 - (208786): instance c013800d-014a-5257-07ae-00000000002e
+on database directory D:\git\projects\Project\db 
+
+Database Class Loader started - derby.database.classpath=''
+Connection number: 2.
+
+2014-12-16 09:04:37.529 GMT:
+Shutting down instance c013800d-014a-5257-07ae-00000000002e
+----------------------------------------------------------------
+2014-12-16 09:04:37.545 GMT Thread[DRDAConnThread_3,5,main] (DATABASE = db), (DRDAID = {2}), Database 'db' shutdown.
+Connection number: 3.
+----------------------------------------------------------------
+2014-12-16 09:04:42.291 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.1.1.0 - (208786): instance ed07c066-014a-5257-07ae-00000000002e
+on database directory D:\git\projects\Project\db 
+
+Database Class Loader started - derby.database.classpath=''
+Connection number: 4.
+
+2014-12-16 11:10:44.541 GMT:
+Shutting down instance ed07c066-014a-5257-07ae-00000000002e
+----------------------------------------------------------------
+2014-12-16 11:10:44.556 GMT Thread[DRDAConnThread_2,5,main] (DATABASE = db), (DRDAID = {4}), Database 'db' shutdown.
