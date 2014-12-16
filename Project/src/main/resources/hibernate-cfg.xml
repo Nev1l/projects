@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration
+   PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+   "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<mapping class="by.epam.beans.Employee" />
+		<mapping class="by.epam.beans.Activity" />
+		<mapping class="by.epam.beans.Assignment" />
+		<mapping class="by.epam.beans.Attachment" />
+		<mapping class="by.epam.beans.Member" />
+		<mapping class="by.epam.beans.Position" />
+		<mapping class="by.epam.beans.Project" />
+		<mapping class="by.epam.beans.Role" />
+		<mapping class="by.epam.beans.Status" />
+		<mapping class="by.epam.beans.Task" />
+	</session-factory>
+</hibernate-configuration>
