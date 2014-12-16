@@ -25,3 +25,23 @@ Connection number: 4.
 Shutting down instance ed07c066-014a-5257-07ae-00000000002e
 ----------------------------------------------------------------
 2014-12-16 11:10:44.556 GMT Thread[DRDAConnThread_2,5,main] (DATABASE = db), (DRDAID = {4}), Database 'db' shutdown.
+Connection number: 5.
+----------------------------------------------------------------
+2014-12-16 11:32:57.482 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.1.1.0 - (208786): instance addac06e-014a-5257-07ae-00000000002e
+on database directory D:\git\projects\Project\db 
+
+Database Class Loader started - derby.database.classpath=''
+Connection number: 6.
+
+2014-12-16 11:32:57.591 GMT:
+Shutting down instance addac06e-014a-5257-07ae-00000000002e
+----------------------------------------------------------------
+2014-12-16 11:32:57.591 GMT Thread[DRDAConnThread_4,5,main] (DATABASE = db), (DRDAID = {6}), Database 'db' shutdown.
+Connection number: 7.
+----------------------------------------------------------------
+2014-12-16 11:33:15.796 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.1.1.0 - (208786): instance 65f6406f-014a-5257-07ae-00000000002e
+on database directory D:\git\projects\Project\db 
+
+Database Class Loader started - derby.database.classpath=''
