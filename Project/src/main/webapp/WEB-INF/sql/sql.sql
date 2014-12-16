@@ -1,4 +1,5 @@
-connect 'jdbc:derby://localhost:1527/db;create=true;user=user;password=123';/* 
+connect 'jdbc:derby://localhost:1527/db;create=true;user=user;password=123';
+/*
 drop table activity;
 drop table assignment;
 drop table attachment_task;

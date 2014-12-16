@@ -10,10 +10,8 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<context:annotation-config />
 
-	<context:component-scan base-package="by.epam.service" />
-	<context:component-scan base-package="by.epam.dao" />
-	<context:component-scan base-package="by.epam.beans" />
-
+	<!-- <context:component-scan base-package="by.epam.service" /> <context:component-scan 
+		base-package="by.epam.dao" /> -->
 
 	<import resource="data.xml" />
 </beans>

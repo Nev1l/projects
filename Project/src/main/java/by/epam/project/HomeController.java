@@ -1,12 +1,12 @@
-package by.epam.controllers;
+package by.epam.project;
 
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import org.apache.derby.client.am.Connection;
 import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,10 +28,10 @@ public class HomeController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@Autowired
-	private Session sessionFactory;
+	// @Autowired
+	// private Session sessionFactory;
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/home.do")
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 
@@ -41,7 +41,7 @@ public class HomeController {
 
 		String formattedDate = dateFormat.format(date);
 		model.addAttribute("serverTime", formattedDate);
-		model.addAttribute("connectMessage",getConnection());
+		model.addAttribute("connectMessage", getConnection());
 		return "home";
 	}
 
@@ -51,10 +51,11 @@ public class HomeController {
 		String driver = "org.apache.derby.jdbc.ClientDriver";
 		String user = "user";
 		String pass = "123";
-		String message = "Unknow";
+		String message = "Unknown";
 		try {
 			Class.forName(driver);
-			connection = (Connection) DriverManager.getConnection(URL, user, pass);
+			connection = (Connection) DriverManager.getConnection(URL, user,
+					pass);
 			if (connection != null) {
 				message = "Connecting sucess";
 			}
