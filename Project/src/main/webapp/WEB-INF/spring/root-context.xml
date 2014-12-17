@@ -7,11 +7,10 @@
 	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-	<!-- Root Context: defines shared resources visible to all other web components -->
 	<context:annotation-config />
 
-	<!-- <context:component-scan base-package="by.epam.service" /> <context:component-scan 
-		base-package="by.epam.dao" /> -->
-
+	<context:component-scan base-package="by.epam.dao" />
+	<context:component-scan base-package="by.epam.services" />
+	<context:component-scan base-package="by.epam.workimplements" />
 	<import resource="data.xml" />
 </beans>

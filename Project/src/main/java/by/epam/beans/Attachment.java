@@ -1,16 +1,19 @@
 package by.epam.beans;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
+import javax.persistence.Table;
+@Entity
+@Table(name = "Attachment")
 public class Attachment {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 	@Column(name = "name")
 	private String name;
 
@@ -28,11 +31,11 @@ public class Attachment {
 	@JoinColumn(name = "taskId")
 	private Task task;
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -76,7 +79,7 @@ public class Attachment {
 		this.task = task;
 	}
 
-	public Attachment(Long id, String name, String size, String description,
+	public Attachment(int id, String name, String size, String description,
 			Project project, Task task) {
 		super();
 		this.id = id;

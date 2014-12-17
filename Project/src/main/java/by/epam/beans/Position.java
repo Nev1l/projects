@@ -11,16 +11,16 @@ import javax.persistence.Table;
 @Table(name = "Position")
 public class Position {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 	@Column(name = "name")//,length=...
 	private String name;
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -32,7 +32,7 @@ public class Position {
 		this.name = name;
 	}
 
-	public Position(Long id, String name) {
+	public Position(int id, String name) {
 		super();
 		this.id = id;
 		this.name = name;

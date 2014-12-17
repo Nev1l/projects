@@ -15,5 +15,6 @@
 		<mapping class="by.epam.beans.Role" />
 		<mapping class="by.epam.beans.Status" />
 		<mapping class="by.epam.beans.Task" />
+		<mapping class="by.epam.beans.User" />
 	</session-factory>
 </hibernate-configuration>

@@ -3,16 +3,20 @@ package by.epam.beans;
 import java.sql.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "Activity")
 public class Activity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
 	@Column(name = "_date")
 	private Date date;
@@ -31,11 +35,11 @@ public class Activity {
 	@JoinColumn(name = "assignmentId")
 	private Assignment assignment;
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -79,7 +83,7 @@ public class Activity {
 		this.assignment = assignment;
 	}
 
-	public Activity(Long id, Date date, int duration, String comment,
+	public Activity(int id, Date date, int duration, String comment,
 			Member member, Assignment assignment) {
 		super();
 		this.id = id;

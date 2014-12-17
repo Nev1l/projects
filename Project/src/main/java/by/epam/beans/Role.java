@@ -11,16 +11,16 @@ import javax.persistence.Table;
 @Table(name = "Role")
 public class Role {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 	@Column(name = "name")
 	private String name;
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -32,9 +32,8 @@ public class Role {
 		this.name = name;
 	}
 
-	public Role(Long id, String name) {
+	public Role(String name) {
 		super();
-		this.id = id;
 		this.name = name;
 	}
 

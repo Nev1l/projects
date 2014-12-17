@@ -7,8 +7,55 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
 
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<!-- <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource"> 
+		<property name="basename" value="classpath:messages" /> <property name="defaultEncoding" 
+		value="UTF-8" /> </bean> -->
+
+
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+		p:location="/WEB-INF/jdbc.properties" />
+
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.databaseurl}"
+		p:username="${jdbc.username}" p:password="${jdbc.password}" />
+		
+		
+	<!-- <property name=”hibernate.connection.driver_class”>org.apache.derby.jdbc.ClientDriver</property> 
+		<property name=”hibernate.connection.url”>jdbc:derby://localhost:1527/databaseName;create=true</property> 
+		<property name=”hibernate.connection.username”>admin</property> <property 
+		name=”hibernate.connection.password”>admin</property> <!– no schema necessary 
+		–> <property name=”hibernate.dialect”>org.hibernate.dialect.DerbyDialect</property> -->
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation">
+			<value>classpath:hibernate-cfg.xml</value>
+		</property>
+		<property name="configurationClass">
+			<value>org.hibernate.cfg.AnnotationConfiguration</value>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.dialect">${jdbc.dialect}</prop>
+				<prop key="hibernate.connection.charSet">UTF-8</prop>
+			<!-- 	<prop key="hibernate.current_session_context_class">thread</prop> -->
+			</props>
+		</property>
+	</bean>
 
 </beans>

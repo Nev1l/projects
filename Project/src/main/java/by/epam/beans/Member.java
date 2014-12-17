@@ -1,15 +1,19 @@
 package by.epam.beans;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "Member")
 public class Member {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
 	@ManyToOne
 	@JoinColumn(name = "projectId")
@@ -23,11 +27,11 @@ public class Member {
 	@JoinColumn(name = "roleId")
 	private Role role;
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -55,7 +59,7 @@ public class Member {
 		this.role = role;
 	}
 
-	public Member(Long id, Project project, Employee employee, Role role) {
+	public Member(int id, Project project, Employee employee, Role role) {
 		super();
 		this.id = id;
 		this.project = project;

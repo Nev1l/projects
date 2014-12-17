@@ -12,8 +12,8 @@ import javax.persistence.Table;
 @Table(name = "Employee")
 public class Employee {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
 	@Column(name = "first_name")
 	private String firstName;
@@ -24,11 +24,11 @@ public class Employee {
 	@Embedded
 	private User user;
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

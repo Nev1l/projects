@@ -3,16 +3,19 @@ package by.epam.beans;
 import java.sql.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
+import javax.persistence.Table;
+@Entity
+@Table(name = "Assignment")
 public class Assignment {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
 	@ManyToOne  
     @JoinColumn(name ="memberId")  
@@ -34,11 +37,11 @@ public class Assignment {
 	@Column(name = "add")
 	private Date add;
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -98,7 +101,7 @@ public class Assignment {
 		this.add = add;
 	}
 
-	public Assignment(Long id, Member member, Task task, String description,
+	public Assignment(int id, Member member, Task task, String description,
 			Date psd, Date pdd, Date asd, Date add) {
 		super();
 		this.id = id;
