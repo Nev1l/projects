@@ -24,7 +24,7 @@ create table role(id integer not null generated always as identity constraint ro
 --               assignment is correct
 create table assignment(id integer not null generated always as identity constraint assignment_pk primary key, member_id integer,task_id integer,description varchar(255),psd date,ped date,asd date,aed date);
 --               activity is correct
-create table activity(id integer not null generated always as identity constraint activity_pk primary key, activity_date date,duration integer, comment varchar(255), project_id integer,assignment_id integer,);
+create table activity(id integer not null generated always as identity constraint activity_pk primary key, activity_date date,duration integer, comment varchar(255), project_id integer,assignment_id integer);
 
 ALTER TABLE employee ADD CONSTRAINT employee_position_FK
 Foreign Key (position_id) REFERENCES position (id);

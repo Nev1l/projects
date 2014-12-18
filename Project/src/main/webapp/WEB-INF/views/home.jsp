@@ -17,13 +17,14 @@
 			<td></td>
 			<td width="20%">
 				<c:if test="${employee.role.isAdmin()}">
-					<c:url var="loginUrl" value='/login.do' />
+				</c:if>
+				<c:url var="loginUrl" value='/login.do' />
 					<form method="POST" name="loginForm" action="${loginUrl}">
-						<input type="text" name="js:login" value="" required /> <input
-							type="password" name="js:password" value="" required /> <input
+						<input type="text" name="login" value="" required /> <input
+							type="password" name="password" value="" required /> <input
 							type="submit" value="Login">
 					</form>
-				</c:if></td>
+			</td>
 
 		</tr>
 		<c:forEach var="project" items="${projects}" varStatus="status">
