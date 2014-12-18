@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 @Entity
 @Table(name = "Assignment")
 public class Assignment {
@@ -17,25 +18,28 @@ public class Assignment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@ManyToOne  
-    @JoinColumn(name ="memberId")  
+	@ManyToOne
+	@JoinColumn(name = "member_id")
 	private Member member;
 
-	@ManyToOne  
-    @JoinColumn(name ="taskId") 
+	@ManyToOne
+	@JoinColumn(name = "task_id")
 	private Task task;
 
-	@Column(name = "description")//unique = true, nullable = false, length = 10
+	@Column(name = "description", length = 255)
 	private String description;
 
 	@Column(name = "psd")
-	private Date psd;
-	@Column(name = "pdd")
-	private Date pdd;
+	private String plannedStartDate;
+
+	@Column(name = "ped")
+	private String plannedEndDate;
+
 	@Column(name = "asd")
-	private Date asd;
-	@Column(name = "add")
-	private Date add;
+	private String actualStartDate;
+
+	@Column(name = "aed")
+	private String actualEndDate;
 
 	public int getId() {
 		return id;
@@ -69,49 +73,36 @@ public class Assignment {
 		this.description = description;
 	}
 
-	public Date getPsd() {
-		return psd;
+	public String getPlannedStartDate() {
+		return plannedStartDate;
 	}
 
-	public void setPsd(Date psd) {
-		this.psd = psd;
+	public void setPlannedStartDate(String plannedStartDate) {
+		this.plannedStartDate = plannedStartDate;
 	}
 
-	public Date getPdd() {
-		return pdd;
+	public String getPlannedEndDate() {
+		return plannedEndDate;
 	}
 
-	public void setPdd(Date pdd) {
-		this.pdd = pdd;
+	public void setPlannedEndDate(String plannedEndDate) {
+		this.plannedEndDate = plannedEndDate;
 	}
 
-	public Date getAsd() {
-		return asd;
+	public String getActualStartDate() {
+		return actualStartDate;
 	}
 
-	public void setAsd(Date asd) {
-		this.asd = asd;
+	public void setActualStartDate(String actualStartDate) {
+		this.actualStartDate = actualStartDate;
 	}
 
-	public Date getAdd() {
-		return add;
+	public String getActualEndDate() {
+		return actualEndDate;
 	}
 
-	public void setAdd(Date add) {
-		this.add = add;
-	}
-
-	public Assignment(int id, Member member, Task task, String description,
-			Date psd, Date pdd, Date asd, Date add) {
-		super();
-		this.id = id;
-		this.member = member;
-		this.task = task;
-		this.description = description;
-		this.psd = psd;
-		this.pdd = pdd;
-		this.asd = asd;
-		this.add = add;
+	public void setActualEndDate(String actualEndDate) {
+		this.actualEndDate = actualEndDate;
 	}
 
 	public Assignment() {

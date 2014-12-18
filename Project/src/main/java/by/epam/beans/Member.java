@@ -16,15 +16,15 @@ public class Member {
 	private int id;
 
 	@ManyToOne
-	@JoinColumn(name = "projectId")
+	@JoinColumn(name = "project_id")
 	private Project project;
 
 	@ManyToOne
-	@JoinColumn(name = "employeeId")
+	@JoinColumn(name = "employee_id")
 	private Employee employee;
 
 	@ManyToOne
-	@JoinColumn(name = "roleId")
+	@JoinColumn(name = "role_id")
 	private Role role;
 
 	public int getId() {

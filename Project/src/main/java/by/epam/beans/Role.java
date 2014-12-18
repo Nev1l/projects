@@ -13,7 +13,10 @@ public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(name = "name")
+	
+	//+enum !!!!
+	@Column(name = "name",length=50)
+	//@Enumerated(EnumType.STRING)
 	private String name;
 
 	public int getId() {
@@ -32,14 +35,17 @@ public class Role {
 		this.name = name;
 	}
 
-	public Role(String name) {
-		super();
-		this.name = name;
-	}
-
 	public Role() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
+	public Role(String name) {
+		super();
+		this.name = name;
+	}
+
+	public boolean isAdmin() {
+		return name.equals("ADMIN");// +enum !!!!
+	}
 }

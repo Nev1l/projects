@@ -7,21 +7,18 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import org.hibernate.SQLQuery;
-import org.hibernate.SessionFactory;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.context.WebApplicationContext;
 
 import by.epam.beans.Role;
-import by.epam.dao.RoleDAO;
-import by.epam.services.WorkService;
+import by.epam.consts.ConstantsJSP;
 import by.epam.workimplements.WorkDAO;
 
 /**
@@ -39,24 +36,19 @@ public class HomeController {
 	@Autowired
 	private WorkDAO workService;
 
-	
 	@RequestMapping(value = "/home.do")
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
-
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG,
-				DateFormat.LONG, locale);
-
-		String formattedDate = dateFormat.format(date);
-		model.addAttribute("serverTime", formattedDate);
-		model.addAttribute("connectMessage", getConnection());
-		workService.save(new Role("Admin"));
+	public String home(HttpServletRequest req, HttpServletResponse res) {
+		logger.info("Welcome home!");
+		req.setAttribute("connectMessage", getConnection());
+		//workService.save(new Role("Admin"));
+		// data for home page (list of)
+		// workService.save(new Role("Admin"));
 		
-		return "home";
+		return ConstantsJSP.homePage;
 	}
 
 	public String getConnection() {
+		// model.addAttribute("connectMessage", getConnection());
 		Connection connection;
 		String URL = "jdbc:derby://localhost:1527/db";
 		String driver = "org.apache.derby.jdbc.ClientDriver";

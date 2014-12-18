@@ -1,7 +1,5 @@
 package by.epam.beans;
 
-import java.sql.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,23 +15,26 @@ public class Project {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(name = "name")
+	@Column(name = "name",length=100)
 	private String name;
 
-	@Column(name = "description")
+	@Column(name = "description",length=255)
 	private String description;
 
 	@Column(name = "psd")
-	private Date psd;
-	@Column(name = "ped")
-	private Date ped;
-	@Column(name = "asd")
-	private Date asd;
-	@Column(name = "aed")
-	private Date aed;
+	private String plannedStartDate;
 
+	@Column(name = "ped")
+	private String plannedEndDate;
+
+	@Column(name = "asd")
+	private String actualStartDate;
+
+	@Column(name = "aed")
+	private String actualEndDate;
+	
 	@ManyToOne
-	@JoinColumn(name = "statusId")
+	@JoinColumn(name = "status_id")
 	private Status status;
 
 	public int getId() {
@@ -60,38 +61,6 @@ public class Project {
 		this.description = description;
 	}
 
-	public Date getPsd() {
-		return psd;
-	}
-
-	public void setPsd(Date psd) {
-		this.psd = psd;
-	}
-
-	public Date getPed() {
-		return ped;
-	}
-
-	public void setPed(Date ped) {
-		this.ped = ped;
-	}
-
-	public Date getAsd() {
-		return asd;
-	}
-
-	public void setAsd(Date asd) {
-		this.asd = asd;
-	}
-
-	public Date getAed() {
-		return aed;
-	}
-
-	public void setAed(Date aed) {
-		this.aed = aed;
-	}
-
 	public Status getStatus() {
 		return status;
 	}
@@ -100,17 +69,36 @@ public class Project {
 		this.status = status;
 	}
 
-	public Project(int id, String name, String description, Date psd,
-			Date ped, Date asd, Date aed, Status status) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.psd = psd;
-		this.ped = ped;
-		this.asd = asd;
-		this.aed = aed;
-		this.status = status;
+	public String getPlannedStartDate() {
+		return plannedStartDate;
+	}
+
+	public void setPlannedStartDate(String plannedStartDate) {
+		this.plannedStartDate = plannedStartDate;
+	}
+
+	public String getPlannedEndDate() {
+		return plannedEndDate;
+	}
+
+	public void setPlannedEndDate(String plannedEndDate) {
+		this.plannedEndDate = plannedEndDate;
+	}
+
+	public String getActualStartDate() {
+		return actualStartDate;
+	}
+
+	public void setActualStartDate(String actualStartDate) {
+		this.actualStartDate = actualStartDate;
+	}
+
+	public String getActualEndDate() {
+		return actualEndDate;
+	}
+
+	public void setActualEndDate(String actualEndDate) {
+		this.actualEndDate = actualEndDate;
 	}
 
 	public Project() {

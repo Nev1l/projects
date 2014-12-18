@@ -1,11 +1,9 @@
 package by.epam.services;
 
-import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +17,7 @@ import by.epam.beans.Project;
 import by.epam.beans.Role;
 import by.epam.beans.Status;
 import by.epam.beans.Task;
-import by.epam.controllers.HomeController;
+import by.epam.beans.User;
 import by.epam.workimplements.WorkDAO;
 
 @Service
@@ -107,6 +105,12 @@ public class WorkService implements WorkDAO {
 		return workDAO.getEmployeeById(id);
 	}
 
+	@Transactional
+	public Employee getEmployee(User user) {
+		// TODO Auto-generated method stub
+		return workDAO.getEmployee(user);
+	}
+	
 	@Transactional
 	public void save(Member object) {
 		// TODO Auto-generated method stub
@@ -225,4 +229,5 @@ public class WorkService implements WorkDAO {
 		// TODO Auto-generated method stub
 		return workDAO.getSessionFactory();
 	}
+
 }

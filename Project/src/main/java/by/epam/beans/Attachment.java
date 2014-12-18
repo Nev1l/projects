@@ -14,21 +14,21 @@ public class Attachment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(name = "name")
+	@Column(name = "name",length=50)
 	private String name;
 
-	@Column(name = "size")
+	@Column(name = "size",length=100)
 	private String size;
 
-	@Column(name = "description")
+	@Column(name = "description",length=255)
 	private String description;
 
 	@ManyToOne
-	@JoinColumn(name = "projectId")
+	@JoinColumn(name = "project_id")
 	private Project project;
 
 	@ManyToOne
-	@JoinColumn(name = "taskId")
+	@JoinColumn(name = "task_id")
 	private Task task;
 
 	public int getId() {

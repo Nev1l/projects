@@ -1,7 +1,5 @@
 package by.epam.beans;
 
-import java.sql.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+
 @Entity
 @Table(name = "Task")
 public class Task {
@@ -17,24 +17,27 @@ public class Task {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@ManyToOne  
-    @JoinColumn(name ="projectId") 
+	@ManyToOne
+	@JoinColumn(name = "project_id")
 	private Project project;
 
-	@Column(name = "description")
+	@Column(name = "description", length = 255)
 	private String description;
 
 	@Column(name = "psd")
-	private Date psd;
-	@Column(name = "pdd")
-	private Date pdd;
-	@Column(name = "asd")
-	private Date asd;
-	@Column(name = "add")
-	private Date add;
+	private String plannedStartDate;
 
-	@ManyToOne  
-    @JoinColumn(name ="statusId") 
+	@Column(name = "ped")
+	private String plannedEndDate;
+
+	@Column(name = "asd")
+	private String actualStartDate;
+
+	@Column(name = "aed")
+	private String actualEndDate;
+
+	@ManyToOne
+	@JoinColumn(name = "status_id")
 	private Status status;
 
 	public int getId() {
@@ -61,36 +64,36 @@ public class Task {
 		this.description = description;
 	}
 
-	public Date getPsd() {
-		return psd;
+	public String getPlannedStartDate() {
+		return plannedStartDate;
 	}
 
-	public void setPsd(Date psd) {
-		this.psd = psd;
+	public void setPlannedStartDate(String plannedStartDate) {
+		this.plannedStartDate = plannedStartDate;
 	}
 
-	public Date getPdd() {
-		return pdd;
+	public String getPlannedEndDate() {
+		return plannedEndDate;
 	}
 
-	public void setPdd(Date pdd) {
-		this.pdd = pdd;
+	public void setPlannedEndDate(String plannedEndDate) {
+		this.plannedEndDate = plannedEndDate;
 	}
 
-	public Date getAsd() {
-		return asd;
+	public String getActualStartDate() {
+		return actualStartDate;
 	}
 
-	public void setAsd(Date asd) {
-		this.asd = asd;
+	public void setActualStartDate(String actualStartDate) {
+		this.actualStartDate = actualStartDate;
 	}
 
-	public Date getAdd() {
-		return add;
+	public String getActualEndDate() {
+		return actualEndDate;
 	}
 
-	public void setAdd(Date add) {
-		this.add = add;
+	public void setActualEndDate(String actualEndDate) {
+		this.actualEndDate = actualEndDate;
 	}
 
 	public Status getStatus() {
@@ -105,18 +108,4 @@ public class Task {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-	public Task(int id, Project project, String description, Date psd,
-			Date pdd, Date asd, Date add, Status status) {
-		super();
-		this.id = id;
-		this.project = project;
-		this.description = description;
-		this.psd = psd;
-		this.pdd = pdd;
-		this.asd = asd;
-		this.add = add;
-		this.status = status;
-	}
-
 }

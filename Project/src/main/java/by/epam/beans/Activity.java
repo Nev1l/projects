@@ -18,21 +18,21 @@ public class Activity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(name = "_date")
+	@Column(name = "activity_date")
 	private Date date;
 
 	@Column(name = "duration")
 	private int duration;
 
-	@Column(name = "comment")
+	@Column(name = "comment",length=255)
 	private String comment;
 
 	@ManyToOne
-	@JoinColumn(name = "projectId")
+	@JoinColumn(name = "project_id")
 	private Member member;
 
 	@ManyToOne
-	@JoinColumn(name = "assignmentId")
+	@JoinColumn(name = "assignment_id")
 	private Assignment assignment;
 
 	public int getId() {

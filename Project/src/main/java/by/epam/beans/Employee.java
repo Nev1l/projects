@@ -15,10 +15,10 @@ public class Employee {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(name = "first_name")
+	@Column(name = "first_name",length=30)
 	private String firstName;
 
-	@Column(name = "last_name")
+	@Column(name = "last_name",length=30)
 	private String lastName;
 
 	@Embedded

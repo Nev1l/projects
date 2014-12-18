@@ -1,6 +1,7 @@
 package by.epam.dao;
 
 import by.epam.beans.Employee;
+import by.epam.beans.User;
 
 
 public interface EmployeeDAO {
@@ -8,4 +9,5 @@ public interface EmployeeDAO {
 	void update(Employee p);
 	void delete(int id);
 	Employee getEmployeeById(int id);
+	Employee getEmployee(User user);
 }

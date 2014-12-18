@@ -1,7 +1,12 @@
 package by.epam.workimplements;
 
+import java.util.List;
+
+import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +21,7 @@ import by.epam.beans.Project;
 import by.epam.beans.Role;
 import by.epam.beans.Status;
 import by.epam.beans.Task;
+import by.epam.beans.User;
 
 @Repository
 public class WorkImplement implements WorkDAO {
@@ -121,6 +127,16 @@ public class WorkImplement implements WorkDAO {
 	}
 
 	@Override
+	public Employee getEmployee(User user) {
+		// TODO Auto-generated method stub
+		Session session = getSessionFactory().getCurrentSession();
+		return (Employee) session.createCriteria(Employee.class)
+				.add(Restrictions.eq("login", user.getLogin()))
+				.add(Restrictions.eq("password", user.getPassword()))
+				.uniqueResult();
+	}
+
+	@Override
 	public void save(Member object) {
 		// TODO Auto-generated method stub
 		sessionFactory.getCurrentSession().save(object);
@@ -177,7 +193,7 @@ public class WorkImplement implements WorkDAO {
 	@Override
 	public void save(Role object) {
 		// TODO Auto-generated method stub
-		sessionFactory.getCurrentSession().update(object);
+		sessionFactory.getCurrentSession().save(object);
 	}
 
 	@Override

@@ -5,10 +5,10 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class User {
-	@Column(name = "login")
+	@Column(name = "login", nullable = false, length = 50)
 	private String login;
 
-	@Column(name = "password")
+	@Column(name = "password", nullable = false, length = 50)
 	private String password;
 
 	public String getLogin() {
@@ -34,8 +34,8 @@ public class User {
 
 	public User(String login, String password) {
 		super();
-		this.login = login;
-		this.password = password;
+		setLogin(login);
+		setPassword(password);
 	}
 
 }
