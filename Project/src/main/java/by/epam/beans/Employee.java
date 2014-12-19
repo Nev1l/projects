@@ -15,14 +15,19 @@ public class Employee {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(name = "first_name",length=30)
+	@Column(name = "first_name", length = 30)
 	private String firstName;
 
-	@Column(name = "last_name",length=30)
+	@Column(name = "last_name", length = 30)
 	private String lastName;
 
-	@Embedded
-	private User user;
+	// @Embedded
+	// private User user;
+	@Column(name = "login", nullable = false, length = 50)
+	private String login;
+
+	@Column(name = "password", nullable = false, length = 50)
+	private String password;
 
 	public int getId() {
 		return id;
@@ -48,9 +53,32 @@ public class Employee {
 		this.lastName = lastName;
 	}
 
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public Employee() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public String toString() {
+		return "Employee [id=" + id + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", login=" + login + ", password="
+				+ password + "]";
 	}
 
 }

@@ -130,10 +130,10 @@ public class WorkImplement implements WorkDAO {
 	public Employee getEmployee(User user) {
 		// TODO Auto-generated method stub
 		Session session = getSessionFactory().getCurrentSession();
-		return (Employee) session.createCriteria(Employee.class)
+		Criteria cr = session.createCriteria(Employee.class)
 				.add(Restrictions.eq("login", user.getLogin()))
-				.add(Restrictions.eq("password", user.getPassword()))
-				.uniqueResult();
+				.add(Restrictions.eq("password", user.getPassword()));
+		return (Employee) cr.uniqueResult();
 	}
 
 	@Override

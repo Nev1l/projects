@@ -14,18 +14,31 @@
 	<table>
 		<tr>
 			<td></td>
-			<td></td>
-			<td width="20%">
-				<c:if test="${employee.role.isAdmin()}">
+			<td>
+				<c:if test="${not empty errorMessage}">
+					<p>${errorMessage}</p>	
 				</c:if>
-				<c:url var="loginUrl" value='/login.do' />
-					<form method="POST" name="loginForm" action="${loginUrl}">
-						<input type="text" name="login" value="" required /> <input
-							type="password" name="password" value="" required /> <input
-							type="submit" value="Login">
-					</form>
 			</td>
-
+			<td width="15%">
+				<c:choose>
+					<c:when test="${not empty curent_employee}">
+						<c:out value="${curent_employee}"></c:out>
+						<c:url var="logoutUrl" value='/logout.do' />
+						<form method="POST" name="loginForm" action="${logoutUrl}">
+							<input type="submit" value="Logout">
+						</form>
+					</c:when>
+					<c:otherwise>
+						<c:out value="${curent_employee}"></c:out>
+						<c:url var="loginUrl" value='/login.do' />
+						<form method="POST" name="loginForm" action="${loginUrl}">
+							<input type="text" name="login" value="" required /> <input
+								type="password" name="password" value="" required /> <input
+								type="submit" value="Login">
+						</form>
+					</c:otherwise>
+				</c:choose> 
+			</td>
 		</tr>
 		<c:forEach var="project" items="${projects}" varStatus="status">
 			<tr>

@@ -2,6 +2,7 @@ package by.epam.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,25 +21,38 @@ import by.epam.workimplements.WorkDAO;
 public class LoginController {
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(HomeController.class);
+			.getLogger(LoginController.class);
+
+	public final static String pageLogger = ConstantsLogger.loggerPrefix
+			+ ConstantsJSP.loginPage + ConstantsLogger.loggerSuffix;
 
 	@Autowired
 	private WorkDAO workService;
 
 	@RequestMapping(value = "/login.do")
 	public String login(HttpServletRequest req, HttpServletResponse res) {
-		logger.info(ConstantsLogger.loggerPrefix+ConstantsJSP.loginPage);
-		User user = null;
+		logger.info(pageLogger);
+		String errorMessage = ConstantsJSP.EMPTY;
+		Employee employee = null;
 		try {
-			user = new User(req.getParameter(ConstantsJSP.KEY_LOGIN),
-					req.getParameter(ConstantsJSP.KEY_PASSWORD));
+			String login = req.getParameter(ConstantsJSP.KEY_LOGIN);
+			String password = req.getParameter(ConstantsJSP.KEY_PASSWORD);
+			if (login != null && password != null) {
+				employee = workService.getEmployee(new User(login, password));
+			} else {
+				logger.info(pageLogger + ConstantsError.errorNull);
+			}
 		} catch (Exception e) {
-			logger.info(ConstantsLogger.loggerPrefix+ConstantsJSP.loginPage+ConstantsLogger.loggerSuffix+e.getMessage());
-			req.setAttribute(ConstantsJSP.ATT_ERROR,ConstantsError.errorLoginPage);
-			return "forward:" + ConstantsJSP.homePage;
+			logger.info(pageLogger + e.getMessage());
+			errorMessage = ConstantsError.errorServer;
 		}
-		Employee employee = workService.getEmployee(user);
-		req.setAttribute(ConstantsJSP.ATT_EMPLOYEE, employee);
-		return "forward:" + ConstantsJSP.homePage;
+		if (employee == null){
+			errorMessage = ConstantsError.errorUserNotExist;
+		}
+		HttpSession session = req.getSession();
+		req.setAttribute(ConstantsJSP.ATT_ERROR, errorMessage);
+		session.setAttribute(ConstantsJSP.ATT_EMPLOYEE, employee);
+		//workService.get last activity
+		return ConstantsJSP.homePage;
 	}
 }

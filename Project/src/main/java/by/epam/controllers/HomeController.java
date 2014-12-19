@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import by.epam.beans.Role;
 import by.epam.consts.ConstantsJSP;
+import by.epam.consts.ConstantsLogger;
 import by.epam.workimplements.WorkDAO;
 
 /**
@@ -29,7 +30,8 @@ public class HomeController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(HomeController.class);
-
+	public final static String pageLogger = ConstantsLogger.loggerPrefix
+			+ ConstantsJSP.homePage + ConstantsLogger.loggerSuffix;
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -38,12 +40,12 @@ public class HomeController {
 
 	@RequestMapping(value = "/home.do")
 	public String home(HttpServletRequest req, HttpServletResponse res) {
-		logger.info("Welcome home!");
+		logger.info(pageLogger);
 		req.setAttribute("connectMessage", getConnection());
-		//workService.save(new Role("Admin"));
+		// workService.save(new Role("Admin"));
 		// data for home page (list of)
 		// workService.save(new Role("Admin"));
-		
+
 		return ConstantsJSP.homePage;
 	}
 
