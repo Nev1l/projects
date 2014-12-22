@@ -61,20 +61,21 @@ insert into employee(first_name, last_name, position_id, login, password)values 
 insert into employee(first_name, last_name, position_id, login, password)values ('Vitaliy','Gapanovich',2,'vitaliy','123');
 insert into employee(first_name, last_name, position_id, login, password)values ('Aliaksei','Osipov',3,'osipov','123');
 
-insert into status(name)values('NOT_STARTED');
-insert into status(name)values('STARTED');
-insert into status(name)values('SUSPENDED');
-insert into status(name)values('FINISHED');
+insert into status(name)values('"No started"');
+insert into status(name)values('Started');
+insert into status(name)values('Suspended');
+insert into status(name)values('Finished');
 
 insert into project(name, description,psd,ped,asd,aed,status_id)values('Airport','Access system for airport','2012-12-12','2012-12-16','2012-12-12','2012-12-16',1);
 insert into project(name, description,psd,ped,asd,aed,status_id)values('Stadium','Security system','2012-12-12','2012-12-15','2012-12-12','2012-12-15',2);
 insert into project(name, description,psd,ped,asd,aed,status_id)values('Web-project','Test project','2012-12-12','2012-12-15','2012-12-12','2012-12-14',3);
 insert into project(name, description,psd,ped,asd,aed,status_id)values('Station','Shedule of trains','2012-12-12','2012-12-15','2012-12-12','2012-12-14',4);
 
-insert into role(name)values('ADMIN');
-insert into role(name)values('RESOURCE_MANAGER');
-insert into role(name)values('TEAM_LEAD');	
-insert into role(name)values('DEVELOPER');
+insert into role(name)values('Administrator');
+insert into role(name)values('Resource Manager');
+insert into role(name)values('Team lead');	
+insert into role(name)values('Developer');
+insert into role(name)values('Tester');
 
 insert into task(project_id,description, psd,ped,asd,aed,status_id)values(1,'Create database','2012-12-12','2012-12-13','2012-12-12','2012-12-13',1);
 insert into task(project_id,description, psd,ped,asd,aed,status_id)values(2,'Inject spring in project','2012-12-12','2012-12-13','2012-12-12','2012-12-13',1);

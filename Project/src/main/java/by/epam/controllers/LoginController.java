@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import by.epam.beans.Employee;
+import by.epam.beans.Member;
 import by.epam.beans.User;
 import by.epam.consts.ConstantsError;
 import by.epam.consts.ConstantsJSP;
@@ -34,6 +35,7 @@ public class LoginController {
 		logger.info(pageLogger);
 		String errorMessage = ConstantsJSP.EMPTY;
 		Employee employee = null;
+		String pageReturn = ConstantsJSP.loginPage;
 		try {
 			String login = req.getParameter(ConstantsJSP.KEY_LOGIN);
 			String password = req.getParameter(ConstantsJSP.KEY_PASSWORD);
@@ -46,13 +48,15 @@ public class LoginController {
 			logger.info(pageLogger + e.getMessage());
 			errorMessage = ConstantsError.errorServer;
 		}
-		if (employee == null){
-			errorMessage = ConstantsError.errorUserNotExist;
+		if (employee == null) {
+			errorMessage = ConstantsError.errorInputData;
+		} else {
+			pageReturn = ConstantsJSP.homePage;
 		}
-		HttpSession session = req.getSession();
 		req.setAttribute(ConstantsJSP.ATT_ERROR, errorMessage);
+		HttpSession session = req.getSession();
 		session.setAttribute(ConstantsJSP.ATT_EMPLOYEE, employee);
-		//workService.get last activity
-		return ConstantsJSP.homePage;
+		// workService.get last activity
+		return pageReturn;
 	}
 }

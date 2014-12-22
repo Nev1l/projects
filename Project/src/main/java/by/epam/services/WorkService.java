@@ -1,5 +1,7 @@
 package by.epam.services;
 
+import java.util.List;
+
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,11 @@ import by.epam.beans.Status;
 import by.epam.beans.Task;
 import by.epam.beans.User;
 import by.epam.workimplements.WorkDAO;
+
+
+//================================================
+//=========[Добавь к новому методу @Transactional]
+//================================================
 
 @Service
 public class WorkService implements WorkDAO {
@@ -61,12 +68,6 @@ public class WorkService implements WorkDAO {
 	public void update(Assignment object) {
 		// TODO Auto-generated method stub
 		workDAO.update(object);
-	}
-
-	@Transactional
-	public Assignment getAssignmentById(int id) {
-		// TODO Auto-generated method stub
-		return workDAO.getAssignmentById(id);
 	}
 
 	@Transactional
@@ -124,9 +125,9 @@ public class WorkService implements WorkDAO {
 	}
 
 	@Transactional
-	public Member getMemberById(int id) {
+	public Member getMemberByEmployeeId(int id) {
 		// TODO Auto-generated method stub
-		return workDAO.getMemberById(id);
+		return workDAO.getMemberByEmployeeId(id);
 	}
 
 	@Transactional
@@ -160,9 +161,9 @@ public class WorkService implements WorkDAO {
 	}
 
 	@Transactional
-	public Project getProjectById(int id) {
+	public List<Project> getProjectsByMemberId(int id){
 		// TODO Auto-generated method stub
-		return workDAO.getProjectById(id);
+		return workDAO.getProjectsByMemberId(id);
 	}
 
 	@Transactional
@@ -213,11 +214,6 @@ public class WorkService implements WorkDAO {
 		workDAO.update(object);
 	}
 
-	@Transactional
-	public Task getTaskById(int id) {
-		// TODO Auto-generated method stub
-		return workDAO.getTaskById(id);
-	}
 
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		// TODO Auto-generated method stub
@@ -228,6 +224,18 @@ public class WorkService implements WorkDAO {
 	public SessionFactory getSessionFactory() {
 		// TODO Auto-generated method stub
 		return workDAO.getSessionFactory();
+	}
+
+	@Transactional
+	public List<Assignment> getEmployeeAssignments(int employeeId) {
+		// TODO Auto-generated method stub
+		return workDAO.getEmployeeAssignments(employeeId);
+	}
+
+	@Transactional
+	public List<Member> getAllMembers() {
+		// TODO Auto-generated method stub
+		return workDAO.getAllMembers();
 	}
 
 }

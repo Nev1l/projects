@@ -9,7 +9,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import by.epam.beans.Activity;
 import by.epam.beans.Assignment;
@@ -85,12 +84,6 @@ public class WorkImplement implements WorkDAO {
 	}
 
 	@Override
-	public Assignment getAssignmentById(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void save(Attachment object) {
 		// TODO Auto-generated method stub
 		sessionFactory.getCurrentSession().save(object);
@@ -149,7 +142,7 @@ public class WorkImplement implements WorkDAO {
 	}
 
 	@Override
-	public Member getMemberById(int id) {
+	public Member getMemberByEmployeeId(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -185,9 +178,12 @@ public class WorkImplement implements WorkDAO {
 	}
 
 	@Override
-	public Project getProjectById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Project> getProjectsByMemberId(int id) {
+		String sql = "select * from member,project where member.project_id=project.id and member.id="
+				+ id;
+		SQLQuery sqlquery = sessionFactory.getCurrentSession()
+				.createSQLQuery(sql).addEntity(Assignment.class);
+		return (List<Project>) sqlquery.list();
 	}
 
 	@Override
@@ -239,9 +235,22 @@ public class WorkImplement implements WorkDAO {
 	}
 
 	@Override
-	public Task getTaskById(int id) {
+	public List<Assignment> getEmployeeAssignments(int employeeId) {
 		// TODO Auto-generated method stub
-		return null;
+		String sql = "select * from assignment,member where assignment.member_id=member.id and member.employee_id="
+				+ employeeId;
+		SQLQuery sqlquery = sessionFactory.getCurrentSession()
+				.createSQLQuery(sql).addEntity(Assignment.class);
+		return (List<Assignment>) sqlquery.list();
+	}
+
+	@Override
+	public List<Member> getAllMembers() {
+		// TODO Auto-generated method stub
+		SQLQuery sqlquery = sessionFactory.getCurrentSession()
+				.createSQLQuery("select * from member").addEntity(Member.class);
+		return (List<Member>) sqlquery.list();
+
 	}
 
 }

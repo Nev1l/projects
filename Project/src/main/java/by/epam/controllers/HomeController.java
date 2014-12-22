@@ -5,10 +5,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +19,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import by.epam.beans.Assignment;
+import by.epam.beans.Employee;
+import by.epam.beans.Position;
+import by.epam.beans.ProjectPosition;
 import by.epam.beans.Role;
+import by.epam.beans.RoleAccess;
+import by.epam.beans.Status;
+import by.epam.beans.Status.State;
 import by.epam.consts.ConstantsJSP;
 import by.epam.consts.ConstantsLogger;
 import by.epam.workimplements.WorkDAO;
@@ -42,10 +51,19 @@ public class HomeController {
 	public String home(HttpServletRequest req, HttpServletResponse res) {
 		logger.info(pageLogger);
 		req.setAttribute("connectMessage", getConnection());
-		// workService.save(new Role("Admin"));
-		// data for home page (list of)
-		// workService.save(new Role("Admin"));
-
+		//workService.getProjectById(id);
+		
+		//assigned to me
+		HttpSession session = req.getSession();
+		if(session!=null){
+			Employee employee = (Employee) session.getAttribute(ConstantsJSP.ATT_EMPLOYEE);
+			if (employee!=null){
+				List<Assignment> list = workService.getEmployeeAssignments(employee.getId());
+				req.setAttribute(ConstantsJSP.EMPLOYEE_ASSIGNMENT, list);
+				req.setAttribute("obj", "LIST");
+			}
+		}
+		//workService.save(new Position(ProjectPosition.MANAGER));
 		return ConstantsJSP.homePage;
 	}
 

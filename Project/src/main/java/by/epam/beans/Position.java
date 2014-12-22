@@ -28,19 +28,33 @@ public class Position {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setName(ProjectPosition pos) {
+		this.name = pos.getPosition();
 	}
 
-	public Position(int id, String name) {
+	public Position(ProjectPosition pos) {
 		super();
-		this.id = id;
-		this.name = name;
+		this.name = pos.getPosition();
 	}
 
 	public Position() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	
+	public boolean isAdmin() {
+		return name.equals(ProjectPosition.ADMIN.getPosition());
+	}
+	
+	public boolean isManager() {
+		return name.equals(ProjectPosition.MANAGER.getPosition());
+	}
+	
+	public boolean isLead() {
+		return name.equals(ProjectPosition.LEAD.getPosition());
+	}
+	public boolean isDeveloper() {
+		return name.equals(ProjectPosition.JUNIOR.getPosition());
 	}
 
 }

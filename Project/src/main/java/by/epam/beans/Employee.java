@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -21,8 +23,10 @@ public class Employee {
 	@Column(name = "last_name", length = 30)
 	private String lastName;
 
-	// @Embedded
-	// private User user;
+	@ManyToOne
+	@JoinColumn(name = "position_id")
+	private Position position;
+
 	@Column(name = "login", nullable = false, length = 50)
 	private String login;
 
@@ -53,6 +57,14 @@ public class Employee {
 		this.lastName = lastName;
 	}
 
+	public Position getPosition() {
+		return position;
+	}
+
+	public void setPosition(Position position) {
+		this.position = position;
+	}
+
 	public String getLogin() {
 		return login;
 	}
@@ -77,7 +89,7 @@ public class Employee {
 	@Override
 	public String toString() {
 		return "Employee [id=" + id + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", login=" + login + ", password="
+				+ ", lastName=" + lastName +", position="+ position +", login=" + login + ", password="
 				+ password + "]";
 	}
 

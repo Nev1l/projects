@@ -9,7 +9,7 @@
 <body>
 	<!-- header -->
 	<%--<jsp:include page="login.jsp" flush="true" />--%>
-	<h1>Hello world!</h1>
+	<h1>HOME</h1>
 	<p>Dashboards</p>
 	<table>
 		<tr>
@@ -18,6 +18,19 @@
 				<c:if test="${not empty errorMessage}">
 					<p>${errorMessage}</p>	
 				</c:if>
+			</td>
+			<td>
+			<c:if test="${not empty curent_employee}">
+				<c:url var="role" value='/role.do' />
+				<c:url var="member" value='/member.do' />
+				<c:url var="project" value='/project.do' />
+				<c:url var="assignment" value='/assignment.do' />
+				<c:if test="${curent_employee.position.isAdmin()}">
+					<a href="${member}">Member</a>
+					<a href="${project}">Project</a>
+					<a href="${assignment}">Assignment</a>
+				</c:if>
+			</c:if>
 			</td>
 			<td width="15%">
 				<c:choose>
@@ -53,6 +66,7 @@
 			</tr>
 		</c:forEach>
 	</table>
+	<p>Role ${obj}</p>
 	<p>Connect message ${connectMessage}</p>
 	<!-- footer -->
 </body>

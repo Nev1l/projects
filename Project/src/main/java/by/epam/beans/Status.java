@@ -10,10 +10,30 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Status")
 public class Status {
+	public enum State {
+		NOT_STARTED("No started"), STARTED("Started"), SUSPENDED("Suspended"), FINISHED(
+				"Finished");
+		
+		String state;
+
+		public String getState() {
+			return state;
+		}
+
+		public void setState(String state) {
+			this.state = state;
+		}
+
+		private State(String state) {
+			this.state = state;
+		}
+
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(name = "name",length=50)
+	@Column(name = "name", length = 50)
 	private String name;
 
 	public int getId() {
@@ -28,14 +48,13 @@ public class Status {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setName(Status status) {
+		this.name = status.toString();
 	}
 
-	public Status(int id, String name) {
+	public Status(State state) {
 		super();
-		this.id = id;
-		this.name = name;
+		this.name = state.toString();
 	}
 
 	public Status() {

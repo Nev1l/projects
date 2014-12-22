@@ -14,9 +14,7 @@ public class Role {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	//+enum !!!!
 	@Column(name = "name",length=50)
-	//@Enumerated(EnumType.STRING)
 	private String name;
 
 	public int getId() {
@@ -31,8 +29,8 @@ public class Role {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setName(RoleAccess role) {
+		this.name = role.getAccess();
 	}
 
 	public Role() {
@@ -40,12 +38,23 @@ public class Role {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Role(String name) {
+	public Role(RoleAccess role) {
 		super();
-		this.name = name;
+		this.name = role.getAccess();
 	}
 
 	public boolean isAdmin() {
-		return name.equals("ADMIN");// +enum !!!!
+		return name.equals(RoleAccess.ADMIN.getAccess());
+	}
+	
+	public boolean isManager() {
+		return name.equals(RoleAccess.MANAGER.getAccess());
+	}
+	
+	public boolean isLead() {
+		return name.equals(RoleAccess.LEAD.getAccess());
+	}
+	public boolean isDeveloper() {
+		return name.equals(RoleAccess.DEVELOPER.getAccess());
 	}
 }

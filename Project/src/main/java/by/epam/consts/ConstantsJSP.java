@@ -9,4 +9,11 @@ public interface ConstantsJSP {
 	String homePage = "home";
 	String loginPage = "login";
 	String logoutPage = "logout";
+	String memberPage = "member";
+	String rolePage = "role";
+	String assignmentPage = "assignment";
+	String projectPage = "project";
+	String EMPLOYEE_ASSIGNMENT = "employeeAssignments";
+	String MEMBER_PROJECTS = "memberProjects";
+	String ALL_MEMBERS = "allMembers";
 }
