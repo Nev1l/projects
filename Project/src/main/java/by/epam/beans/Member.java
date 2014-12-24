@@ -59,7 +59,7 @@ public class Member {
 		this.role = role;
 	}
 
-	public Member(int id, Project project, Employee employee, Role role) {
+	public Member(Project project, Employee employee, Role role) {
 		super();
 		this.id = id;
 		this.project = project;
@@ -70,6 +70,12 @@ public class Member {
 	public Member() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public String toString() {
+		return "Member [id=" + id + ", project=" + project + ", employee="
+				+ employee + ", role=" + role + "]";
 	}
 
 }

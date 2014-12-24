@@ -1,4 +1,4 @@
-package by.epam.workimplements;
+package by.epam.impls;
 
 import java.util.List;
 
@@ -21,6 +21,7 @@ import by.epam.beans.Role;
 import by.epam.beans.Status;
 import by.epam.beans.Task;
 import by.epam.beans.User;
+import by.epam.dao.WorkDAO;
 
 @Repository
 public class WorkImplement implements WorkDAO {
@@ -114,9 +115,12 @@ public class WorkImplement implements WorkDAO {
 	}
 
 	@Override
-	public Employee getEmployeeById(int id) {
+	public Employee getEmployeeByUserName(String userName) {
 		// TODO Auto-generated method stub
-		return null;
+		Session session = getSessionFactory().getCurrentSession();
+		Criteria cr = session.createCriteria(Employee.class)
+				.add(Restrictions.eq("login", userName));
+		return (Employee) cr.uniqueResult();
 	}
 
 	@Override
@@ -252,5 +256,7 @@ public class WorkImplement implements WorkDAO {
 		return (List<Member>) sqlquery.list();
 
 	}
+
+
 
 }

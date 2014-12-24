@@ -1,7 +1,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ page import="by.epam.consts.ConstantsJSP"%>
 <%@ page import="by.epam.consts.ConstantsError"%>
 <%@ page session="true"%>
+<link href="${pageContext.request.contextPath}/resources/css/style.css"	rel="stylesheet" type="text/css" />
 <html>
 <head>
 <title>Home</title>
@@ -12,11 +14,12 @@
 	<h1>HOME</h1>
 	<p>Dashboards</p>
 	<table>
+	
 		<tr>
 			<td></td>
 			<td>
 				<c:if test="${not empty errorMessage}">
-					<p>${errorMessage}</p>	
+					<p class="error">${errorMessage}</p>	
 				</c:if>
 			</td>
 			<td>

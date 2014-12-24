@@ -18,7 +18,7 @@ import by.epam.beans.Member;
 import by.epam.beans.Project;
 import by.epam.consts.ConstantsJSP;
 import by.epam.consts.ConstantsLogger;
-import by.epam.workimplements.WorkDAO;
+import by.epam.dao.WorkDAO;
 
 @Controller
 public class MemberController {

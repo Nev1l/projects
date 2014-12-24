@@ -20,15 +20,26 @@ import by.epam.beans.Role;
 import by.epam.beans.Status;
 import by.epam.beans.Task;
 import by.epam.beans.User;
-import by.epam.workimplements.WorkDAO;
-
+import by.epam.dao.ActivityDAO;
+import by.epam.dao.AssigmentDAO;
+import by.epam.dao.AttachmentDAO;
+import by.epam.dao.EmployeeDAO;
+import by.epam.dao.MemberDAO;
+import by.epam.dao.PositionDAO;
+import by.epam.dao.ProjectDAO;
+import by.epam.dao.RoleDAO;
+import by.epam.dao.StatusDAO;
+import by.epam.dao.TaskDAO;
+import by.epam.dao.WorkDAO;
 
 //================================================
 //=========[Добавь к новому методу @Transactional]
 //================================================
 
 @Service
-public class WorkService implements WorkDAO {
+public class WorkService implements ActivityDAO, AssigmentDAO, AttachmentDAO,
+		EmployeeDAO, MemberDAO, PositionDAO, ProjectDAO, RoleDAO, StatusDAO,
+		TaskDAO {
 	private static final Logger logger = LoggerFactory
 			.getLogger(WorkService.class);
 	@Autowired
@@ -101,17 +112,11 @@ public class WorkService implements WorkDAO {
 	}
 
 	@Transactional
-	public Employee getEmployeeById(int id) {
-		// TODO Auto-generated method stub
-		return workDAO.getEmployeeById(id);
-	}
-
-	@Transactional
 	public Employee getEmployee(User user) {
 		// TODO Auto-generated method stub
 		return workDAO.getEmployee(user);
 	}
-	
+
 	@Transactional
 	public void save(Member object) {
 		// TODO Auto-generated method stub
@@ -161,7 +166,7 @@ public class WorkService implements WorkDAO {
 	}
 
 	@Transactional
-	public List<Project> getProjectsByMemberId(int id){
+	public List<Project> getProjectsByMemberId(int id) {
 		// TODO Auto-generated method stub
 		return workDAO.getProjectsByMemberId(id);
 	}
@@ -214,7 +219,6 @@ public class WorkService implements WorkDAO {
 		workDAO.update(object);
 	}
 
-
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		// TODO Auto-generated method stub
 		workDAO.setSessionFactory(sessionFactory);
@@ -236,6 +240,12 @@ public class WorkService implements WorkDAO {
 	public List<Member> getAllMembers() {
 		// TODO Auto-generated method stub
 		return workDAO.getAllMembers();
+	}
+
+	@Transactional
+	public Employee getEmployeeByUserName(String userName) {
+		// TODO Auto-generated method stub
+		return workDAO.getEmployeeByUserName(userName);
 	}
 
 }

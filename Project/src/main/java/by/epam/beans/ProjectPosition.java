@@ -1,8 +1,8 @@
 package by.epam.beans;
 
 public enum ProjectPosition {
-	ADMIN("Administrator"), MANAGER("Resource manager"), LEAD("Team lead"), JUNIOR(
-			"Junior"), TESTER("Tester");
+	ADMIN("Administrator"), MANAGER("Manager"), LEAD("Lead"), JUNIOR(
+			"Junior");
 	String position;
 
 	public String getPosition() {

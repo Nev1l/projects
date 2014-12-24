@@ -52,7 +52,7 @@ ALTER TABLE activity ADD CONSTRAINT activity_assignment_FK
 Foreign Key (assignment_id) REFERENCES assignment (id);
 
 insert into position(name)values ('Administrator');
-insert into position(name)values ('Resource Manager');
+insert into position(name)values ('Manager');
 insert into position(name)values ('Junior');
 insert into position(name)values ('Lead');
 
@@ -72,10 +72,9 @@ insert into project(name, description,psd,ped,asd,aed,status_id)values('Web-proj
 insert into project(name, description,psd,ped,asd,aed,status_id)values('Station','Shedule of trains','2012-12-12','2012-12-15','2012-12-12','2012-12-14',4);
 
 insert into role(name)values('Administrator');
-insert into role(name)values('Resource Manager');
-insert into role(name)values('Team lead');	
+insert into role(name)values('Manager');
+insert into role(name)values('Lead');	
 insert into role(name)values('Developer');
-insert into role(name)values('Tester');
 
 insert into task(project_id,description, psd,ped,asd,aed,status_id)values(1,'Create database','2012-12-12','2012-12-13','2012-12-12','2012-12-13',1);
 insert into task(project_id,description, psd,ped,asd,aed,status_id)values(2,'Inject spring in project','2012-12-12','2012-12-13','2012-12-12','2012-12-13',1);

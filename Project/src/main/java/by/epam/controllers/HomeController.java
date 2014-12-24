@@ -29,7 +29,7 @@ import by.epam.beans.Status;
 import by.epam.beans.Status.State;
 import by.epam.consts.ConstantsJSP;
 import by.epam.consts.ConstantsLogger;
-import by.epam.workimplements.WorkDAO;
+import by.epam.dao.WorkDAO;
 
 /**
  * Handles requests for the application home page.

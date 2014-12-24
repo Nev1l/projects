@@ -4,7 +4,7 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public enum RoleAccess {
-	ADMIN("Administrator"), MANAGER("Resource manager"), LEAD("Team lead"), DEVELOPER("Developer"), TESTER("Tester");
+	ADMIN("Administrator"), MANAGER("Manager"), LEAD("Lead"), DEVELOPER("Developer");
 
 	String access;
 

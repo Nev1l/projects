@@ -16,7 +16,7 @@ import by.epam.beans.User;
 import by.epam.consts.ConstantsError;
 import by.epam.consts.ConstantsJSP;
 import by.epam.consts.ConstantsLogger;
-import by.epam.workimplements.WorkDAO;
+import by.epam.dao.WorkDAO;
 
 @Controller
 public class LoginController {
@@ -24,28 +24,28 @@ public class LoginController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(LoginController.class);
 
-	public final static String pageLogger = ConstantsLogger.loggerPrefix
-			+ ConstantsJSP.loginPage + ConstantsLogger.loggerSuffix;
-
 	@Autowired
 	private WorkDAO workService;
 
 	@RequestMapping(value = "/login.do")
 	public String login(HttpServletRequest req, HttpServletResponse res) {
-		logger.info(pageLogger);
+		logger.info("");
 		String errorMessage = ConstantsJSP.EMPTY;
 		Employee employee = null;
 		String pageReturn = ConstantsJSP.loginPage;
 		try {
 			String login = req.getParameter(ConstantsJSP.KEY_LOGIN);
 			String password = req.getParameter(ConstantsJSP.KEY_PASSWORD);
+			logger.info("test work service:"+workService.getEmployeeByUserName("nev1l").toString());
 			if (login != null && password != null) {
+				logger.info(login+" "+password);
 				employee = workService.getEmployee(new User(login, password));
+				logger.info(employee.toString());
 			} else {
-				logger.info(pageLogger + ConstantsError.errorNull);
+				logger.info(ConstantsError.errorNull);
 			}
 		} catch (Exception e) {
-			logger.info(pageLogger + e.getMessage());
+			logger.info(e.getMessage());
 			errorMessage = ConstantsError.errorServer;
 		}
 		if (employee == null) {

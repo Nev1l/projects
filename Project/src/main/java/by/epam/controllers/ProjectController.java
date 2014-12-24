@@ -16,7 +16,7 @@ import by.epam.beans.Assignment;
 import by.epam.beans.Employee;
 import by.epam.consts.ConstantsJSP;
 import by.epam.consts.ConstantsLogger;
-import by.epam.workimplements.WorkDAO;
+import by.epam.dao.WorkDAO;
 
 @Controller
 public class ProjectController {
