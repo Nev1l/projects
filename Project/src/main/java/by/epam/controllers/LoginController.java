@@ -1,5 +1,7 @@
 package by.epam.controllers;
 
+import java.util.Enumeration;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -7,6 +9,9 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -17,6 +22,7 @@ import by.epam.consts.ConstantsError;
 import by.epam.consts.ConstantsJSP;
 import by.epam.consts.ConstantsLogger;
 import by.epam.dao.WorkDAO;
+import by.epam.dao.WorkServiceDAO;
 
 @Controller
 public class LoginController {
@@ -25,36 +31,43 @@ public class LoginController {
 			.getLogger(LoginController.class);
 
 	@Autowired
-	private WorkDAO workService;
+	private WorkServiceDAO workService;
 
 	@RequestMapping(value = "/login.do")
 	public String login(HttpServletRequest req, HttpServletResponse res) {
 		logger.info("");
-		String errorMessage = ConstantsJSP.EMPTY;
+		String pageReturn = ConstantsJSP.homePage;
 		Employee employee = null;
-		String pageReturn = ConstantsJSP.loginPage;
+		Member member = null;
+		HttpSession session = req.getSession(true);
+		String errorMessage = ConstantsJSP.EMPTY;
+		Exception ex = (Exception) session
+				.getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
+		if (ex!=null) {
+			errorMessage = ex.getMessage();
+			pageReturn = ConstantsJSP.loginPage;
+		}
+		logger.info("Exeption:"+errorMessage);
 		try {
-			String login = req.getParameter(ConstantsJSP.KEY_LOGIN);
-			String password = req.getParameter(ConstantsJSP.KEY_PASSWORD);
-			logger.info("test work service:"+workService.getEmployeeByUserName("nev1l").toString());
-			if (login != null && password != null) {
-				logger.info(login+" "+password);
-				employee = workService.getEmployee(new User(login, password));
+			SecurityContext context = (SecurityContext) session
+					.getAttribute(ConstantsJSP.SECURUTY_CONTEXT);
+			//œ–Œ¬≈–»“‹ ¿¬“Œ–»«Œ¬¿Õ À» —¬-¬Œ AUTH (SecurityContextHolder.getContext())
+			if (context != null) {
+				Authentication authenticate = context.getAuthentication();
+				String userName = authenticate.getName();
+				employee = workService.getEmployeeByUserName(userName);
 				logger.info(employee.toString());
+				member = workService.getMemberByEmployeeId(employee.getId());
+				logger.info(member.getRole().getName());
 			} else {
-				logger.info(ConstantsError.errorNull);
+				pageReturn = ConstantsJSP.loginPage;
+				logger.info("Security context is null");
 			}
 		} catch (Exception e) {
 			logger.info(e.getMessage());
 			errorMessage = ConstantsError.errorServer;
 		}
-		if (employee == null) {
-			errorMessage = ConstantsError.errorInputData;
-		} else {
-			pageReturn = ConstantsJSP.homePage;
-		}
-		req.setAttribute(ConstantsJSP.ATT_ERROR, errorMessage);
-		HttpSession session = req.getSession();
+		session.setAttribute(ConstantsJSP.ATT_ERROR, errorMessage);
 		session.setAttribute(ConstantsJSP.ATT_EMPLOYEE, employee);
 		// workService.get last activity
 		return pageReturn;

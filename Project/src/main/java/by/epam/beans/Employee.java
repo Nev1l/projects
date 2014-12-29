@@ -14,6 +14,7 @@ import javax.persistence.Table;
 @Table(name = "Employee")
 public class Employee {
 	@Id
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 

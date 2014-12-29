@@ -46,12 +46,13 @@
 					</c:when>
 					<c:otherwise>
 						<c:out value="${curent_employee}"></c:out>
-						<c:url var="loginUrl" value='/login.do' />
-						<form method="POST" name="loginForm" action="${loginUrl}">
-							<input type="text" name="login" value="" required /> <input
-								type="password" name="password" value="" required /> <input
-								type="submit" value="Login">
-						</form>
+						<form method="POST" name="loginForm" action="<c:url value="/j_spring_security_check" />">
+							<spring:message code="label.login" />
+							<input type="text" name="j_username" value="" required />
+							<spring:message code="label.password" />
+							<input type="password" name="j_password" value="" required /> 
+							<input type="submit" style="margin-top: 10px" value="Login">
+						</form>  
 					</c:otherwise>
 				</c:choose> 
 			</td>

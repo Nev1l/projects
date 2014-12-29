@@ -82,4 +82,7 @@ insert into task(project_id,description, psd,ped,asd,aed,status_id)values(2,'Tes
 insert into task(project_id,description, psd,ped,asd,aed,status_id)values(3,'SQL queries','2012-12-12','2012-12-14','2012-12-12','2012-12-13',2);
 insert into task(project_id,description, psd,ped,asd,aed,status_id)values(4,'Front-end','2012-12-12','2012-12-13','2012-12-12','2012-12-13',3);
 
+insert into member(project_id,employee_id,role_id)values(1,1,1);
+insert into member(project_id,employee_id,role_id)values(1,3,4);
+
 select * from member;

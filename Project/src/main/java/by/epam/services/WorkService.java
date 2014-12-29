@@ -31,15 +31,15 @@ import by.epam.dao.RoleDAO;
 import by.epam.dao.StatusDAO;
 import by.epam.dao.TaskDAO;
 import by.epam.dao.WorkDAO;
+import by.epam.dao.WorkServiceDAO;
 
 //================================================
 //=========[Добавь к новому методу @Transactional]
 //================================================
 
 @Service
-public class WorkService implements ActivityDAO, AssigmentDAO, AttachmentDAO,
-		EmployeeDAO, MemberDAO, PositionDAO, ProjectDAO, RoleDAO, StatusDAO,
-		TaskDAO {
+@Transactional
+public class WorkService implements WorkServiceDAO {
 	private static final Logger logger = LoggerFactory
 			.getLogger(WorkService.class);
 	@Autowired

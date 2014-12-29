@@ -17,6 +17,7 @@ import by.epam.beans.Employee;
 import by.epam.consts.ConstantsJSP;
 import by.epam.consts.ConstantsLogger;
 import by.epam.dao.WorkDAO;
+import by.epam.dao.WorkServiceDAO;
 
 @Controller
 public class ProjectController {
@@ -29,7 +30,7 @@ public class ProjectController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@Autowired
-	private WorkDAO workService;
+	private WorkServiceDAO workService;
 
 	@RequestMapping(value = "/project.do")
 	public String home(HttpServletRequest req, HttpServletResponse res) {

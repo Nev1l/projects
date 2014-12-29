@@ -19,20 +19,19 @@ import by.epam.beans.Project;
 import by.epam.consts.ConstantsJSP;
 import by.epam.consts.ConstantsLogger;
 import by.epam.dao.WorkDAO;
+import by.epam.dao.WorkServiceDAO;
 
 @Controller
 public class MemberController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(MemberController.class);
-	public final static String pageLogger = ConstantsLogger.loggerPrefix
-			+ ConstantsJSP.homePage + ConstantsLogger.loggerSuffix;
 	@Autowired
-	private WorkDAO workService;
+	private WorkServiceDAO workService;
 
 	@RequestMapping(value = "/member.do")
 	public String member(HttpServletRequest req, HttpServletResponse res) {
-		logger.info(pageLogger);
+		logger.info("");
 		HttpSession session = req.getSession();
 		if (session != null) {
 			Member member = null;
@@ -54,7 +53,7 @@ public class MemberController {
 	
 	@RequestMapping(value = "/memberAdd.do")
 	public String addMember(HttpServletRequest req, HttpServletResponse res) {
-		logger.info(pageLogger);
+		logger.info("");
 		return ConstantsJSP.memberPage;
 	}
 }

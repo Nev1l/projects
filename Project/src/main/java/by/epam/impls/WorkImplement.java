@@ -147,8 +147,10 @@ public class WorkImplement implements WorkDAO {
 
 	@Override
 	public Member getMemberByEmployeeId(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Session session = getSessionFactory().getCurrentSession();
+		Criteria cr = session.createCriteria(Member.class)
+				.add(Restrictions.eq("id", id));
+		return (Member) cr.uniqueResult();
 	}
 
 	@Override

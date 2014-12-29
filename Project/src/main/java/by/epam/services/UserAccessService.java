@@ -33,26 +33,16 @@ public class UserAccessService implements UserDetailsService {
 	@Transactional
 	public UserDetails loadUserByUsername(final String username)
 			throws UsernameNotFoundException {
-		logger.info("UserAccessService->loadUserByUsername");
 		Employee employee = null;
 		Member member = null;
 		employee = workDAO.getEmployeeByUserName(username);
 		member = workDAO.getMemberByEmployeeId(employee.getId());
 		logger.info(employee.toString());
-		logger.info(member.toString());
+		logger.info(member.getRole().getName());
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		authorities.add(new SimpleGrantedAuthority(member.getRole().getName()));
 		return new User(employee.getLogin(), employee.getPassword(), true,
 				true, true, true, authorities);
-		/*
-		 * Session sess = workDAO.getSessionFactory().getCurrentSession();
-		 * Transaction tx = null;
-		 * 
-		 * try { tx = sess.beginTransaction();
-		 * tx.commit();
-		 * } catch (Exception e) { if (tx != null) tx.rollback(); throw new
-		 * UsernameNotFoundException("DataBase error"); }
-		 */
 	}
 
 }

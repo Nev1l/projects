@@ -16,13 +16,11 @@ import by.epam.consts.ConstantsLogger;
 public class LogoutController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(LogoutController.class);
-	public final static String pageLogger = ConstantsLogger.loggerPrefix
-			+ ConstantsJSP.logoutPage + ConstantsLogger.loggerSuffix;
 
 	@RequestMapping(value = "/logout.do")
 	public String logout(HttpServletRequest request,
 			HttpServletResponse response) {
-		logger.info(pageLogger);
+		logger.info("");
 		HttpSession session = request.getSession();
 		session.invalidate();
 		return ConstantsJSP.homePage;
