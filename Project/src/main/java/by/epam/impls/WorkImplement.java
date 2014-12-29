@@ -149,7 +149,7 @@ public class WorkImplement implements WorkDAO {
 	public Member getMemberByEmployeeId(int id) {
 		Session session = getSessionFactory().getCurrentSession();
 		Criteria cr = session.createCriteria(Member.class)
-				.add(Restrictions.eq("id", id));
+				.add(Restrictions.eq("employee_id", id));
 		return (Member) cr.uniqueResult();
 	}
 

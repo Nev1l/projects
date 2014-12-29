@@ -49,7 +49,7 @@ public class LoginController {
 		}
 		logger.info("Exeption:"+errorMessage);
 		try {
-			SecurityContext context = SecurityContextHolder.getContext();//(SecurityContext) session.getAttribute(ConstantsJSP.SECURUTY_CONTEXT);
+			SecurityContext context = SecurityContextHolder.getContext();
 			Authentication authenticate = context.getAuthentication();
 			String userName = authenticate.getName();
 			logger.info("userName="+userName);
@@ -57,7 +57,7 @@ public class LoginController {
 				employee = workService.getEmployeeByUserName(userName);
 				logger.info("employee="+employee.toString());
 				member = workService.getMemberByEmployeeId(employee.getId());
-				logger.info("member"+member.getRole().getName());
+				logger.info("member="+member.getRole().getName());
 			} else {
 				pageReturn = ConstantsJSP.loginPage;
 				logger.info("guest!");
