@@ -49,19 +49,18 @@ public class LoginController {
 		}
 		logger.info("Exeption:"+errorMessage);
 		try {
-			SecurityContext context = (SecurityContext) session
-					.getAttribute(ConstantsJSP.SECURUTY_CONTEXT);
-			//œ–Œ¬≈–»“‹ ¿¬“Œ–»«Œ¬¿Õ À» —¬-¬Œ AUTH (SecurityContextHolder.getContext())
-			if (context != null) {
-				Authentication authenticate = context.getAuthentication();
-				String userName = authenticate.getName();
+			SecurityContext context = SecurityContextHolder.getContext();//(SecurityContext) session.getAttribute(ConstantsJSP.SECURUTY_CONTEXT);
+			Authentication authenticate = context.getAuthentication();
+			String userName = authenticate.getName();
+			logger.info("userName="+userName);
+			if(!userName.equals(ConstantsJSP.USER_GUEST)){
 				employee = workService.getEmployeeByUserName(userName);
-				logger.info(employee.toString());
+				logger.info("employee="+employee.toString());
 				member = workService.getMemberByEmployeeId(employee.getId());
-				logger.info(member.getRole().getName());
+				logger.info("member"+member.getRole().getName());
 			} else {
 				pageReturn = ConstantsJSP.loginPage;
-				logger.info("Security context is null");
+				logger.info("guest!");
 			}
 		} catch (Exception e) {
 			logger.info(e.getMessage());

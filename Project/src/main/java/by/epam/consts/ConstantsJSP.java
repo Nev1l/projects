@@ -4,6 +4,7 @@ public interface ConstantsJSP {
 	String SECURUTY_CONTEXT = "SPRING_SECURITY_CONTEXT";
 	String HAS_ERROR = "error";
 	String EMPTY = "";
+	String USER_GUEST = "guest";
 	String KEY_LOGIN = "j_username";
 	String KEY_PASSWORD = "j_password";
 	String ATT_EMPLOYEE = "curent_employee";

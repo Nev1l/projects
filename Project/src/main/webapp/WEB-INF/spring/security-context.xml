@@ -37,7 +37,7 @@
 		<security:form-login login-page="/login"
 			default-target-url="/login.do" authentication-failure-url="/login.do" />
 
-		<security:logout logout-url="/logout"
+		<security:logout logout-url="/logout.do"
 			logout-success-url="/login.do" />
 
 		<security:anonymous username="guest"

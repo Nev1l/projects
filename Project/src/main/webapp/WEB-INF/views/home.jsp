@@ -38,9 +38,9 @@
 			<td width="15%">
 				<c:choose>
 					<c:when test="${not empty curent_employee}">
+					<!-- /j_spring_security_logout -->
 						<c:out value="${curent_employee}"></c:out>
-						<c:url var="logoutUrl" value='/logout.do' />
-						<form method="POST" name="loginForm" action="${logoutUrl}">
+						<form method="POST" name="loginForm" action="<c:url value="/logout.do"/>">
 							<input type="submit" value="Logout">
 						</form>
 					</c:when>
