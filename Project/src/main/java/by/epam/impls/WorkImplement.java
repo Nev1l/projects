@@ -7,7 +7,10 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.object.SqlQuery;
 import org.springframework.stereotype.Repository;
 
 import by.epam.beans.Activity;
@@ -25,6 +28,8 @@ import by.epam.dao.WorkDAO;
 
 @Repository
 public class WorkImplement implements WorkDAO {
+	private static final Logger logger = LoggerFactory
+			.getLogger(WorkImplement.class);
 
 	public WorkImplement() {
 		super();
@@ -117,10 +122,12 @@ public class WorkImplement implements WorkDAO {
 	@Override
 	public Employee getEmployeeByUserName(String userName) {
 		// TODO Auto-generated method stub
-		Session session = getSessionFactory().getCurrentSession();
-		Criteria cr = session.createCriteria(Employee.class)
-				.add(Restrictions.eq("login", userName));
-		return (Employee) cr.uniqueResult();
+		SQLQuery sqlquery = sessionFactory
+				.getCurrentSession()
+				.createSQLQuery(
+						"select * from employee where login='" + userName + "'")
+				.addEntity(Employee.class);
+		return (Employee) sqlquery.uniqueResult();
 	}
 
 	@Override
@@ -147,10 +154,12 @@ public class WorkImplement implements WorkDAO {
 
 	@Override
 	public Member getMemberByEmployeeId(int id) {
-		Session session = getSessionFactory().getCurrentSession();
-		Criteria cr = session.createCriteria(Member.class)
-				.add(Restrictions.eq("employee_id", id));
-		return (Member) cr.uniqueResult();
+		SQLQuery sqlquery = sessionFactory
+				.getCurrentSession()
+				.createSQLQuery(
+						"select * from member,employee where employee_id=" + id)
+				.addEntity(Member.class);
+		return (Member) sqlquery.uniqueResult();
 	}
 
 	@Override
@@ -185,11 +194,10 @@ public class WorkImplement implements WorkDAO {
 
 	@Override
 	public List<Project> getProjectsByMemberId(int id) {
-		String sql = "select * from member,project where member.project_id=project.id and member.id="
-				+ id;
+		String sql = "select * from project,assignment,member,task where assignment.member_id=member.id and assignment.task_id=task.id and project.id=task.project_id and member.id="+id;
 		SQLQuery sqlquery = sessionFactory.getCurrentSession()
-				.createSQLQuery(sql).addEntity(Assignment.class);
-		return (List<Project>) sqlquery.list();
+				.createSQLQuery(sql).addEntity(Project.class);
+		return (List<Project>)sqlquery.list();
 	}
 
 	@Override
@@ -241,12 +249,15 @@ public class WorkImplement implements WorkDAO {
 	}
 
 	@Override
-	public List<Assignment> getEmployeeAssignments(int employeeId) {
+	public List<Assignment> getEmployeeAssignments(int employeeId, int start,
+			int count) {
 		// TODO Auto-generated method stub
 		String sql = "select * from assignment,member where assignment.member_id=member.id and member.employee_id="
 				+ employeeId;
 		SQLQuery sqlquery = sessionFactory.getCurrentSession()
 				.createSQLQuery(sql).addEntity(Assignment.class);
+		sqlquery.setFirstResult(start);
+		sqlquery.setMaxResults(count);
 		return (List<Assignment>) sqlquery.list();
 	}
 
@@ -259,6 +270,88 @@ public class WorkImplement implements WorkDAO {
 
 	}
 
+	@Override
+	public List<Activity> getLastActivity(int count) {
+		// TODO Auto-generated method stub
+		String sql = "select * from activity order by activity_date desc";
+		SQLQuery sqlquery = sessionFactory.getCurrentSession()
+				.createSQLQuery(sql).addEntity(Activity.class);
+		return sqlquery.setMaxResults(count).list();
+	}
 
+	@Override
+	public int getCountAssignmentsByEmployeeId(int employeeId) {
+		// TODO Auto-generated method stub
+		String sql = "select count(*) from assignment,member where assignment.member_id=member.id and member.employee_id="
+				+ employeeId;
+		SQLQuery query = sessionFactory.getCurrentSession().createSQLQuery(sql);
+		int count = (Integer) query.uniqueResult();
+		return count;
+	}
+
+	@Override
+	public int getActivityCount() {
+		// TODO Auto-generated method stub
+		String sql = "select count(*) from activity";
+		SQLQuery query = sessionFactory.getCurrentSession().createSQLQuery(sql);
+		return (Integer) query.uniqueResult();
+	}
+
+	@Override
+	public Task getTaskById(int id) {
+		// TODO Auto-generated method stub
+		String sql = "select * from task where id=" + id;
+		SQLQuery sqlquery = sessionFactory.getCurrentSession()
+				.createSQLQuery(sql).addEntity(Task.class);
+		return (Task) sqlquery.uniqueResult();
+	}
+
+	@Override
+	public List<Task> getTasksByProjectId(int id) {
+		// TODO Auto-generated method stub
+		String sql = "select * from task,project where project.id=task.project_id and project.id="
+				+ id;
+		SQLQuery sqlquery = sessionFactory.getCurrentSession()
+				.createSQLQuery(sql).addEntity(Task.class);
+		return sqlquery.list();
+	}
+
+	@Override
+	public List<Project> getAllProjects() {
+		// TODO Auto-generated method stub
+		String sql = "select * from project";
+		SQLQuery sqlquery = sessionFactory.getCurrentSession()
+				.createSQLQuery(sql).addEntity(Project.class);
+		return (List<Project>) sqlquery.list();
+	}
+
+	@Override
+	public Project getProjectById(int id) {
+		// TODO Auto-generated method stub
+		String sql = "select * from project where id=" + id;
+		SQLQuery sqlquery = sessionFactory.getCurrentSession()
+				.createSQLQuery(sql).addEntity(Project.class);
+		return (Project) sqlquery.uniqueResult();
+	}
+
+	@Override
+	public Assignment getAssignmentByTaskId(int id) {
+		// TODO Auto-generated method stub
+		String sql = "select * from task,assignment where task_id=task.id and task.id="
+				+ id;
+		SQLQuery sqlquery = sessionFactory.getCurrentSession()
+				.createSQLQuery(sql).addEntity(Assignment.class);
+		return (Assignment) sqlquery.uniqueResult();
+	}
+
+	@Override
+	public List<Member> getMembersByProjectId(int id) {
+		// TODO Auto-generated method stub
+		String sql = "select * from member,task,assignment,project where member.id=assignment.member_id and task.id=assignment.task_id and project.id=task.project_id and project.id="
+				+ id;
+		SQLQuery sqlquery = sessionFactory.getCurrentSession()
+				.createSQLQuery(sql).addEntity(Member.class);
+		return (List<Member>) sqlquery.list();
+	}
 
 }

@@ -17,8 +17,7 @@
 		</property>
 	</bean>
 
-	<bean id="roleVoter"
-		class="org.springframework.security.access.vote.RoleVoter">
+	<bean id="roleVoter" class="org.springframework.security.access.vote.RoleVoter">
 		<property name="rolePrefix" value="" />
 	</bean>
 
@@ -26,22 +25,28 @@
 		class="org.springframework.security.access.vote.AuthenticatedVoter">
 	</bean>
 
-	<!-- auto-config="true" use-expressions="true" access="isAuthenticated()"  login-from >>> username-parameter="username" password-parameter="password" -->
-	<security:http auto-config="true" access-decision-manager-ref="accessDecisionManager" access-denied-page="/error403.jsp">
+	<!-- auto-config="true" use-expressions="true" access="isAuthenticated()" 
+		login-from >>> username-parameter="username" password-parameter="password" -->
+	<security:http access-decision-manager-ref="accessDecisionManager"
+		access-denied-page="/WEB-INF/views/error403.jsp">
 		<security:intercept-url pattern="/home*"
-			access="Administrator,Developer, ANONYMOUS" />
+			access="Administrator,Manager,Lead,Developer" /><!-- Administrator,Developer, ANONYMOUS -->
+		<security:intercept-url pattern="/task*"
+			access="Administrator,Manager,Lead,Developer" />
 
-		<security:intercept-url pattern="/add*"
-			access="Administrator" />
-
-		<security:form-login login-page="/login"
-			default-target-url="/login.do" authentication-failure-url="/login.do" />
+		<security:intercept-url pattern="/project*"
+			access="Administrator,Manager,Lead,Developer" />
+			
+		<!--/ .do -->
+		<security:form-login login-page="/login.do"
+			default-target-url="/home.do" authentication-failure-url="/login.do?error=1" />
 
 		<security:logout logout-url="/logout.do"
 			logout-success-url="/login.do" />
 
 		<security:anonymous username="guest"
-			granted-authority="ANONYMOUS" />
+			granted-authority="Anonymous" />
+		<security:remember-me />
 	</security:http>
 
 	<security:authentication-manager>

@@ -1,5 +1,7 @@
 package by.epam.beans;
 
+import java.sql.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,16 +31,16 @@ public class Assignment {
 	private String description;
 
 	@Column(name = "psd")
-	private String plannedStartDate;
+	private Date plannedStartDate;
 
 	@Column(name = "ped")
-	private String plannedEndDate;
+	private Date plannedEndDate;
 
 	@Column(name = "asd")
-	private String actualStartDate;
+	private Date actualStartDate;
 
 	@Column(name = "aed")
-	private String actualEndDate;
+	private Date actualEndDate;
 
 	public int getId() {
 		return id;
@@ -72,35 +74,35 @@ public class Assignment {
 		this.description = description;
 	}
 
-	public String getPlannedStartDate() {
+	public Date getPlannedStartDate() {
 		return plannedStartDate;
 	}
 
-	public void setPlannedStartDate(String plannedStartDate) {
+	public void setPlannedStartDate(Date plannedStartDate) {
 		this.plannedStartDate = plannedStartDate;
 	}
 
-	public String getPlannedEndDate() {
+	public Date getPlannedEndDate() {
 		return plannedEndDate;
 	}
 
-	public void setPlannedEndDate(String plannedEndDate) {
+	public void setPlannedEndDate(Date plannedEndDate) {
 		this.plannedEndDate = plannedEndDate;
 	}
 
-	public String getActualStartDate() {
+	public Date getActualStartDate() {
 		return actualStartDate;
 	}
 
-	public void setActualStartDate(String actualStartDate) {
+	public void setActualStartDate(Date actualStartDate) {
 		this.actualStartDate = actualStartDate;
 	}
 
-	public String getActualEndDate() {
+	public Date getActualEndDate() {
 		return actualEndDate;
 	}
 
-	public void setActualEndDate(String actualEndDate) {
+	public void setActualEndDate(Date actualEndDate) {
 		this.actualEndDate = actualEndDate;
 	}
 

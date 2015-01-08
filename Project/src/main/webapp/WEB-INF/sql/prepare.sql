@@ -61,7 +61,7 @@ insert into employee(first_name, last_name, position_id, login, password)values 
 insert into employee(first_name, last_name, position_id, login, password)values ('Vitaliy','Gapanovich',2,'vitaliy','123');
 insert into employee(first_name, last_name, position_id, login, password)values ('Aliaksei','Osipov',3,'osipov','123');
 
-insert into status(name)values('"No started"');
+insert into status(name)values('No started');
 insert into status(name)values('Started');
 insert into status(name)values('Suspended');
 insert into status(name)values('Finished');
@@ -84,5 +84,13 @@ insert into task(project_id,description, psd,ped,asd,aed,status_id)values(4,'Fro
 
 insert into member(project_id,employee_id,role_id)values(1,1,1);
 insert into member(project_id,employee_id,role_id)values(1,3,4);
+
+insert into assignment(member_id,task_id,description,psd,ped,asd,aed)values(1,1,'assignment...','2012-12-12','2012-12-13','2012-12-12','2012-12-13');
+
+insert into activity(activity_date,duration,comment,assignment_id)values('2012-12-12 11:51:30',1,'comment1',1);
+insert into activity(activity_date,duration,comment,assignment_id)values('2012-12-12 11:52:30',2,'comment2',1);
+insert into activity(activity_date,duration,comment,assignment_id)values('2012-12-12 11:53:30',3,'comment3',1);
+insert into activity(activity_date,duration,comment,assignment_id)values('2012-12-12 11:54:30',4,'comment4',1);
+insert into activity(activity_date,duration,comment,assignment_id)values('2012-12-12 11:55:30',5,'comment5',1);
 
 select * from member;

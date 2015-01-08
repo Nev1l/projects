@@ -63,7 +63,6 @@ public class Member {
 
 	public Member(Project project, Employee employee, Role role) {
 		super();
-		this.id = id;
 		this.project = project;
 		this.employee = employee;
 		this.role = role;

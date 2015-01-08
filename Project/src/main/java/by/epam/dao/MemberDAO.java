@@ -11,4 +11,5 @@ public interface MemberDAO {
 	void delete(int id);
 	Member getMemberByEmployeeId(int id);
 	List<Member> getAllMembers();
+	List<Member> getMembersByProjectId(int id);
 }

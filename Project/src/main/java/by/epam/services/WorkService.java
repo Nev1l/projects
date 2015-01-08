@@ -231,9 +231,10 @@ public class WorkService implements WorkServiceDAO {
 	}
 
 	@Transactional
-	public List<Assignment> getEmployeeAssignments(int employeeId) {
+	public List<Assignment> getEmployeeAssignments(int employeeId, int start,
+			int count) {
 		// TODO Auto-generated method stub
-		return workDAO.getEmployeeAssignments(employeeId);
+		return workDAO.getEmployeeAssignments(employeeId, start, count);
 	}
 
 	@Transactional
@@ -246,6 +247,60 @@ public class WorkService implements WorkServiceDAO {
 	public Employee getEmployeeByUserName(String userName) {
 		// TODO Auto-generated method stub
 		return workDAO.getEmployeeByUserName(userName);
+	}
+
+	@Transactional
+	public List<Activity> getLastActivity(int count) {
+		// TODO Auto-generated method stub
+		return workDAO.getLastActivity(count);
+	}
+
+	@Transactional
+	public int getCountAssignmentsByEmployeeId(int employeeId) {
+		// TODO Auto-generated method stub
+		return workDAO.getCountAssignmentsByEmployeeId(employeeId);
+	}
+
+	@Transactional
+	public int getActivityCount() {
+		// TODO Auto-generated method stub
+		return workDAO.getActivityCount();
+	}
+
+	@Transactional
+	public Task getTaskById(int id) {
+		// TODO Auto-generated method stub
+		return workDAO.getTaskById(id);
+	}
+
+	@Transactional
+	public List<Task> getTasksByProjectId(int id) {
+		// TODO Auto-generated method stub
+		return workDAO.getTasksByProjectId(id);
+	}
+
+	@Transactional
+	public List<Project> getAllProjects() {
+		// TODO Auto-generated method stub
+		return workDAO.getAllProjects();
+	}
+
+	@Transactional
+	public Project getProjectById(int id) {
+		// TODO Auto-generated method stub
+		return  workDAO.getProjectById(id);
+	}
+
+	@Transactional
+	public Assignment getAssignmentByTaskId(int id) {
+		// TODO Auto-generated method stub
+		return workDAO.getAssignmentByTaskId(id);
+	}
+
+	@Transactional
+	public List<Member> getMembersByProjectId(int id) {
+		// TODO Auto-generated method stub
+		return workDAO.getMembersByProjectId(id);
 	}
 
 }

@@ -9,5 +9,7 @@ public interface AssigmentDAO {
 	void save(Assignment p);
 	void update(Assignment p);
 	void delete(int id);
-	List<Assignment> getEmployeeAssignments(int employeeId);
+	List<Assignment> getEmployeeAssignments(int employeeId,int start,int count);
+	int getCountAssignmentsByEmployeeId(int employeeId);
+	Assignment getAssignmentByTaskId(int id);
 }

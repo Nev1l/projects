@@ -6,4 +6,7 @@ public interface ConstantsError {
 	String errorUserNotExist = "User doesn't exist in database.";
 	String errorInputData = "Wrong input data.";
 	String errorServer = "Sorry!Server has a problems.";
+	String errorNotFound = "Not found.";
+	String errorIncorrectId = "Wrong id.";
+	String errorParamIsNull = "Param is null.";
 }

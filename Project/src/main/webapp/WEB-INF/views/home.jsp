@@ -3,75 +3,96 @@
 <%@ page import="by.epam.consts.ConstantsJSP"%>
 <%@ page import="by.epam.consts.ConstantsError"%>
 <%@ page session="true"%>
-<link href="${pageContext.request.contextPath}/resources/css/style.css"	rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/resources/css/style.css"
+  rel="stylesheet" type="text/css" />
 <html>
 <head>
+<script type="text/javascript"
+  src="${pageContext.request.contextPath}/resources/js/script.js"></script>
 <title>Home</title>
 </head>
 <body>
-	<!-- header -->
-	<%--<jsp:include page="login.jsp" flush="true" />--%>
-	<h1>HOME</h1>
-	<p>Dashboards</p>
-	<table>
-	
-		<tr>
-			<td></td>
-			<td>
-				<c:if test="${not empty errorMessage}">
-					<p class="error">${errorMessage}</p>	
-				</c:if>
-			</td>
-			<td>
-			<c:if test="${not empty curent_employee}">
-				<c:url var="role" value='/role.do' />
-				<c:url var="member" value='/member.do' />
-				<c:url var="project" value='/project.do' />
-				<c:url var="assignment" value='/assignment.do' />
-				<c:if test="${curent_employee.position.isAdmin()}">
-					<a href="${member}">Member</a>
-					<a href="${project}">Project</a>
-					<a href="${assignment}">Assignment</a>
-				</c:if>
-			</c:if>
-			</td>
-			<td width="15%">
-				<c:choose>
-					<c:when test="${not empty curent_employee}">
-					<!-- /j_spring_security_logout -->
-						<c:out value="${curent_employee}"></c:out>
-						<form method="POST" name="loginForm" action="<c:url value="/logout.do"/>">
-							<input type="submit" value="Logout">
-						</form>
-					</c:when>
-					<c:otherwise>
-						<c:out value="${curent_employee}"></c:out>
-						<form method="POST" name="loginForm" action="<c:url value="/j_spring_security_check" />">
-							<spring:message code="label.login" />
-							<input type="text" name="j_username" value="" required />
-							<spring:message code="label.password" />
-							<input type="password" name="j_password" value="" required /> 
-							<input type="submit" style="margin-top: 10px" value="Login">
-						</form>  
-					</c:otherwise>
-				</c:choose> 
-			</td>
-		</tr>
-		<c:forEach var="project" items="${projects}" varStatus="status">
-			<tr>
-				<td>
-					<%-- <a href="qweqwe('${project.id}')">${project.name}</a> --%>
-				</td>
-				<td>${project.plannedStartDate}</td>
-				<td>${project.plannedEndDate}</td>
-				<td>${project.actualStartDate}</td>
-				<td>${project.actualEndDate}</td>
-				<td>${project.status.name}</td>
-			</tr>
-		</c:forEach>
-	</table>
-	<p>Role ${obj}</p>
-	<p>Connect message ${connectMessage}</p>
-	<!-- footer -->
+  <!-- header -->
+  <%--<jsp:include page="login.jsp" flush="true" />--%>
+  <h1>HOME</h1>
+  <p>Dashboards</p>
+  <table width="15%">
+    <tr>
+      <td><c:choose>
+          <c:when test="${not empty MEMBER}">
+            <tr>
+              <td><c:out value="${MEMBER.employee.position.name}" />
+              </td>
+            </tr>
+            <tr>
+              <td><c:out
+                  value="${MEMBER.employee.firstName} ${MEMBER.employee.lastName}" />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <form method="POST" name="loginForm"
+                  action="<c:url value="/logout.do"/>">
+                  <input type="submit" value="Logout">
+                </form>
+              </td>
+            </tr>
+          </c:when>
+          <c:otherwise>
+            <%-- no auth --%>
+          </c:otherwise>
+        </c:choose></td>
+    </tr>
+  </table>
+  <div>
+    <c:if test="${not empty MEMBER}">
+      <c:url var="project" value="/project.do" />
+      <a href="${project}">Projects</a>
+      <c:if test="${not MEMBER.role.isDeveloper()}">
+      </c:if>
+    </c:if>
+  </div>
+  <div>
+    <table width="35%" border="solid 1 px">
+      <tr>
+        <td>Project name</td>
+        <td>Assignment description</td>
+        <td>Task description</td>
+      </tr>
+      <c:forEach var="assignment" items="${EMPLOYEE_ASSIGNMENT}"
+        varStatus="status">
+        <tr>
+          <td><a href="#"
+            onClick="sendPost('/project/project.do','${assignment.task.project.id}')">${assignment.task.project.name}</a>
+          </td>
+          <td>${assignment.description}</td>
+          <td><a href="#"
+            onClick="sendPost('/project/task.do','${assignment.task.id}')">${assignment.task.description}</a>
+          </td>
+        </tr>
+      </c:forEach>
+    </table>
+    <table width="35%" border="solid 1 px">
+      <tr>
+        <td>Last Activity</td>
+        <td>Member</td>
+        <td>Comment</td>
+        <td>Task description</td>
+      </tr>
+      <c:forEach var="activity" items="${LAST_ACTIVITY}" varStatus="status">
+        <tr>
+          <td>${activity.date}</td>
+          <td>${activity.assignment.member.employee.firstName}
+            ${activity.assignment.member.employee.lastName}</td>
+          <td>${activity.comment}</td>
+          <td>${activity.assignment.task.description}</td>
+        </tr>
+      </c:forEach>         
+    </table>
+    <input type="button" name="showMore" onClick="load()"
+      value="Show more.." />
+  </div>
+  <%-- <p> ${sessionScope}</p> --%>
+  <!-- footer -->
 </body>
 </html>

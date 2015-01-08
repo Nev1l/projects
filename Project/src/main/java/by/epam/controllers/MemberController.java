@@ -4,21 +4,20 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import by.epam.beans.Assignment;
-import by.epam.beans.Employee;
 import by.epam.beans.Member;
 import by.epam.beans.Project;
+import by.epam.beans.Task;
+import by.epam.consts.ConstantsError;
 import by.epam.consts.ConstantsJSP;
-import by.epam.consts.ConstantsLogger;
-import by.epam.dao.WorkDAO;
 import by.epam.dao.WorkServiceDAO;
 
 @Controller
@@ -30,27 +29,41 @@ public class MemberController {
 	private WorkServiceDAO workService;
 
 	@RequestMapping(value = "/member.do")
-	public String member(HttpServletRequest req, HttpServletResponse res) {
-		logger.info("");
-		HttpSession session = req.getSession();
-		if (session != null) {
-			Member member = null;
-			Employee employee = (Employee) session
-					.getAttribute(ConstantsJSP.ATT_EMPLOYEE);
-			if (employee != null) {
-				if(employee.getPosition().isAdmin() || employee.getPosition().isLead() || employee.getPosition().isManager()){
-					List<Member> memberList = workService.getAllMembers();
-					req.setAttribute(ConstantsJSP.ALL_MEMBERS, memberList);
-				}else if(employee.getPosition().isDeveloper()){
-					member = workService.getMemberByEmployeeId(employee.getId());
-					List<Project> projectList = workService.getProjectsByMemberId(member.getId());
-					req.setAttribute(ConstantsJSP.MEMBER_PROJECTS, projectList);
+	public String member(HttpServletRequest req, HttpServletResponse res,
+			@RequestParam(value = "id", required = false) String identity) {
+		logger.info(ConstantsJSP.EMPTY);
+		Project project = null;
+		if (identity != null) {
+			int id = 0;
+			try {
+				id = Integer.parseInt(identity);
+			} catch (NumberFormatException e) {
+				logger.info("error" + e.getMessage());
+				req.setAttribute(ConstantsJSP.ERROR,
+						ConstantsError.errorIncorrectId);
+			}
+			if (id > 0) {
+				project = workService.getProjectById(id);
+				if (project != null) {
+					logger.info("project " + project);
+					req.setAttribute(ConstantsJSP.PROJECT, project);
+					List<Member> memberList = workService.getMembersByProjectId(project.getId());
+					req.setAttribute(ConstantsJSP.PROJECT_MEMBERS, memberList);
+					logger.info("project members list="+memberList);
+				} else {
+					logger.info("project is null");
+					req.setAttribute(ConstantsJSP.ERROR,
+							ConstantsError.errorNotFound);
 				}
+			}else{
+				req.setAttribute(ConstantsJSP.ERROR,
+						ConstantsError.errorIncorrectId);
 			}
 		}
+		
 		return ConstantsJSP.memberPage;
 	}
-	
+
 	@RequestMapping(value = "/memberAdd.do")
 	public String addMember(HttpServletRequest req, HttpServletResponse res) {
 		logger.info("");

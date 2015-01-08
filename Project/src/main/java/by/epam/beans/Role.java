@@ -31,7 +31,7 @@ public class Role {
 	}
 
 	public void setName(RoleAccess role) {
-		this.name = role.name();
+		this.name = role.getAccess();
 	}
 
 	public Role() {
@@ -41,21 +41,21 @@ public class Role {
 
 	public Role(RoleAccess role) {
 		super();
-		this.name = role.name();
+		this.name = role.getAccess();
 	}
 
 	public boolean isAdmin() {
-		return name.equals(RoleAccess.ADMIN.name());
+		return name.equals(RoleAccess.ADMIN.getAccess());
 	}
 	
 	public boolean isManager() {
-		return name.equals(RoleAccess.MANAGER.name());
+		return name.equals(RoleAccess.MANAGER.getAccess());
 	}
 	
 	public boolean isLead() {
-		return name.equals(RoleAccess.LEAD.name());
+		return name.equals(RoleAccess.LEAD.getAccess());
 	}
 	public boolean isDeveloper() {
-		return name.equals(RoleAccess.DEVELOPER.name());
+		return name.equals(RoleAccess.DEVELOPER.getAccess());
 	}
 }

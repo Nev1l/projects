@@ -29,10 +29,6 @@ public class Activity {
 	private String comment;
 
 	@ManyToOne
-	@JoinColumn(name = "project_id")
-	private Member member;
-
-	@ManyToOne
 	@JoinColumn(name = "assignment_id")
 	private Assignment assignment;
 
@@ -68,30 +64,11 @@ public class Activity {
 		this.comment = comment;
 	}
 
-	public Member getMember() {
-		return member;
-	}
-
-	public void setMember(Member member) {
-		this.member = member;
-	}
-
 	public Assignment getAssignment() {
 		return assignment;
 	}
 
 	public void setAssignment(Assignment assignment) {
-		this.assignment = assignment;
-	}
-
-	public Activity(int id, Date date, int duration, String comment,
-			Member member, Assignment assignment) {
-		super();
-		this.id = id;
-		this.date = date;
-		this.duration = duration;
-		this.comment = comment;
-		this.member = member;
 		this.assignment = assignment;
 	}
 
