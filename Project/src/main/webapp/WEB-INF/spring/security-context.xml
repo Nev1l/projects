@@ -6,7 +6,7 @@
 
 	<security:global-method-security
 		secured-annotations="enabled" />
-
+		
 	<bean id="accessDecisionManager"
 		class="org.springframework.security.access.vote.AffirmativeBased">
 		<property name="decisionVoters">
@@ -30,16 +30,21 @@
 	<security:http access-decision-manager-ref="accessDecisionManager"
 		access-denied-page="/WEB-INF/views/error403.jsp">
 		<security:intercept-url pattern="/home*"
-			access="Administrator,Manager,Lead,Developer" /><!-- Administrator,Developer, ANONYMOUS -->
+			access="Administrator,Manager,Lead,Developer" /><!-- Administrator,Developer, 
+			ANONYMOUS -->
 		<security:intercept-url pattern="/task*"
 			access="Administrator,Manager,Lead,Developer" />
 
+		<security:intercept-url pattern="/member*"
+			access="Administrator,Manager,Lead,Developer" />
+			
 		<security:intercept-url pattern="/project*"
 			access="Administrator,Manager,Lead,Developer" />
 			
+
 		<!--/ .do -->
 		<security:form-login login-page="/login.do"
-			default-target-url="/home.do" authentication-failure-url="/login.do?error=1" />
+			default-target-url="/home.do" always-use-default-target="true" authentication-failure-url="/login.do?error=1" />
 
 		<security:logout logout-url="/logout.do"
 			logout-success-url="/login.do" />

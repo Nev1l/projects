@@ -194,10 +194,11 @@ public class WorkImplement implements WorkDAO {
 
 	@Override
 	public List<Project> getProjectsByMemberId(int id) {
-		String sql = "select * from project,assignment,member,task where assignment.member_id=member.id and assignment.task_id=task.id and project.id=task.project_id and member.id="+id;
+		String sql = "select * from project,assignment,member,task where assignment.member_id=member.id and assignment.task_id=task.id and project.id=task.project_id and member.id="
+				+ id;
 		SQLQuery sqlquery = sessionFactory.getCurrentSession()
 				.createSQLQuery(sql).addEntity(Project.class);
-		return (List<Project>)sqlquery.list();
+		return (List<Project>) sqlquery.list();
 	}
 
 	@Override
@@ -351,7 +352,16 @@ public class WorkImplement implements WorkDAO {
 				+ id;
 		SQLQuery sqlquery = sessionFactory.getCurrentSession()
 				.createSQLQuery(sql).addEntity(Member.class);
-		return (List<Member>) sqlquery.list();
+		return sqlquery.list();
+	}
+
+	@Override
+	public List<Status> getStatusList() {
+		// TODO Auto-generated method stub
+		String sql = "select * from status";
+		SQLQuery sqlquery = sessionFactory.getCurrentSession()
+				.createSQLQuery(sql).addEntity(Status.class);
+		return sqlquery.list();
 	}
 
 }

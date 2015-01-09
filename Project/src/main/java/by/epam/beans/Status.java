@@ -10,26 +10,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Status")
 public class Status {
-	public enum State {
-		NOT_STARTED("No started"), STARTED("Started"), SUSPENDED("Suspended"), FINISHED(
-				"Finished");
-		
-		String state;
-
-		public String getState() {
-			return state;
-		}
-
-		public void setState(String state) {
-			this.state = state;
-		}
-
-		private State(String state) {
-			this.state = state;
-		}
-
-	}
-
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

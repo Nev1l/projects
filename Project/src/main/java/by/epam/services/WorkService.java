@@ -303,4 +303,10 @@ public class WorkService implements WorkServiceDAO {
 		return workDAO.getMembersByProjectId(id);
 	}
 
+	@Transactional
+	public List<Status> getStatusList() {
+		// TODO Auto-generated method stub
+		return workDAO.getStatusList();
+	}
+
 }

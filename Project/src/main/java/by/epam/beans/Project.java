@@ -1,7 +1,5 @@
 package by.epam.beans;
 
-import java.sql.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,16 +23,16 @@ public class Project {
 	private String description;
 
 	@Column(name = "psd")
-	private Date plannedStartDate;
+	private String plannedStartDate;
 
 	@Column(name = "ped")
-	private Date plannedEndDate;
+	private String plannedEndDate;
 
 	@Column(name = "asd")
-	private Date actualStartDate;
+	private String actualStartDate;
 
 	@Column(name = "aed")
-	private Date actualEndDate;
+	private String actualEndDate;
 	
 	@ManyToOne
 	@JoinColumn(name = "status_id")
@@ -72,35 +70,35 @@ public class Project {
 		this.status = status;
 	}
 
-	public Date getPlannedStartDate() {
+	public String getPlannedStartDate() {
 		return plannedStartDate;
 	}
 
-	public void setPlannedStartDate(Date plannedStartDate) {
+	public void setPlannedStartDate(String plannedStartDate) {
 		this.plannedStartDate = plannedStartDate;
 	}
 
-	public Date getPlannedEndDate() {
+	public String getPlannedEndDate() {
 		return plannedEndDate;
 	}
 
-	public void setPlannedEndDate(Date plannedEndDate) {
+	public void setPlannedEndDate(String plannedEndDate) {
 		this.plannedEndDate = plannedEndDate;
 	}
 
-	public Date getActualStartDate() {
+	public String getActualStartDate() {
 		return actualStartDate;
 	}
 
-	public void setActualStartDate(Date actualStartDate) {
+	public void setActualStartDate(String actualStartDate) {
 		this.actualStartDate = actualStartDate;
 	}
 
-	public Date getActualEndDate() {
+	public String getActualEndDate() {
 		return actualEndDate;
 	}
 
-	public void setActualEndDate(Date actualEndDate) {
+	public void setActualEndDate(String actualEndDate) {
 		this.actualEndDate = actualEndDate;
 	}
 
@@ -112,7 +110,7 @@ public class Project {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "[project "+name+", description "+description+", id "+id+"]";
+		return "[project "+name+", description "+description+", id "+id+", status ["+status.getId()+" "+status.getName()+"]";
 	}
 
 }

@@ -3,13 +3,13 @@
 <%@ page import="by.epam.consts.ConstantsJSP"%>
 <%@ page import="by.epam.consts.ConstantsError"%>
 <%@ page session="true"%>
-<link href="${pageContext.request.contextPath}/resources/css/style.css"
-   rel="stylesheet" type="text/css" />
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link href="${pageContext.request.contextPath}/resources/css/style.css"
+   rel="stylesheet" type="text/css" />
 <script type="text/javascript"
    src="${pageContext.request.contextPath}/resources/js/script.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -18,13 +18,16 @@
 <body>
    <c:url var="home" value="/home.do" />
    <a href="${home}">Home</a>
-   <c:if test="${not MEMBER.role.isDeveloper()}">
-      <form action="/project/projectAdd.do" method="post">
-         <input type="submit" value="New project">
-      </form>
-   </c:if>
+   <c:url var="projects" value="/project.do" />
+   <a href="${projects}">Projects</a>
    <c:choose>
       <c:when test="${not empty PROJECT_LIST}">
+         <c:if test="${not MEMBER.role.isDeveloper()}">
+         <c:url var="projectNew" value="/projectNew.do" />
+            <form action="${projectNew}" method="post">
+              <input type="submit" value="New project">
+            </form>
+         </c:if>
          <table>
             <tr>
                <td>Project name</td>
@@ -50,7 +53,7 @@
          <c:if test="${not MEMBER.role.isDeveloper()}">
             <div>
                <input type="button"
-                  onClick="sendPost('/project/taskAdd.do','${PROJECT.id}')"
+                  onClick="sendPost('/project/taskNew.do','${PROJECT.id}')"
                   value="New task">
             </div>
          </c:if>   
