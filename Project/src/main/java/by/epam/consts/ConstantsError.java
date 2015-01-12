@@ -9,4 +9,5 @@ public interface ConstantsError {
 	String errorNotFound = "Not found.";
 	String errorIncorrectId = "Wrong id.";
 	String errorParamIsNull = "Param is null.";
+	String errorDateFormat = "Incorrect date format.";
 }

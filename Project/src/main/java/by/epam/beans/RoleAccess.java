@@ -1,10 +1,12 @@
 package by.epam.beans;
 
+import java.io.Serializable;
+
 import javax.persistence.Embeddable;
 
 @Embeddable
-public enum RoleAccess {
-	ADMIN("Administrator"), MANAGER("Manager"), LEAD("Lead"), DEVELOPER("Developer");
+public enum RoleAccess implements Serializable{
+	ADMIN("Administrator"),MANAGER("Manager"), LEAD("Lead"), DEVELOPER("Developer");
 
 	String access;
 

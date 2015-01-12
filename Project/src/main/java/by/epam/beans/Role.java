@@ -1,5 +1,7 @@
 package by.epam.beans;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +11,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Role")
-public class Role {
+public class Role implements Serializable{
+	private static final long serialVersionUID = -6279591525680987659L;
+
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,9 +33,8 @@ public class Role {
 	public String getName() {
 		return name;
 	}
-
-	public void setName(RoleAccess role) {
-		this.name = role.getAccess();
+	public void setName(ProjectPosition pos) {
+		this.name = pos.getPosition();
 	}
 
 	public Role() {
@@ -39,23 +42,18 @@ public class Role {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Role(RoleAccess role) {
-		super();
-		this.name = role.getAccess();
-	}
-
-	public boolean isAdmin() {
-		return name.equals(RoleAccess.ADMIN.getAccess());
-	}
+	/*public boolean isAdmin() {
+		return name.equals(ProjectPosition.ADMIN.getPosition());
+	}*/
 	
 	public boolean isManager() {
-		return name.equals(RoleAccess.MANAGER.getAccess());
+		return name.equals(ProjectPosition.MANAGER.getPosition());
 	}
 	
 	public boolean isLead() {
-		return name.equals(RoleAccess.LEAD.getAccess());
+		return name.equals(ProjectPosition.LEAD.getPosition());
 	}
 	public boolean isDeveloper() {
-		return name.equals(RoleAccess.DEVELOPER.getAccess());
+		return name.equals(ProjectPosition.DEVELOPER.getPosition());
 	}
 }

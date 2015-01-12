@@ -53,13 +53,17 @@ Foreign Key (assignment_id) REFERENCES assignment (id);
 
 insert into position(name)values ('Administrator');
 insert into position(name)values ('Manager');
-insert into position(name)values ('Junior');
-insert into position(name)values ('Lead');
+insert into position(name)values ('Lead');	
+insert into position(name)values ('Developer');
 
-
-insert into employee(first_name, last_name, position_id, login, password)values ('Viktar','Kapachou',1,'nev1l','123');
-insert into employee(first_name, last_name, position_id, login, password)values ('Vitaliy','Gapanovich',2,'vitaliy','123');
-insert into employee(first_name, last_name, position_id, login, password)values ('Aliaksei','Osipov',3,'osipov','123');
+insert into employee(first_name, last_name, position_id, login, password)values ('Dmitry','Turovets',1,'admin','123');
+insert into employee(first_name, last_name, position_id, login, password)values ('Viktar','Kapachou',2,'nev1l','123');
+insert into employee(first_name, last_name, position_id, login, password)values ('Vitaliy','Gapanovich',3,'vitaliy','123');
+insert into employee(first_name, last_name, position_id, login, password)values ('Aliaksei','Osipov',4,'osipov','123');
+insert into employee(first_name, last_name, position_id, login, password)values ('Andrew','Skachkov',4,'andrew','123');
+insert into employee(first_name, last_name, position_id, login, password)values ('Denis','Savichev',4,'savichev','123');
+insert into employee(first_name, last_name, position_id, login, password)values ('Denis','Burhaev',4,'burhaev','123');
+insert into employee(first_name, last_name, position_id, login, password)values ('Seargei','Suvorov',4,'suvorov','123');
 
 insert into status(name)values('No started');
 insert into status(name)values('Started');
@@ -71,10 +75,10 @@ insert into project(name, description,psd,ped,asd,aed,status_id)values('Stadium'
 insert into project(name, description,psd,ped,asd,aed,status_id)values('Web-project','Test project','2012-12-12','2012-12-15','2012-12-12','2012-12-14',3);
 insert into project(name, description,psd,ped,asd,aed,status_id)values('Station','Shedule of trains','2012-12-12','2012-12-15','2012-12-12','2012-12-14',4);
 
-insert into role(name)values('Administrator');
+insert into role(name)values('Developer');
 insert into role(name)values('Manager');
 insert into role(name)values('Lead');	
-insert into role(name)values('Developer');
+
 
 insert into task(project_id,description, psd,ped,asd,aed,status_id)values(1,'Create database','2012-12-12','2012-12-13','2012-12-12','2012-12-13',1);
 insert into task(project_id,description, psd,ped,asd,aed,status_id)values(2,'Inject spring in project','2012-12-12','2012-12-13','2012-12-12','2012-12-13',1);
@@ -82,10 +86,11 @@ insert into task(project_id,description, psd,ped,asd,aed,status_id)values(2,'Tes
 insert into task(project_id,description, psd,ped,asd,aed,status_id)values(3,'SQL queries','2012-12-12','2012-12-14','2012-12-12','2012-12-13',2);
 insert into task(project_id,description, psd,ped,asd,aed,status_id)values(4,'Front-end','2012-12-12','2012-12-13','2012-12-12','2012-12-13',3);
 
-insert into member(project_id,employee_id,role_id)values(1,1,1);
-insert into member(project_id,employee_id,role_id)values(1,3,4);
+insert into member(project_id,employee_id,role_id)values(1,3,1);
+insert into member(project_id,employee_id,role_id)values(1,2,2);
 
-insert into assignment(member_id,task_id,description,psd,ped,asd,aed)values(1,1,'assignment...','2012-12-12','2012-12-13','2012-12-12','2012-12-13');
+
+insert into assignment(member_id,task_id,description,psd,ped,asd,aed)values(1,1,'some description...','2012-12-12','2012-12-13','2012-12-12','2012-12-13');
 
 insert into activity(activity_date,duration,comment,assignment_id)values('2012-12-12 11:51:30',1,'comment1',1);
 insert into activity(activity_date,duration,comment,assignment_id)values('2012-12-12 11:52:30',2,'comment2',1);

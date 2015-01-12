@@ -20,16 +20,6 @@ import by.epam.beans.Role;
 import by.epam.beans.Status;
 import by.epam.beans.Task;
 import by.epam.beans.User;
-import by.epam.dao.ActivityDAO;
-import by.epam.dao.AssigmentDAO;
-import by.epam.dao.AttachmentDAO;
-import by.epam.dao.EmployeeDAO;
-import by.epam.dao.MemberDAO;
-import by.epam.dao.PositionDAO;
-import by.epam.dao.ProjectDAO;
-import by.epam.dao.RoleDAO;
-import by.epam.dao.StatusDAO;
-import by.epam.dao.TaskDAO;
 import by.epam.dao.WorkDAO;
 import by.epam.dao.WorkServiceDAO;
 
@@ -130,12 +120,6 @@ public class WorkService implements WorkServiceDAO {
 	}
 
 	@Transactional
-	public Member getMemberByEmployeeId(int id) {
-		// TODO Auto-generated method stub
-		return workDAO.getMemberByEmployeeId(id);
-	}
-
-	@Transactional
 	public void save(Position object) {
 		// TODO Auto-generated method stub
 		workDAO.save(object);
@@ -147,12 +131,10 @@ public class WorkService implements WorkServiceDAO {
 		workDAO.update(object);
 	}
 
-	@Transactional
-	public Position getPositionById(int id) {
-		// TODO Auto-generated method stub
-		return workDAO.getPositionById(id);
-	}
-
+	/*
+	 * @Transactional public Position getPositionByEmployeeId(int id){ return
+	 * workDAO.getPositionByEmployeeId(id); }
+	 */
 	@Transactional
 	public void save(Project object) {
 		// TODO Auto-generated method stub
@@ -288,7 +270,7 @@ public class WorkService implements WorkServiceDAO {
 	@Transactional
 	public Project getProjectById(int id) {
 		// TODO Auto-generated method stub
-		return  workDAO.getProjectById(id);
+		return workDAO.getProjectById(id);
 	}
 
 	@Transactional
@@ -307,6 +289,36 @@ public class WorkService implements WorkServiceDAO {
 	public List<Status> getStatusList() {
 		// TODO Auto-generated method stub
 		return workDAO.getStatusList();
+	}
+
+	@Transactional
+	public List<Member> getMembersByEmployeeId(int id) {
+		// TODO Auto-generated method stub
+		return workDAO.getMembersByEmployeeId(id);
+	}
+
+	@Transactional
+	public Member getProjectMember(int projectId, int employeeId) {
+		// TODO Auto-generated method stub
+		return workDAO.getProjectMember(projectId, employeeId);
+	}
+
+	@Transactional
+	public List<Employee> getEmployeeNoProjectMember(int projectId) {
+		// TODO Auto-generated method stub
+		return workDAO.getEmployeeNoProjectMember(projectId);
+	}
+
+	@Transactional
+	public List<Role> getRoleList() {
+		// TODO Auto-generated method stub
+		return workDAO.getRoleList();
+	}
+
+	@Override
+	public Employee getEmployee(int id) {
+		// TODO Auto-generated method stub
+		return workDAO.getEmployee(id);
 	}
 
 }

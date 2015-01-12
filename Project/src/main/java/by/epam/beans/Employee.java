@@ -1,7 +1,8 @@
 package by.epam.beans;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,7 +13,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Employee")
-public class Employee {
+public class Employee implements Serializable{
+	private static final long serialVersionUID = 3526661671398495089L;
+
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

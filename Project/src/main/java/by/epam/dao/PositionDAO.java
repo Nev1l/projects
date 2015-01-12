@@ -7,5 +7,5 @@ public interface PositionDAO {
 	void save(Position p);
 	void update(Position p);
 	void delete(int id);
-	Position getPositionById(int id);
+	//Position getPositionByEmployeeId(int id);
 }

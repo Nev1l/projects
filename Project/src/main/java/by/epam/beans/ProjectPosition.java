@@ -1,8 +1,9 @@
 package by.epam.beans;
 
-public enum ProjectPosition {
-	ADMIN("Administrator"), MANAGER("Manager"), LEAD("Lead"), JUNIOR(
-			"Junior");
+import java.io.Serializable;
+
+public enum ProjectPosition implements Serializable{
+	MANAGER("Manager"), LEAD("Lead"), DEVELOPER("Developer");
 	String position;
 
 	public String getPosition() {

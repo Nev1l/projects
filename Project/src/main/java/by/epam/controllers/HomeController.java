@@ -57,17 +57,18 @@ public class HomeController {
 		Authentication authenticate = context.getAuthentication();
 		String userName = authenticate.getName();
 		Employee employee = null;
-		Member member = null;
+		List<Member> members = null;
 		List<Assignment> listAssignments = null;
 		List<Activity> listActivity = null;
 		int maxPageCount = 0;
 		try {
 			employee = workService.getEmployeeByUserName(userName);
-			member = workService.getMemberByEmployeeId(employee.getId());
+			session.setAttribute(ConstantsJSP.EMPLOYEE, employee);
+			members = workService.getMembersByEmployeeId(employee.getId());
 			//==========HARDCODE===================
 			//member.setRole(new Role(RoleAccess.DEVELOPER));
-			session.setAttribute(ConstantsJSP.MEMBER, member);
-			logger.info("member=" + member.getRole().getName());
+			//=============[Member-a больше нет работать со списком для получения прав для разных проектов]
+			session.setAttribute(ConstantsJSP.MEMBERS, members);
 			maxPageCount = workService.getCountAssignmentsByEmployeeId(employee.getId());
 			start = Math.min(start,maxPageCount);
 			listAssignments = workService.getEmployeeAssignments(employee.getId(), start,

@@ -1,10 +1,14 @@
 package by.epam.beans;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class User {
+public class User implements Serializable{
+	private static final long serialVersionUID = 7267530828092831451L;
+
 	@Column(name = "login", nullable = false, length = 50)
 	private String login;
 
