@@ -42,6 +42,7 @@
 			<a href="${project}">Projects</a>
 	</div>
 	<div>
+	   <c:if test="${not empty EMPLOYEE_ASSIGNMENT}">
 		<table width="35%" border="solid 1 px">
 			<tr>
 				<td>Project name</td>
@@ -61,6 +62,7 @@
 				</tr>
 			</c:forEach>
 		</table>
+	   </c:if>
 		<table width="35%" border="solid 1 px">
 			<tr>
 				<td>Last Activity</td>

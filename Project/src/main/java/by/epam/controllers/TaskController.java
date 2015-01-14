@@ -31,7 +31,6 @@ public class TaskController {
 	private WorkServiceDAO workService;
 
 	@RequestMapping(value = "/task.do")
-	// ,method=RequestMethod.POST
 	public String task(HttpServletRequest req, HttpServletResponse res,
 			@RequestParam(value = "id", required = false) String identity) {
 		logger.info(ConstantsJSP.EMPTY);
@@ -88,13 +87,6 @@ public class TaskController {
 				Task task = new Task();
 				task.setProject(project);
 				task.setDescription(description);
-				// date format 2015-01-18 (check format and convert)
-				// ========[HARDCODE]==============
-				//psd = "2012-01-18";
-				//ped = "2012-05-21";
-				//asd = "2012-02-18";
-				//aed = "2012-04-24";
-				// ========[END HARDCODE]===========
 				task.setPlannedStartDate(psd);
 				task.setPlannedEndDate(ped);
 				task.setActualStartDate(asd);

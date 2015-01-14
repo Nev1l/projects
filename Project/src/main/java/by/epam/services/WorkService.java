@@ -315,10 +315,17 @@ public class WorkService implements WorkServiceDAO {
 		return workDAO.getRoleList();
 	}
 
-	@Override
+	@Transactional
 	public Employee getEmployee(int id) {
 		// TODO Auto-generated method stub
 		return workDAO.getEmployee(id);
+	}
+
+	@Transactional
+	public void delete(Member member) {
+		// TODO Auto-generated method stub
+		workDAO.delete(member);
+		
 	}
 
 }

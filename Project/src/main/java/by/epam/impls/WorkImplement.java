@@ -62,8 +62,9 @@ public class WorkImplement implements WorkDAO {
 	}
 
 	@Override
-	public void delete(int id) {
+	public void delete(Member member) {
 		// TODO Auto-generated method stub
+		sessionFactory.getCurrentSession().delete(member);
 	}
 
 	@Override
@@ -398,6 +399,12 @@ public class WorkImplement implements WorkDAO {
 		SQLQuery sqlquery = sessionFactory.getCurrentSession()
 				.createSQLQuery("select * from employee where id="+id).addEntity(Employee.class);
 		return (Employee) sqlquery.uniqueResult();
+	}
+
+	@Override
+	public void delete(int id) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -36,43 +36,23 @@ public class ProjectController {
 	@Autowired
 	private WorkServiceDAO workService;
 
-	@RequestMapping(value = "/projectEdit.do", method = RequestMethod.POST)
-	public String projectEdit(HttpServletRequest req, HttpServletResponse res,
-			@RequestParam(value = "id", required = false) String identity) {
-		List<Status> statuses = workService.getStatusList();
-		req.setAttribute(ConstantsJSP.STATUS_LIST, statuses);
-		logger.info("==========[projectEdit]===========");
-		if (identity != null) {
-			int id = 0;
-			try {
-				id = Integer.parseInt(identity);
-			} catch (NumberFormatException e) {
-				logger.info("error" + e.getMessage());
-				req.setAttribute(ConstantsJSP.ERROR,
-						ConstantsError.errorIncorrectId);
-			}
-			if (id > 0) {
-				Project project = workService.getProjectById(id);
-				if (project != null) {
-					req.setAttribute(ConstantsJSP.PROJECT, project);
+	/*
+	 * @RequestMapping(value = "/projectEdit.do", method = RequestMethod.POST)
+	 * public String projectEdit(HttpServletRequest req, HttpServletResponse
+	 * res,
+	 * 
+	 * @RequestParam(value = "id", required = false) String identity) {
+	 * List<Status> statuses = workService.getStatusList();
+	 * req.setAttribute(ConstantsJSP.STATUS_LIST, statuses);
+	 * logger.info("==========[projectEdit]==========="); Project project =
+	 * projectCheckId(req, identity); return ConstantsJSP.projectEditPage; }
+	 */
 
-				} else {
-					req.setAttribute(ConstantsJSP.ERROR,
-							ConstantsError.errorNotFound);
-				}
-			} else {
-				req.setAttribute(ConstantsJSP.ERROR,
-						ConstantsError.errorIncorrectId);
-			}
-		} else {
-			req.setAttribute(ConstantsJSP.ERROR,
-					ConstantsError.errorParamIsNull);
-		}
-		return ConstantsJSP.projectEditPage;
-	}
-
-	@RequestMapping(value = "/projectChange.do", method = RequestMethod.POST)
-	public String projectChange(HttpServletRequest req, HttpServletResponse res,
+	@RequestMapping(value = "/projectUpdate.do", method = RequestMethod.POST)
+	public String projectUpdate(
+			HttpServletRequest req,
+			HttpServletResponse res,
+			@RequestParam(value = "id", required = false) String identity,
 			@RequestParam(value = "name", required = false) String name,
 			@RequestParam(value = "description", required = false) String description,
 			@RequestParam(value = "psd", required = false) String psd,
@@ -80,16 +60,49 @@ public class ProjectController {
 			@RequestParam(value = "asd", required = false) String asd,
 			@RequestParam(value = "aed", required = false) String aed,
 			@RequestParam(value = "status", required = false) String status) {
-		logger.info("==========[projectChange]===========");
-		List<Status> statuses = workService.getStatusList();
-		req.setAttribute(ConstantsJSP.STATUS_LIST, statuses);
-		String pageReturn = ConstantsJSP.projectEditPage;// good
-		pageReturn = "redirect:/" + ConstantsJSP.projectController;// bad
-		projectAdd(req, res, name, description, psd, ped, asd, aed, status);
+		logger.info("==========[projectUpdate]===========");
+		req.setAttribute(ConstantsJSP.STATUS_LIST,
+		workService.getStatusList());
+		String pageReturn = ConstantsJSP.projectEditPage;
+		Project project = projectCheckId(req, identity);
+		if (project != null) {
+			req.setAttribute(ConstantsJSP.PROJECT, project);
+		}
 		return pageReturn;
 	}
-
-
+	
+	@RequestMapping(value = "/projectEdit.do", method = RequestMethod.POST)
+	public String projectEdit(
+			HttpServletRequest req,
+			HttpServletResponse res,
+			@RequestParam(value = "id", required = false) String identity,
+			@RequestParam(value = "name", required = false) String name,
+			@RequestParam(value = "description", required = false) String description,
+			@RequestParam(value = "psd", required = false) String psd,
+			@RequestParam(value = "ped", required = false) String ped,
+			@RequestParam(value = "asd", required = false) String asd,
+			@RequestParam(value = "aed", required = false) String aed,
+			@RequestParam(value = "status", required = false) String status) {
+		logger.info("==========[projectEdit]===========");
+		// ======[this method in ---> projectCheck]======
+		// req.setAttribute(ConstantsJSP.STATUS_LIST,
+		// workService.getStatusList());
+		String pageReturn = ConstantsJSP.projectEditPage;
+		// 1.projectCheck method always uses first (init status list)
+		// 2.projectCheckId
+		Project project = projectCheck(req, res, name, description, psd, ped,
+				asd, aed, status);
+		if (project != null) {
+			//
+			Project updatedProjectId = projectCheckId(req, identity);
+			if (updatedProjectId != null) {
+				project.setId(updatedProjectId.getId());// id for update
+				workService.update(project);
+				pageReturn = "redirect:/" + ConstantsJSP.projectController;
+			}
+		}
+		return pageReturn;
+	}
 
 	@RequestMapping(value = "/projectAdd.do", method = RequestMethod.POST)
 	public String projectAdd(
@@ -102,7 +115,20 @@ public class ProjectController {
 			@RequestParam(value = "asd", required = false) String asd,
 			@RequestParam(value = "aed", required = false) String aed,
 			@RequestParam(value = "status", required = false) String status) {
+		logger.info("==========[projectAdd]===========");
 		String pageReturn = ConstantsJSP.projectNewPage;
+		Project project = projectCheck(req, res, name, description, psd, ped,
+				asd, aed, status);
+		if (project != null) {
+			workService.save(project);
+			pageReturn = "redirect:/" + ConstantsJSP.projectController;
+		}
+		return pageReturn;
+	}
+
+	private Project projectCheck(HttpServletRequest req,
+			HttpServletResponse res, String name, String description,
+			String psd, String ped, String asd, String aed, String status) {
 		List<Status> statuses = workService.getStatusList();
 		req.setAttribute(ConstantsJSP.STATUS_LIST, statuses);
 		Project project = new Project();
@@ -132,8 +158,7 @@ public class ProjectController {
 			boolean plannedCondition = sdf.parse(asd).before(sdf.parse(aed));
 			boolean actualCondition = sdf.parse(psd).before(sdf.parse(ped));
 			if (plannedCondition && actualCondition) {
-				workService.save(project);
-				pageReturn = "redirect:/" + ConstantsJSP.projectController;
+				return project;
 			} else if (!plannedCondition) {
 				req.setAttribute(ConstantsJSP.ERROR,
 						"Planned end date is incorrect (before planned start date)");
@@ -144,13 +169,12 @@ public class ProjectController {
 		} catch (ParseException e) {
 			req.setAttribute(ConstantsJSP.ERROR, ConstantsError.errorDateFormat);
 		}
-		return pageReturn;
+		return null;
 	}
 
 	@RequestMapping(value = "/projectNew.do", method = RequestMethod.POST)
 	public String projectNew(HttpServletRequest req, HttpServletResponse res) {
-		List<Status> statuses = workService.getStatusList();
-		req.setAttribute(ConstantsJSP.STATUS_LIST, statuses);
+		req.setAttribute(ConstantsJSP.STATUS_LIST, workService.getStatusList());
 		return ConstantsJSP.projectNewPage;
 	}
 
@@ -168,14 +192,31 @@ public class ProjectController {
 		}
 		return ConstantsJSP.projectPage;
 	}
-	
+
 	@RequestMapping(value = "/project.do", method = RequestMethod.POST)
 	public String project(HttpServletRequest req, HttpServletResponse res,
 			@RequestParam(value = "id", required = false) String identity) {
 		logger.info(ConstantsJSP.EMPTY);
-		HttpSession session = req.getSession();
-		Employee employee = (Employee) session
-				.getAttribute(ConstantsJSP.EMPLOYEE);
+		Project project = projectCheckId(req, identity);
+		if (project != null) {
+			HttpSession session = req.getSession();
+			Employee employee = (Employee) session
+					.getAttribute(ConstantsJSP.EMPLOYEE);
+			req.setAttribute(
+					ConstantsJSP.MEMBER,
+					workService.getProjectMember(project.getId(),
+							employee.getId()));
+			java.util.List<Task> list = workService.getTasksByProjectId(project
+					.getId());
+			logger.info("list=" + list);
+			req.setAttribute(ConstantsJSP.PROJECT_TASKS, list);
+			logger.info("project " + project);
+			req.setAttribute(ConstantsJSP.PROJECT, project);
+		}
+		return ConstantsJSP.projectPage;
+	}
+
+	public Project projectCheckId(HttpServletRequest req, String identity) {
 		if (identity != null) {
 			int id = 0;
 			try {
@@ -188,15 +229,7 @@ public class ProjectController {
 			if (id > 0) {
 				Project project = workService.getProjectById(id);
 				if (project != null) {
-					req.setAttribute(ConstantsJSP.MEMBER,
-							workService.getProjectMember(project.getId(),
-									employee.getId()));
-					java.util.List<Task> list = workService
-							.getTasksByProjectId(project.getId());
-					logger.info("list=" + list);
-					req.setAttribute(ConstantsJSP.PROJECT_TASKS, list);
-					logger.info("project " + project);
-					req.setAttribute(ConstantsJSP.PROJECT, project);
+					return project;
 				} else {
 					req.setAttribute(ConstantsJSP.ERROR,
 							ConstantsError.errorNotFound);
@@ -209,6 +242,6 @@ public class ProjectController {
 			req.setAttribute(ConstantsJSP.ERROR,
 					ConstantsError.errorParamIsNull);
 		}
-		return ConstantsJSP.projectPage;
+		return null;
 	}
 }

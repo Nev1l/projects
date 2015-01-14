@@ -10,7 +10,7 @@
 <script type="text/javascript"
   src="${pageContext.request.contextPath}/resources/js/script.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>New project</title>
+<title>New task</title>
 </head>
 <body>
 	<div align="center">
