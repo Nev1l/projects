@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import by.epam.beans.Employee;
 import by.epam.beans.Member;
 import by.epam.beans.Project;
+import by.epam.beans.ProjectPosition;
+import by.epam.beans.Role;
 import by.epam.beans.Status;
 import by.epam.beans.Task;
 import by.epam.consts.ConstantsError;
@@ -36,18 +38,7 @@ public class ProjectController {
 	@Autowired
 	private WorkServiceDAO workService;
 
-	/*
-	 * @RequestMapping(value = "/projectEdit.do", method = RequestMethod.POST)
-	 * public String projectEdit(HttpServletRequest req, HttpServletResponse
-	 * res,
-	 * 
-	 * @RequestParam(value = "id", required = false) String identity) {
-	 * List<Status> statuses = workService.getStatusList();
-	 * req.setAttribute(ConstantsJSP.STATUS_LIST, statuses);
-	 * logger.info("==========[projectEdit]==========="); Project project =
-	 * projectCheckId(req, identity); return ConstantsJSP.projectEditPage; }
-	 */
-
+	
 	@RequestMapping(value = "/projectUpdate.do", method = RequestMethod.POST)
 	public String projectUpdate(
 			HttpServletRequest req,
@@ -120,7 +111,16 @@ public class ProjectController {
 		Project project = projectCheck(req, res, name, description, psd, ped,
 				asd, aed, status);
 		if (project != null) {
-			workService.save(project);
+			project = workService.save(project); //get New project with id
+			logger.info("project="+project);
+			HttpSession session = req.getSession();
+			Employee employee = (Employee) session.getAttribute(ConstantsJSP.EMPLOYEE);
+			Member member = new Member();
+			member.setEmployee(employee);
+			member.setProject(project);
+			Role role=workService.getRoleName(ProjectPosition.ADMIN);
+			member.setRole(role);
+			workService.save(member);
 			pageReturn = "redirect:/" + ConstantsJSP.projectController;
 		}
 		return pageReturn;
@@ -134,13 +134,6 @@ public class ProjectController {
 		Project project = new Project();
 		project.setName(name);
 		project.setDescription(description);
-		// date format 2015-01-18 (check format and convert)
-		// ========[HARDCODE]==============
-		// psd = "2012-01-18";
-		// ped = "2012-05-21";
-		// asd = "2012-02-18";
-		// aed = "2012-04-24";
-		// ========[END HARDCODE]===========
 		project.setPlannedStartDate(psd);
 		project.setPlannedEndDate(ped);
 		project.setActualStartDate(asd);

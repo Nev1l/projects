@@ -13,11 +13,14 @@
 <title>New task</title>
 </head>
 <body>
+	<c:url var="home" value="/home.do" />
+	<a href="${home}">Home</a>
 	<div align="center">
 	 <c:if test="${not empty ERROR}">
 	    <div class="error">${ERROR}<br></div>
 	 </c:if>
      <c:if test="${not empty PROJECT}">
+     	<a href="#" onclick="sendPost('/project/project.do','${PROJECT.id}')">Task List</a>
 		<c:set var="psd" value=""/>
 		<c:set var="ped" value=""/>
 		<c:set var="asd" value=""/>

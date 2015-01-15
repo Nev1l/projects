@@ -3,7 +3,7 @@ package by.epam.beans;
 import java.io.Serializable;
 
 public enum ProjectPosition implements Serializable{
-	MANAGER("Manager"), LEAD("Lead"), DEVELOPER("Developer");
+	ADMIN("Administrator"),MANAGER("Manager"), LEAD("Lead"), DEVELOPER("Developer");
 	String position;
 
 	public String getPosition() {

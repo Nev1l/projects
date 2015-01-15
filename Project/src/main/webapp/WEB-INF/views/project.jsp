@@ -20,15 +20,15 @@
 	<a href="${home}">Home</a>
 	<c:url var="projects" value="/project.do" />
 	<a href="${projects}">Projects</a>
-	<c:if test="${EMPLOYEE.position.isAdmin()}">
-		<c:url var="projectNew" value="/projectNew.do" />
-		<form action="${projectNew}" method="post">
-			<input type="submit" value="New project">
-		</form>
-	</c:if>
 	<c:choose>
 		<%-- project list available only for admin --%>
 		<c:when test="${not empty PROJECT_LIST}">
+			<c:if test="${EMPLOYEE.position.isAdmin()}">
+				<c:url var="projectNew" value="/projectNew.do" />
+				<form action="${projectNew}" method="post">
+					<input type="submit" value="New project">
+				</form>
+			</c:if>
 			<table>
 				<tr>
 					<td>Project name</td>
@@ -74,17 +74,15 @@
 						<td>${member.project.status.name}</td>
 						<td><a href="#"
 							onClick="sendPost('/project/member.do','${member.project.id}')">Members</a></td>
-						<td>
-						<c:choose>
-						   <c:when test="${not member.role.isDeveloper()}">
-						   	  <input type="button" value="Change"
-							  onClick="sendPost('/project/projectUpdate.do','${member.project.id}')" />
-						   </c:when>
-						   <c:otherwise>
+						<td><c:choose>
+								<c:when test="${not member.role.isDeveloper()}">
+									<input type="button" value="Change"
+										onClick="sendPost('/project/projectUpdate.do','${member.project.id}')" />
+								</c:when>
+								<c:otherwise>
 						   	No available
 						   </c:otherwise>
-						</c:choose>
-						</td>
+							</c:choose></td>
 					</tr>
 				</c:forEach>
 			</table>
@@ -104,13 +102,21 @@
 					<c:set var="hasAccess" value="false" />
 				</c:otherwise>
 			</c:choose>
+			<c:set var="hasCreateTaskAccess" value="false" />
+			<c:if test="${not empty MEMBER}">
+				<c:if test="${not MEMBER.role.isDeveloper()}">
+					<c:set var="hasCreateTaskAccess" value="true" />
+				</c:if>
+			</c:if>
 			<P>Project name:${PROJECT.name}</P>
-			<c:if test="${hasAccess}">
+			<c:if test="${hasCreateTaskAccess}">
 				<div>
 					<input size="25" type="button"
 						onClick="sendPost('/project/taskNew.do','${PROJECT.id}')"
 						value="New task">
 				</div>
+			</c:if>
+			<c:if test="${hasAccess}">
 				<div>
 					<input size="25" type="button"
 						onClick="sendPost('/project/memberNew.do','${PROJECT.id}')"
@@ -124,7 +130,7 @@
 						<tr>
 							<td>Task description</td>
 							<td>Status</td>
-							<c:if test="${hasAccess}">
+							<c:if test="${not MEMBER.role.isDeveloper()}">
 								<td>Actions</td>
 							</c:if>
 						</tr>
@@ -134,13 +140,11 @@
 									onClick="sendPost('/project/task.do','${task.id}')">${task.description}</a>
 								</td>
 								<td>${task.status.name}</td>
-								<td>
-								   <c:if test="${hasAccess}">
+								<td><c:if test="${not MEMBER.role.isDeveloper()}">
 										<input type="button"
-											onClick="sendPost('/project/taskEdit.do','${task.id}')"
+											onClick="sendPost('/project/taskUpdate.do','${task.id}')"
 											value="Change">
-									</c:if>
-								</td>
+									</c:if></td>
 							</tr>
 						</c:forEach>
 					</table>

@@ -1,9 +1,12 @@
 package by.epam.consts;
 
 public class ConstantsJSP {
+	public final static String DATE_FORMAT = "yyyy-MM-dd";
+	
 	public final static String homeController = "home.do";
 	public final static String projectController = "project.do";
 	public final static String memberController = "member.do";
+	public final static String taskController = "task.do";
 	
 	public final static String homePage = "home";
 	public final static String loginPage = "login";

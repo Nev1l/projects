@@ -1,17 +1,23 @@
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
+
+import by.epam.beans.Project;
+import by.epam.beans.Status;
+import by.epam.consts.ConstantsError;
+import by.epam.consts.ConstantsJSP;
 
 
 public class Runner {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Date d1 = new Date(1992,1,18);
-		java.sql.Date d2 = new java.sql.Date(1992,1,18);
-		Timestamp t = new Timestamp(1992,1,18,10,46,12,0);
-		System.out.println(d1);
-		System.out.println(d2);
-		System.out.println(t);
+		String project_id = "123";
+		try {
+			int projectId = Integer.parseInt(project_id);
+		} catch (NumberFormatException e) {
+			System.out.println(e);
+		}
 	}
 
 }

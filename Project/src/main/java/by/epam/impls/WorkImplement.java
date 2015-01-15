@@ -19,6 +19,7 @@ import by.epam.beans.Employee;
 import by.epam.beans.Member;
 import by.epam.beans.Position;
 import by.epam.beans.Project;
+import by.epam.beans.ProjectPosition;
 import by.epam.beans.Role;
 import by.epam.beans.Status;
 import by.epam.beans.Task;
@@ -183,9 +184,11 @@ public class WorkImplement implements WorkDAO {
 	 */
 
 	@Override
-	public void save(Project object) {
+	public Project save(Project object) {
 		// TODO Auto-generated method stub
-		sessionFactory.getCurrentSession().save(object);
+		Session session = sessionFactory.getCurrentSession();
+		session.save(object);
+		return (Project) session.get(Project.class, object.getId());
 	}
 
 	@Override
@@ -240,9 +243,11 @@ public class WorkImplement implements WorkDAO {
 	}
 
 	@Override
-	public void save(Task object) {
+	public Task save(Task object) {
 		// TODO Auto-generated method stub
-		sessionFactory.getCurrentSession().save(object);
+		Session session = sessionFactory.getCurrentSession();
+		session.save(object);
+		return (Task) session.get(Task.class, object.getId());
 	}
 
 	@Override
@@ -379,7 +384,7 @@ public class WorkImplement implements WorkDAO {
 	@Override
 	public List<Employee> getEmployeeNoProjectMember(int projectId) {
 		// TODO Auto-generated method stub
-		String sql = "select * from employee where employee.id not in (select member.employee_id from member,project where member.project_id=project.id)";
+		String sql = "select * from employee where employee.id not in (select member.employee_id from member where member.project_id="+projectId+")";
 		SQLQuery sqlquery = sessionFactory.getCurrentSession()
 				.createSQLQuery(sql).addEntity(Employee.class);
 		return sqlquery.list();
@@ -405,6 +410,14 @@ public class WorkImplement implements WorkDAO {
 	public void delete(int id) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Role getRoleName(ProjectPosition role) {
+		// TODO Auto-generated method stub
+		SQLQuery sqlquery = sessionFactory.getCurrentSession()
+				.createSQLQuery("select * from role where name='"+role.getPosition()+"'").addEntity(Role.class);
+		return (Role) sqlquery.uniqueResult();
 	}
 
 }

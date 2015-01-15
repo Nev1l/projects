@@ -6,7 +6,7 @@ import by.epam.beans.Task;
 
 
 public interface TaskDAO {
-	void save(Task p);
+	Task save(Task p);
 	void update(Task p);
 	void delete(int id);
 	Task getTaskById(int id);

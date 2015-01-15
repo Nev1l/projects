@@ -23,7 +23,6 @@
 			<p class="error">${ERROR}</p>
 		</c:when>
 		<c:otherwise>
-		    <a href="#" onclick="sendPost('/project/project.do','${TASK.project.id}')">Task List</a>
 			<table>
 				<c:set var="assignee" value="No assignee" />
 				<c:if test="${not empty ASSIGNEE}">

@@ -7,7 +7,7 @@ import by.epam.beans.Task;
 
 
 public interface ProjectDAO {
-	void save(Project p);
+	Project save(Project p);
 	void update(Project p);
 	void delete(int id);
 	List<Project> getProjectsByMemberId(int id);

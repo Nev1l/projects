@@ -78,7 +78,7 @@ insert into project(name, description,psd,ped,asd,aed,status_id)values('Station'
 insert into role(name)values('Developer');
 insert into role(name)values('Manager');
 insert into role(name)values('Lead');	
-
+insert into role(name)values ('Administrator');
 
 insert into task(project_id,description, psd,ped,asd,aed,status_id)values(1,'Create database','2012-12-12','2012-12-13','2012-12-12','2012-12-13',1);
 insert into task(project_id,description, psd,ped,asd,aed,status_id)values(2,'Inject spring in project','2012-12-12','2012-12-13','2012-12-12','2012-12-13',1);

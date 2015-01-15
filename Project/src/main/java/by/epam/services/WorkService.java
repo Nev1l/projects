@@ -16,6 +16,7 @@ import by.epam.beans.Employee;
 import by.epam.beans.Member;
 import by.epam.beans.Position;
 import by.epam.beans.Project;
+import by.epam.beans.ProjectPosition;
 import by.epam.beans.Role;
 import by.epam.beans.Status;
 import by.epam.beans.Task;
@@ -136,9 +137,8 @@ public class WorkService implements WorkServiceDAO {
 	 * workDAO.getPositionByEmployeeId(id); }
 	 */
 	@Transactional
-	public void save(Project object) {
-		// TODO Auto-generated method stub
-		workDAO.save(object);
+	public Project save(Project object) {
+		return workDAO.save(object);
 	}
 
 	@Transactional
@@ -190,9 +190,8 @@ public class WorkService implements WorkServiceDAO {
 	}
 
 	@Transactional
-	public void save(Task object) {
-		// TODO Auto-generated method stub
-		workDAO.save(object);
+	public Task save(Task object) {
+		return workDAO.save(object);
 	}
 
 	@Transactional
@@ -326,6 +325,12 @@ public class WorkService implements WorkServiceDAO {
 		// TODO Auto-generated method stub
 		workDAO.delete(member);
 		
+	}
+
+	@Transactional
+	public Role getRoleName(ProjectPosition role) {
+		// TODO Auto-generated method stub
+		return workDAO.getRoleName(role);
 	}
 
 }

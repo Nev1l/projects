@@ -37,14 +37,20 @@ public class Role implements Serializable{
 		this.name = pos.getPosition();
 	}
 
+	public Role(ProjectPosition pos) {
+		super();
+		setName(pos);
+		// TODO Auto-generated constructor stub
+	}
+
 	public Role() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	/*public boolean isAdmin() {
+	public boolean isAdmin() {
 		return name.equals(ProjectPosition.ADMIN.getPosition());
-	}*/
+	}
 	
 	public boolean isManager() {
 		return name.equals(ProjectPosition.MANAGER.getPosition());
@@ -56,4 +62,11 @@ public class Role implements Serializable{
 	public boolean isDeveloper() {
 		return name.equals(ProjectPosition.DEVELOPER.getPosition());
 	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "[role:"+name+"]";
+	}
+	
 }
