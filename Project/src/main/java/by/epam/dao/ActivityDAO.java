@@ -12,5 +12,7 @@ public interface ActivityDAO {
 	Activity getActivityById(int id);
 	List<Activity> getLastActivity(int count);
 	int getActivityCount();
+	//јктивити будет и ∆урнал и јвтојктивити(автоматически генерируемое активити)
+	
 	//Activity getLastActivityByProjectId(int projectId);
 }

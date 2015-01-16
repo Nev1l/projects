@@ -2,6 +2,10 @@ package by.epam.consts;
 
 public class ConstantsJSP {
 	public final static String DATE_FORMAT = "yyyy-MM-dd";
+	public final static String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+	
+	public final static String CREATE_ASSIGN = "assigned";
+	public final static String CHANGE_ASSIGN = "changed the assignee";
 	
 	public final static String homeController = "home.do";
 	public final static String projectController = "project.do";
@@ -31,6 +35,7 @@ public class ConstantsJSP {
 	public final static String assigneePage = "assignee";
 
 	// public final static String SECURUTY_CONTEXT = "SPRING_SECURITY_CONTEXT";
+	public final static String ASSIGN_AUTO = "(Automatic)";
 	public final static String GUEST = "guest";
 	public final static String ROLE = "ROLE";
 	public final static String NO_AUTH = "Authentication failed";
@@ -48,6 +53,7 @@ public class ConstantsJSP {
 	public final static String ASSIGNEE = "ASSIGNEE";
 	public final static String ERROR = "ERROR";
 
+	public final static String MEMBER_ID = "MEMBER_ID";
 	public final static String EMPLOYEE_LIST = "EMPLOYEE_LIST";
 	public final static String ROLE_LIST = "ROLE_LIST";
 	public final static String STATUS_LIST = "STATUS_LIST";

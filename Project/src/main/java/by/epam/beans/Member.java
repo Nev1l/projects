@@ -11,6 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import by.epam.consts.ConstantsError;
+import by.epam.dao.DaoException;
+
 @Entity
 @Table(name = "Member")
 public class Member implements Serializable{
@@ -37,7 +40,10 @@ public class Member implements Serializable{
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(int id)  {
+		/*throws DaoException if (id < 0) {
+			throw new DaoException(ConstantsError.wrondId);
+		}*/
 		this.id = id;
 	}
 
@@ -45,7 +51,10 @@ public class Member implements Serializable{
 		return project;
 	}
 
-	public void setProject(Project project) {
+	public void setProject(Project project) throws DaoException {
+		if (project==null) {
+			throw new DaoException(ConstantsError.projectIncorrect);
+		}
 		this.project = project;
 	}
 
@@ -53,7 +62,10 @@ public class Member implements Serializable{
 		return employee;
 	}
 
-	public void setEmployee(Employee employee) {
+	public void setEmployee(Employee employee) throws DaoException {
+		if(employee==null){
+			throw new DaoException(ConstantsError.employeeIncorrect);
+		}
 		this.employee = employee;
 	}
 
@@ -61,7 +73,10 @@ public class Member implements Serializable{
 		return role;
 	}
 
-	public void setRole(Role role) {
+	public void setRole(Role role) throws DaoException {
+		if(role==null){
+			throw new DaoException(ConstantsError.roleIncorrect);
+		}
 		this.role = role;
 	}
 

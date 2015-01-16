@@ -18,9 +18,9 @@ import by.epam.beans.Employee;
 import by.epam.beans.Member;
 import by.epam.beans.Project;
 import by.epam.beans.Role;
-import by.epam.beans.Status;
 import by.epam.consts.ConstantsError;
 import by.epam.consts.ConstantsJSP;
+import by.epam.dao.DaoException;
 import by.epam.dao.WorkServiceDAO;
 import by.epam.template.MemberAddTemplate;
 import by.epam.template.MemberAddViewTemplate;
@@ -42,41 +42,31 @@ public class MemberController {
 			@RequestParam(value = "id", required = false) String identity) {
 		logger.info("=====[member]=====");
 		Project project = null;
-		if (identity != null) {
-			int id = 0;
-			try {
-				id = Integer.parseInt(identity);
-			} catch (NumberFormatException e) {
-				logger.info("error" + e.getMessage());
-				req.setAttribute(ConstantsJSP.ERROR,
-						ConstantsError.errorIncorrectId);
-			}
-			if (id > 0) {
-				project = workService.getProjectById(id);
-				if (project != null) {
-					logger.info("project " + project);
-					req.setAttribute(ConstantsJSP.PROJECT, project);
-					List<Member> memberList = workService
-							.getMembersByProjectId(project.getId());
-					req.setAttribute(ConstantsJSP.PROJECT_MEMBERS, memberList);
-					logger.info("project members list=" + memberList);
-					HttpSession session = req.getSession();
-					Employee employee = (Employee) session
-							.getAttribute(ConstantsJSP.EMPLOYEE);
-					Member member = workService.getProjectMember(
-							project.getId(), employee.getId());
-					req.setAttribute(ConstantsJSP.MEMBER, member);
-				} else {
-					logger.info("project is null");
-					req.setAttribute(ConstantsJSP.ERROR,
-							ConstantsError.errorNotFound);
-				}
+		try {
+			int id = Integer.parseInt(identity);
+			project = workService.getProjectById(id);
+			if (project != null) {
+				logger.info("project " + project);
+				req.setAttribute(ConstantsJSP.PROJECT, project);
+				List<Member> memberList = workService
+						.getMembersByProjectId(project.getId());
+				req.setAttribute(ConstantsJSP.PROJECT_MEMBERS, memberList);
+				logger.info("project members list=" + memberList);
+				HttpSession session = req.getSession();
+				Employee employee = (Employee) session
+						.getAttribute(ConstantsJSP.EMPLOYEE);
+				Member member = workService.getProjectMember(project.getId(),
+						employee.getId());
+				req.setAttribute(ConstantsJSP.MEMBER, member);
 			} else {
 				req.setAttribute(ConstantsJSP.ERROR,
-						ConstantsError.errorIncorrectId);
+						ConstantsError.errorNotFound);
 			}
+		} catch (NumberFormatException e) {
+			logger.info("error" + e.getMessage());
+			req.setAttribute(ConstantsJSP.ERROR,
+					ConstantsError.errorIncorrectId);
 		}
-
 		return ConstantsJSP.memberPage;
 	}
 
@@ -87,23 +77,19 @@ public class MemberController {
 			@RequestParam(value = "id", required = false) String project_id,
 			@RequestParam(value = "employee_id", required = false) String employee_id) {
 		String pageReturn = "forward:/" + ConstantsJSP.memberController;
-		if (project_id == null || employee_id == null) {
-			req.setAttribute(ConstantsJSP.ERROR, ConstantsError.errorParamIsNull);
-			return pageReturn;
-		}
-		StringBuilder error = new StringBuilder();
 		try {
 			int projectId = Integer.parseInt(project_id);
 			Project project = workService.getProjectById(projectId);
 			req.setAttribute(ConstantsJSP.PROJECT, project);
 			int employeeId = Integer.parseInt(employee_id);
 			Member member = workService.getProjectMember(projectId, employeeId);
-			if(member!=null){
+			if (member != null) {
 				workService.delete(member);
 			}
 		} catch (NumberFormatException e) {
 			logger.info("error:" + e);
-			error.append(ConstantsError.errorIncorrectId);
+			req.setAttribute(ConstantsJSP.ERROR,
+					ConstantsError.errorIncorrectId);
 		}
 		return pageReturn;
 	}
@@ -117,6 +103,7 @@ public class MemberController {
 			@RequestParam(value = "employee_id[]", required = false) String[] employee_id,
 			@RequestParam(value = "role[]", required = false) String[] role,
 			@RequestParam(value = "check[]", required = false) String[] check) {
+		logger.info("=============[memberAdd]==============");
 		return memberTemplate(req, project_id, member_id, employee_id, role,
 				check, new MemberAddTemplate());
 	}
@@ -130,6 +117,7 @@ public class MemberController {
 			@RequestParam(value = "employee_id[]", required = false) String[] employee_id,
 			@RequestParam(value = "role[]", required = false) String[] role,
 			@RequestParam(value = "check[]", required = false) String[] check) {
+		logger.info("=============[memberEdit]==============");
 		return memberTemplate(req, project_id, member_id, employee_id, role,
 				check, new MemberEditTemplate());
 	}
@@ -138,9 +126,10 @@ public class MemberController {
 			String[] member_id, String[] employee_id, String[] role,
 			String[] check, MemberTemplate membertemplate) {
 		String pageReturn = "forward:/" + ConstantsJSP.memberController;
-		if (project_id == null || employee_id == null || member_id==null || role == null
+		if (employee_id == null || member_id == null || role == null
 				|| check == null) {
-			req.setAttribute(ConstantsJSP.ERROR, ConstantsError.errorParamIsNull);
+			req.setAttribute(ConstantsJSP.ERROR,
+					ConstantsError.errorParamIsNull);
 			return pageReturn;
 		}
 		StringBuilder error = new StringBuilder();
@@ -148,57 +137,38 @@ public class MemberController {
 			int projectId = Integer.parseInt(project_id);
 			Project project = workService.getProjectById(projectId);
 			req.setAttribute(ConstantsJSP.PROJECT, project);
-			//List<Employee> employeeList = workService
-			//		.getEmployeeOnProject(project.getId());
-			//req.setAttribute(ConstantsJSP.EMPLOYEE_LIST, employeeList);
 			List<Role> roleList = workService.getRoleList();
 			req.setAttribute(ConstantsJSP.ROLE_LIST, roleList);
 			for (int i = 0; i < employee_id.length; i++) {
-				logger.info("check[" + i + "]=" + check[i]);
 				if (check[i] != null) {
 					if (check[i].equals(ConstantsJSP.CHECKED)) {
-						if (employee_id[i] != null) {
-							try {
-								int employeeId = Integer
-										.parseInt(employee_id[i]);
-								Employee employee = workService
-										.getEmployee(employeeId);
-								if (employee != null) {
-									Role memberRole = null;
-									for (Role r : roleList) {
-										if (r.getName().equals(role[i])) {
-											memberRole = r;
-											break;
-										}
-									}
-									int memberId = 0;
-									if (member_id[i] != null) {
-										memberId = Integer
-												.parseInt(member_id[i]);
-										Member member = workService
-												.getProjectMember(projectId,
-														employeeId);
-										if (member != null) {
-											memberId = member.getId();
-										}
-									}
-									if (memberRole != null) {
-										Member member = new Member();
-										member.setId(memberId);
-										member.setProject(project);
-										member.setEmployee(employee);
-										member.setRole(memberRole);
-										membertemplate.execute(workService,
-												member);
-									} else {
-										error.append("RoleError(Role not exist!):employee_id="
-												+ employeeId + ";");
-									}
+						try {
+							int employeeId = Integer.parseInt(employee_id[i]);
+							Employee employee = workService
+									.getEmployee(employeeId);
+							Role memberRole = null;
+							for (Role r : roleList) {
+								if (r.getName().equals(role[i])) {
+									memberRole = r;
+									break;
 								}
-							} catch (NumberFormatException e) {
-								logger.info("error:" + e);
-								error.append("ParseError:employee_id;");
 							}
+							try {
+								//save or update (0 || [any id] in db)
+								int memberId = membertemplate.getId(workService, member_id[i]);
+								Member member = new Member();
+								member.setId(memberId);
+								member.setProject(project);
+								member.setEmployee(employee);
+								member.setRole(memberRole);
+								membertemplate.execute(workService, member);
+							} catch (DaoException e) {
+								logger.info("error:" + e);
+								error.append(e.getMessage());
+							}
+						} catch (NumberFormatException e) {
+							logger.info("error:" + e);
+							error.append("ParseError:employee_id;");
 						}
 					}
 				}
@@ -229,18 +199,16 @@ public class MemberController {
 
 	public void memberView(HttpServletRequest req, String project_id,
 			MemberViewTemplate membertemplate) {
-		if (project_id != null) {
-			try {
-				int projectId = Integer.parseInt(project_id);
-				Project project = workService.getProjectById(projectId);
-				req.setAttribute(ConstantsJSP.PROJECT, project);
-				List<Role> roleList = workService.getRoleList();
-				req.setAttribute(ConstantsJSP.ROLE_LIST, roleList);
-				membertemplate.execute(req, workService, projectId);
-			} catch (NumberFormatException e) {
-				req.setAttribute(ConstantsJSP.ERROR,
-						ConstantsError.errorIncorrectId);
-			}
+		try {
+			int projectId = Integer.parseInt(project_id);
+			Project project = workService.getProjectById(projectId);
+			req.setAttribute(ConstantsJSP.PROJECT, project);
+			List<Role> roleList = workService.getRoleList();
+			req.setAttribute(ConstantsJSP.ROLE_LIST, roleList);
+			membertemplate.execute(req, workService, projectId);
+		} catch (NumberFormatException e) {
+			req.setAttribute(ConstantsJSP.ERROR,
+					ConstantsError.errorIncorrectId);
 		}
 	}
 }

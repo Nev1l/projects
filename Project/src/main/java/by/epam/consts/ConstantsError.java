@@ -2,6 +2,10 @@ package by.epam.consts;
 
 public interface ConstantsError {
 	String Empty = "";
+	String projectNameIsEmpty = "Project name is empty.";
+	String projectIsNull = "Param is null";
+	String projectNameIncorrect = "Param name of project is incorrect.";
+	String employeeIncorrect = "Param employee is incorrect.";
 	String projectIncorrect = "Param project is incorrect.";
 	String statusIncorrect = "Param status is incorrect.";
 	String roleIncorrect = "Param role is incorrect.";

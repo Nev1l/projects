@@ -1,11 +1,10 @@
 package by.epam.controllers;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import by.epam.beans.Assignment;
+import by.epam.beans.Employee;
+import by.epam.beans.Member;
 import by.epam.beans.Project;
 import by.epam.beans.Status;
 import by.epam.beans.Task;
@@ -40,7 +41,7 @@ public class TaskController {
 			Task task = workService.getTaskById(id);
 			logger.info("task " + task);
 			if (task != null) {
-				Assignment assignee = workService.getAssignmentByTaskId(task
+				Assignment assignee = workService.getLastAssignmentByTaskId(task
 						.getId());
 				req.setAttribute(ConstantsJSP.ASSIGNEE, assignee);
 				req.setAttribute(ConstantsJSP.TASK, task);
@@ -61,6 +62,7 @@ public class TaskController {
 			HttpServletRequest req,
 			HttpServletResponse res,
 			@RequestParam(value = "id", required = false) String project_id,
+			@RequestParam(value = "assign_member_id", required = false) String assign_member_id,
 			@RequestParam(value = "description", required = false) String description,
 			@RequestParam(value = "psd", required = false) String psd,
 			@RequestParam(value = "ped", required = false) String ped,
@@ -90,9 +92,21 @@ public class TaskController {
 					}
 				}
 				task.setStatus(taskStatus);
-				// task is null if it doesn't add to request
 				req.setAttribute(ConstantsJSP.TASK, task);
-				workService.save(task);
+				task = workService.save(task);// get Id in db
+				HttpSession session = req.getSession();
+				Employee employee = (Employee) session
+						.getAttribute(ConstantsJSP.EMPLOYEE);
+				int assignMemberId = Integer.parseInt(assign_member_id);
+				Member member = workService.getMemberById(assignMemberId);
+				String assignDescription = employee.getFirstName() + " "
+						+ employee.getLastName() + ConstantsJSP.CREATE_ASSIGN;
+				Assignment assignment = new Assignment();
+				assignment.setAssignDate(Assignment.getCurrentDateTime());
+				assignment.setDescription(assignDescription);
+				assignment.setMember(member);
+				assignment.setTask(task);
+				workService.save(assignment);
 				pageReturn = "forward:/" + ConstantsJSP.projectController;
 			} catch (DaoException e1) {
 				req.setAttribute(ConstantsJSP.ERROR, e1.getMessage());
@@ -105,10 +119,11 @@ public class TaskController {
 	}
 
 	@RequestMapping(value = "/taskEdit.do", method = RequestMethod.POST)
-	public String taskAdd(
+	public String taskEdit(
 			HttpServletRequest req,
 			HttpServletResponse res,
 			@RequestParam(value = "id", required = false) String project_id,
+			@RequestParam(value = "assign_member_id", required = false) String assign_member_id,
 			@RequestParam(value = "task_id", required = false) String task_id,
 			@RequestParam(value = "description", required = false) String description,
 			@RequestParam(value = "psd", required = false) String psd,
@@ -142,9 +157,21 @@ public class TaskController {
 					}
 				}
 				task.setStatus(taskStatus);
-				// task is null if it doesn't add to request
 				req.setAttribute(ConstantsJSP.TASK, task);
 				workService.update(task);
+				HttpSession session = req.getSession();
+				Employee employee = (Employee) session
+						.getAttribute(ConstantsJSP.EMPLOYEE);
+				int assignMemberId = Integer.parseInt(assign_member_id);
+				Member member = workService.getMemberById(assignMemberId);
+				String assignDescription = employee.getFirstName() + " "
+						+ employee.getLastName() + ConstantsJSP.CHANGE_ASSIGN;
+				Assignment assignment = new Assignment();
+				assignment.setAssignDate(Assignment.getCurrentDateTime());
+				assignment.setDescription(assignDescription);
+				assignment.setMember(member);
+				assignment.setTask(task);
+				workService.save(assignment);
 				pageReturn = "forward:/" + ConstantsJSP.projectController;
 			} catch (DaoException e1) {
 				req.setAttribute(ConstantsJSP.ERROR, e1.getMessage());
@@ -157,9 +184,7 @@ public class TaskController {
 	}
 
 	@RequestMapping(value = "/taskUpdate.do", method = RequestMethod.POST)
-	public String taskUpdate(
-			HttpServletRequest req,
-			HttpServletResponse res,
+	public String taskUpdate(HttpServletRequest req, HttpServletResponse res,
 			@RequestParam(value = "id", required = false) String task_id) {
 		logger.info("=============[taskUpdate");
 		try {
@@ -168,6 +193,15 @@ public class TaskController {
 			int taskId = Integer.parseInt(task_id);
 			Task task = workService.getTaskById(taskId);
 			req.setAttribute(ConstantsJSP.TASK, task);
+			HttpSession session = req.getSession();
+			Employee employee = (Employee) session
+					.getAttribute(ConstantsJSP.EMPLOYEE);
+			Member member = workService.getProjectMember(task.getProject().getId(),
+					employee.getId());
+			req.setAttribute(ConstantsJSP.MEMBER_ID, member.getId());
+			List<Member> memberList = workService
+					.getMembersByProjectId(task.getProject().getId());
+			req.setAttribute(ConstantsJSP.PROJECT_MEMBERS, memberList);
 		} catch (NumberFormatException e) {
 			req.setAttribute(ConstantsJSP.ERROR,
 					ConstantsError.errorIncorrectId);
@@ -184,6 +218,15 @@ public class TaskController {
 			req.setAttribute(ConstantsJSP.PROJECT, project);
 			List<Status> statuses = workService.getStatusList();
 			req.setAttribute(ConstantsJSP.STATUS_LIST, statuses);
+			HttpSession session = req.getSession();
+			Employee employee = (Employee) session
+					.getAttribute(ConstantsJSP.EMPLOYEE);
+			Member member = workService.getProjectMember(projectId,
+					employee.getId());
+			req.setAttribute(ConstantsJSP.MEMBER_ID, member.getId());
+			List<Member> memberList = workService
+					.getMembersByProjectId(project.getId());
+			req.setAttribute(ConstantsJSP.PROJECT_MEMBERS, memberList);
 		} catch (NumberFormatException e) {
 			req.setAttribute(ConstantsJSP.ERROR,
 					ConstantsError.errorIncorrectId);

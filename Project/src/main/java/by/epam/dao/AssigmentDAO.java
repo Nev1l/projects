@@ -10,6 +10,8 @@ public interface AssigmentDAO {
 	void update(Assignment p);
 	void delete(int id);
 	List<Assignment> getEmployeeAssignments(int employeeId,int start,int count);
-	int getCountAssignmentsByEmployeeId(int employeeId);
-	Assignment getAssignmentByTaskId(int id);
+	
+	int getCountAssignmentsByEmployeeId(int employeeId);//Работает не правильно переписать
+	Assignment getLastAssignmentByTaskId(int id);
+	//List<Assignment> getLastActivity(); Наверно эт не нужно делать здесь
 }

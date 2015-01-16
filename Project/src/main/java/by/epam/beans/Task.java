@@ -55,10 +55,10 @@ public class Task implements Serializable {
 		return id;
 	}
 
-	public void setId(int id) throws DaoException {
-		if (id < 0) {
+	public void setId(int id)  {
+		/*throws DaoException if (id < 0) {
 			throw new DaoException(ConstantsError.wrondId);
-		}
+		}*/
 		this.id = id;
 	}
 

@@ -9,6 +9,7 @@ public interface MemberDAO {
 	void save(Member p);
 	void update(Member p);
 	void delete(Member member);
+	Member getMemberById(int id);
 	Member getProjectMember(int projectId,int employeeId);
 	List<Member> getMembersByEmployeeId(int id);//for get roles of all projects of the employee
 	List<Member> getAllMembers();//all members of all projects

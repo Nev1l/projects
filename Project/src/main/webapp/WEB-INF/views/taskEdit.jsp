@@ -40,9 +40,23 @@
 				Name of project: <a href="#" onclick="sendPost('/project/project.do','${TASK.project.id}')">${TASK.project.name}</a>
 			</div>
 			<input type="hidden" name="id" value="${TASK.project.id}" />
+			<input id="assignee" type="hidden" name="assign_member_id" value="${MEMBER_ID}"/>
 			<input type="hidden" name="task_id"
 					value="${TASK.id}" />
 			<table>
+				<tr>
+					<td>Assignee:</td>
+					<td>
+					<c:if test="${not empty PROJECT_MEMBERS}">
+						<select id="selectAssigneeBox" onchange="selectAssignee();">
+							<option value="${MEMBER_ID}" selected>${assign_member_value}</option>
+							<c:forEach var="member" items="${PROJECT_MEMBERS}">
+            					<option value="${member.id}">${member.employee.firstName} ${member.employee.lastName}</option>
+							</c:forEach>
+						</select>
+					</c:if>
+					</td>
+				</tr>
 				<tr>
 					<td>Planned Start Date:</td>
 					<!-- clear for date input-->

@@ -12,4 +12,5 @@ public class MemberAddViewTemplate implements MemberViewTemplate {
 		req.setAttribute(ConstantsJSP.EMPLOYEE_LIST, workService
 				.getEmployeeNoProjectMember(project_id));
 	}
+
 }

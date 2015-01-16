@@ -14,4 +14,5 @@ public class MemberEditViewTemplate implements MemberViewTemplate {
 				workService.getMembersByProjectId(project_id));
 	}
 
+
 }

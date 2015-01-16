@@ -21,8 +21,8 @@ create table member(id integer not null generated always as identity constraint 
 create table role(id integer not null generated always as identity constraint role_pk primary key, name varchar(255));
 
 
---               assignment is correct
-create table assignment(id integer not null generated always as identity constraint assignment_pk primary key, member_id integer,task_id integer,description varchar(255),psd date,ped date,asd date,aed date);
+--               assignment is correct =====[CHANGED]=====
+create table assignment(id integer not null generated always as identity constraint assignment_pk primary key, member_id integer,task_id integer,description varchar(255),assign_date TIMESTAMP);
 --               activity is correct
 create table activity(id integer not null generated always as identity constraint activity_pk primary key, activity_date date,duration integer, comment varchar(255), project_id integer,assignment_id integer);
 
@@ -89,13 +89,12 @@ insert into task(project_id,description, psd,ped,asd,aed,status_id)values(4,'Fro
 insert into member(project_id,employee_id,role_id)values(1,3,1);
 insert into member(project_id,employee_id,role_id)values(1,2,2);
 
+--        member_id,task_id,description,psd,ped,asd,aed
+--        1,1,'description','2012-12-12','2012-12-13','2012-12-12','2012-12-13'
+insert into assignment(member_id,task_id,description,assign_date)values(1,1,'some description1',CURRENT_TIMESTAMP);
+insert into assignment(member_id,task_id,description,assign_date)values(2,1,'some description2',CURRENT_TIMESTAMP);
+insert into assignment(member_id,task_id,description,assign_date)values(2,2,'some description1...',CURRENT_TIMESTAMP);
+insert into assignment(member_id,task_id,description,assign_date)values(1,2,'some description2...',CURRENT_TIMESTAMP);
 
-insert into assignment(member_id,task_id,description,psd,ped,asd,aed)values(1,1,'some description...','2012-12-12','2012-12-13','2012-12-12','2012-12-13');
-
-insert into activity(activity_date,duration,comment,assignment_id)values('2012-12-12 11:51:30',1,'comment1',1);
-insert into activity(activity_date,duration,comment,assignment_id)values('2012-12-12 11:52:30',2,'comment2',1);
-insert into activity(activity_date,duration,comment,assignment_id)values('2012-12-12 11:53:30',3,'comment3',1);
-insert into activity(activity_date,duration,comment,assignment_id)values('2012-12-12 11:54:30',4,'comment4',1);
-insert into activity(activity_date,duration,comment,assignment_id)values('2012-12-12 11:55:30',5,'comment5',1);
 
 select * from member;

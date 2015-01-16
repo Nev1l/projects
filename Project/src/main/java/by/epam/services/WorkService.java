@@ -273,12 +273,6 @@ public class WorkService implements WorkServiceDAO {
 	}
 
 	@Transactional
-	public Assignment getAssignmentByTaskId(int id) {
-		// TODO Auto-generated method stub
-		return workDAO.getAssignmentByTaskId(id);
-	}
-
-	@Transactional
 	public List<Member> getMembersByProjectId(int id) {
 		// TODO Auto-generated method stub
 		return workDAO.getMembersByProjectId(id);
@@ -331,6 +325,18 @@ public class WorkService implements WorkServiceDAO {
 	public Role getRoleName(ProjectPosition role) {
 		// TODO Auto-generated method stub
 		return workDAO.getRoleName(role);
+	}
+
+	@Transactional
+	public Member getMemberById(int id) {
+		// TODO Auto-generated method stub
+		return workDAO.getMemberById(id);
+	}
+
+	@Transactional
+	public Assignment getLastAssignmentByTaskId(int id) {
+		// TODO Auto-generated method stub
+		return workDAO.getLastAssignmentByTaskId(id);
 	}
 
 }

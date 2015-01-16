@@ -32,3 +32,10 @@ var memberDelete = function(action,id,employee_id){
 	document.body.appendChild(form);
 	form.submit();
 };
+
+var selectAssignee = function (value) {
+    var selectBox = document.getElementById("selectAssigneeBox");
+    var assigneeField = document.getElementById("assignee");
+    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+    assigneeField.value = selectedValue;
+};

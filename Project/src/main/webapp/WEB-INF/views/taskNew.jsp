@@ -21,6 +21,7 @@
 	 </c:if>
      <c:if test="${not empty PROJECT}">
      	<a href="#" onclick="sendPost('/project/project.do','${PROJECT.id}')">Task List</a>
+		<c:set var="assign_member_value" value="(Automatic)"/>
 		<c:set var="psd" value=""/>
 		<c:set var="ped" value=""/>
 		<c:set var="asd" value=""/>
@@ -37,11 +38,25 @@
 		</c:if>
 		<form  method="POST"
 			action="<c:url value='/taskAdd.do'/>">
+			<input id="assignee" type="hidden" name="assign_member_id" value="${MEMBER_ID}"/>
 			New Task<br>
            <div>Name of project: ${PROJECT.name}
   				<input type="hidden" name="id" value="${PROJECT.id}"/>           
            </div>
 			<table>
+				<tr>
+					<td>Assignee:</td>
+					<td>
+					<c:if test="${not empty PROJECT_MEMBERS}">
+						<select id="selectAssigneeBox" onchange="selectAssignee();">
+							<option value="${MEMBER_ID}" selected>${assign_member_value}</option>
+							<c:forEach var="member" items="${PROJECT_MEMBERS}">
+            					<option value="${member.id}">${member.employee.firstName} ${member.employee.lastName}</option>
+							</c:forEach>
+						</select>
+					</c:if>
+					</td>
+				</tr>
 				<tr>
 					<td>Planned Start Date:</td>
 					<!-- clear for date input-->
