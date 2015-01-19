@@ -75,13 +75,14 @@
 						<td><a href="#"
 							onClick="sendPost('/project/member.do','${member.project.id}')">Members</a></td>
 						<td><c:choose>
+						<%--by default member is not null (because this is element of list)--%>
 								<c:when test="${not member.role.isDeveloper()}">
 									<input type="button" value="Change"
 										onClick="sendPost('/project/projectUpdate.do','${member.project.id}')" />
 								</c:when>
 								<c:otherwise>
-						   	No available
-						   </c:otherwise>
+								   	No available
+							    </c:otherwise>
 							</c:choose></td>
 					</tr>
 				</c:forEach>
@@ -89,7 +90,7 @@
 		</c:when>
 		<%-- if user send id of project VIEW PROJECT WITH ID --%>
 		<c:when test="${not empty PROJECT}">
-			<c:choose>
+			<%-- <c:choose>
 				<c:when test="${EMPLOYEE.position.isAdmin()}">
 					<c:set var="hasAccess" value="true" />
 				</c:when>
@@ -101,22 +102,22 @@
 				<c:otherwise>
 					<c:set var="hasAccess" value="false" />
 				</c:otherwise>
-			</c:choose>
-			<c:set var="hasCreateTaskAccess" value="false" />
+			</c:choose> --%>
+			<c:set var="hasMemberAccess" value="false" />
 			<c:if test="${not empty MEMBER}">
 				<c:if test="${not MEMBER.role.isDeveloper()}">
-					<c:set var="hasCreateTaskAccess" value="true" />
+					<c:set var="hasMemberAccess" value="true" />
 				</c:if>
 			</c:if>
 			<P>Project name:${PROJECT.name}</P>
-			<c:if test="${hasCreateTaskAccess}">
+			<c:if test="${hasMemberAccess}">
 				<div>
 					<input size="25" type="button"
 						onClick="sendPost('/project/taskNew.do','${PROJECT.id}')"
 						value="New task">
 				</div>
 			</c:if>
-			<c:if test="${hasAccess}">
+			<c:if test="${hasMemberAccess}">
 				<div>
 					<input size="25" type="button"
 						onClick="sendPost('/project/memberNew.do','${PROJECT.id}')"
@@ -130,9 +131,7 @@
 						<tr>
 							<td>Task description</td>
 							<td>Status</td>
-							<c:if test="${not MEMBER.role.isDeveloper()}">
-								<td>Actions</td>
-							</c:if>
+							<td>Actions</td>
 						</tr>
 						<c:forEach var="task" items="${PROJECT_TASKS}" varStatus="status">
 							<tr>
@@ -140,11 +139,17 @@
 									onClick="sendPost('/project/task.do','${task.id}')">${task.description}</a>
 								</td>
 								<td>${task.status.name}</td>
-								<td><c:if test="${not MEMBER.role.isDeveloper()}">
-										<input type="button"
-											onClick="sendPost('/project/taskUpdate.do','${task.id}')"
-											value="Change">
-									</c:if></td>
+								<td>
+									<c:choose>
+										<c:when test="${hasMemberAccess}">
+											<input type="button"
+												onClick="sendPost('/project/taskUpdate.do','${task.id}')"
+												value="Change">
+										</c:when>
+										<c:otherwise>
+											No available
+										</c:otherwise>
+									</c:choose></td>
 							</tr>
 						</c:forEach>
 					</table>
