@@ -25,18 +25,18 @@ import by.epam.consts.ConstantsError;
 import by.epam.consts.ConstantsJSP;
 import by.epam.dao.DaoException;
 import by.epam.dao.WorkServiceDAO;
+import by.epam.services.ActivityService;
 
 @Controller
 public class ProjectController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(ProjectController.class);
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
 	@Autowired
 	private WorkServiceDAO workService;
-
+	@Autowired
+	private ActivityService activityService;
+	
 	@RequestMapping(value = "/projectUpdate.do", method = RequestMethod.POST)
 	public String projectUpdate(
 			HttpServletRequest req,
@@ -94,11 +94,11 @@ public class ProjectController {
 		}
 		try {
 			int id = Integer.parseInt(identity);
-			Project project = workService.getProjectById(id);
-			if (project != null) {
-				id = project.getId();
+			Project projectOld = workService.getProjectById(id);
+			if (projectOld != null) {
+				id = projectOld.getId();
 				try {
-					project = new Project();
+					Project project = new Project();
 					project.setDescription(description);
 					project.setPlannedStartDate(psd);
 					project.setPlannedEndDate(ped);
@@ -106,8 +106,13 @@ public class ProjectController {
 					project.setActualEndDate(aed);
 					project.setName(name);
 					project.setStatus(st);
-					project.setId(project.getId());// id for update
+					project.setId(id);// id for update
 					workService.update(project);
+					HttpSession session = req.getSession();
+					Employee employee = (Employee) session
+							.getAttribute(ConstantsJSP.EMPLOYEE);
+					Member activityMember = workService.getProjectMember(project.getId(), employee.getId());
+					activityService.activityChangeProject(projectOld,project,activityMember);
 					pageReturn = "redirect:/" + ConstantsJSP.projectController;
 					req.setAttribute(ConstantsJSP.PROJECT, project);
 				} catch (DaoException e1) {
@@ -170,6 +175,8 @@ public class ProjectController {
 				Role role = workService.getRoleName(ProjectPosition.ADMIN);
 				member.setRole(role);
 				workService.save(member);
+				Member activityMember = workService.getProjectMember(project.getId(), employee.getId());
+				activityService.activityCreateProject(project, activityMember);
 			} catch (DaoException e) {
 				e.printStackTrace();
 			}

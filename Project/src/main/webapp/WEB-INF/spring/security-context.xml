@@ -41,10 +41,11 @@
 		<security:intercept-url pattern="/project*"
 			access="Administrator,Manager,Lead,Developer" />
 			
-
+	<security:intercept-url pattern="/fileupload*"
+			access="Administrator,Manager,Lead,Developer" />
 		<!--/ .do -->
 		<security:form-login login-page="/login.do"
-			default-target-url="/home.do" always-use-default-target="true" authentication-failure-url="/login.do?error=1" />
+			default-target-url="/login.do" always-use-default-target="true" authentication-failure-url="/login.do?error=1" />
 
 		<security:logout logout-url="/logout.do"
 			logout-success-url="/login.do" />

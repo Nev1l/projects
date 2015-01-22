@@ -69,6 +69,21 @@
 				<input type="button" value="Activity"
 					onClick="sendPost('/project/activity.do','${ASSIGNEE.task.id}')" />
 			</div>
+			<form method="POST" enctype="multipart/form-data"
+				action="<c:url value="/fileupload.do"/>">
+				<input type="hidden" name="task_id" value="1"/>
+				<input type="hidden" name="description" value="atachment !!!!!"/>
+				<table class="bounty">
+					<tr>
+						<td>File to upload:</td>
+						<td><input type="file" name="file" required></td>
+					</tr>
+					<tr>
+						<td><input type="submit" value="Upload">
+						<td></td>
+					</tr>
+				</table>
+			</form>
 		</c:otherwise>
 	</c:choose>
 </body>

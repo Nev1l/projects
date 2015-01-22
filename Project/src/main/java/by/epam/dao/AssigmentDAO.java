@@ -12,6 +12,6 @@ public interface AssigmentDAO {
 	List<Assignment> getEmployeeAssignments(int employeeId,int start,int count);
 	
 	int getCountAssignmentsByEmployeeId(int employeeId);//Работает не правильно переписать
-	Assignment getLastAssignmentByTaskId(int id);
+	Assignment getLastAssigneeByTaskId(int id);
 	//List<Assignment> getLastActivity(); Наверно эт не нужно делать здесь
 }

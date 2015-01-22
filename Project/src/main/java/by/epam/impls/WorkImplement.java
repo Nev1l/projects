@@ -71,11 +71,7 @@ public class WorkImplement implements WorkDAO {
 	@Override
 	public Activity getActivityById(int id) {
 		// TODO Auto-generated method stub
-		String sql = "select * from activity";
-		SQLQuery sqlquery = sessionFactory.getCurrentSession()
-				.createSQLQuery(sql).addEntity(Activity.class);
-		return (Activity) sqlquery.uniqueResult();
-
+		return (Activity)sessionFactory.getCurrentSession().createCriteria(Activity.class).add(Restrictions.eq("id", id)).uniqueResult();
 	}
 
 	@Override
@@ -259,7 +255,7 @@ public class WorkImplement implements WorkDAO {
 			int count) {
 		// TODO Auto-generated method stub
 		String sql ="select * from assignment where assignment.member_id in (select member_id from assignment,member,employee where assignment.member_id=member.id and member.employee_id="+
-				+ employeeId;
+				+ employeeId+")";
 		SQLQuery sqlquery = sessionFactory.getCurrentSession()
 				.createSQLQuery(sql).addEntity(Assignment.class);
 		sqlquery.setFirstResult(start);
@@ -419,9 +415,8 @@ public class WorkImplement implements WorkDAO {
 				.addEntity(Member.class);
 		return (Member) sqlquery.uniqueResult();
 	}
-
 	@Override
-	public Assignment getLastAssignmentByTaskId(int id) {
+	public Assignment getLastAssigneeByTaskId(int id) {
 		// TODO Auto-generated method stub
 		SQLQuery sqlquery = sessionFactory.getCurrentSession()
 				.createSQLQuery("select * from assignment where task_id=" + id+" order by assign_date desc")

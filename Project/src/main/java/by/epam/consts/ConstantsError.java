@@ -2,6 +2,8 @@ package by.epam.consts;
 
 public interface ConstantsError {
 	String Empty = "";
+	String taskAttachmentError = "File doesn't attach to task";
+	String projectAttachmentError = "File doesn't attach to project";
 	String projectNameIsEmpty = "Project name is empty.";
 	String projectIsNull = "Param is null";
 	String projectNameIncorrect = "Param name of project is incorrect.";

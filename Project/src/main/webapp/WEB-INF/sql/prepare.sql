@@ -20,11 +20,9 @@ create table project(id integer not null generated always as identity constraint
 create table member(id integer not null generated always as identity constraint members_pk primary key, project_id integer, employee_id integer,role_id integer);
 create table role(id integer not null generated always as identity constraint role_pk primary key, name varchar(255));
 
+create table assignment(id integer not null generated always as identity constraint assignment_pk primary key, member_id integer,task_id integer,assign_date TIMESTAMP);
 
---               assignment is correct =====[CHANGED]=====
-create table assignment(id integer not null generated always as identity constraint assignment_pk primary key, member_id integer,task_id integer,description varchar(255),assign_date TIMESTAMP);
---               activity is correct
-create table activity(id integer not null generated always as identity constraint activity_pk primary key, activity_date date,duration integer, comment varchar(255), project_id integer,assignment_id integer);
+create table activity(id integer not null generated always as identity constraint activity_pk primary key, activity_date TIMESTAMP, comment varchar(255), member_id integer);
 
 ALTER TABLE employee ADD CONSTRAINT employee_position_FK
 Foreign Key (position_id) REFERENCES position (id);
@@ -49,7 +47,7 @@ Foreign Key (task_id) REFERENCES task (id);
 ALTER TABLE assignment ADD CONSTRAINT assignment_member_FK
 Foreign Key (member_id) REFERENCES member (id);
 ALTER TABLE activity ADD CONSTRAINT activity_assignment_FK
-Foreign Key (assignment_id) REFERENCES assignment (id);
+Foreign Key (member_id) REFERENCES member (id);
 
 insert into position(name)values ('Administrator');
 insert into position(name)values ('Manager');
@@ -91,10 +89,10 @@ insert into member(project_id,employee_id,role_id)values(1,2,2);
 
 --        member_id,task_id,description,psd,ped,asd,aed
 --        1,1,'description','2012-12-12','2012-12-13','2012-12-12','2012-12-13'
-insert into assignment(member_id,task_id,description,assign_date)values(1,1,'some description1',CURRENT_TIMESTAMP);
-insert into assignment(member_id,task_id,description,assign_date)values(2,1,'some description2',CURRENT_TIMESTAMP);
-insert into assignment(member_id,task_id,description,assign_date)values(2,2,'some description1...',CURRENT_TIMESTAMP);
-insert into assignment(member_id,task_id,description,assign_date)values(1,2,'some description2...',CURRENT_TIMESTAMP);
+insert into assignment(member_id,task_id,assign_date)values(1,1,CURRENT_TIMESTAMP);
+insert into assignment(member_id,task_id,assign_date)values(2,1,CURRENT_TIMESTAMP);
+insert into assignment(member_id,task_id,assign_date)values(2,2,CURRENT_TIMESTAMP);
+insert into assignment(member_id,task_id,assign_date)values(1,2,CURRENT_TIMESTAMP);
 
 
 select * from member;

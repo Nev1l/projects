@@ -1,7 +1,8 @@
 package by.epam.beans;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,9 +13,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import by.epam.consts.ConstantsError;
+import by.epam.consts.ConstantsJSP;
+import by.epam.dao.DaoException;
+
 @Entity
 @Table(name = "Activity")
-public class Activity implements Serializable{
+public class Activity implements Serializable {
 	private static final long serialVersionUID = -6438307689729658459L;
 
 	@Id
@@ -23,17 +28,14 @@ public class Activity implements Serializable{
 	private int id;
 
 	@Column(name = "activity_date")
-	private Date date;
+	private String date;
 
-	@Column(name = "duration")
-	private int duration;
-
-	@Column(name = "comment",length=255)
+	@Column(name = "comment", length = 255)
 	private String comment;
 
 	@ManyToOne
-	@JoinColumn(name = "assignment_id")
-	private Assignment assignment;
+	@JoinColumn(name = "member_id")
+	private Member member;
 
 	public int getId() {
 		return id;
@@ -43,20 +45,31 @@ public class Activity implements Serializable{
 		this.id = id;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDate(String date) throws DaoException {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat(
+					ConstantsJSP.DATE_TIME_FORMAT);
+			sdf.parse(date);
+			this.date = date;
+		} catch (ParseException e) {
+			throw new DaoException(ConstantsError.errorDateFormat);
+		}
+		
 	}
 
-	public int getDuration() {
-		return duration;
+	public Member getMember() {
+		return member;
 	}
 
-	public void setDuration(int duration) {
-		this.duration = duration;
+	public void setMember(Member member) throws DaoException {
+		if(member==null){
+			throw new DaoException(ConstantsError.memberIncorrect);
+		}
+		this.member = member;
 	}
 
 	public String getComment() {
@@ -67,17 +80,16 @@ public class Activity implements Serializable{
 		this.comment = comment;
 	}
 
-	public Assignment getAssignment() {
-		return assignment;
-	}
-
-	public void setAssignment(Assignment assignment) {
-		this.assignment = assignment;
-	}
-
 	public Activity() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	
+	public static String getCurrentDateTime() {
+	    SimpleDateFormat sdfDate = new SimpleDateFormat(ConstantsJSP.DATE_TIME_FORMAT);
+	    java.util.Date now = new java.util.Date();
+	    String strDate = sdfDate.format(now);
+	    return strDate;
 	}
 
 }

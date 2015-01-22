@@ -35,8 +35,8 @@ public class Assignment implements Serializable {
 	@JoinColumn(name = "task_id")
 	private Task task;
 
-	@Column(name = "description", length = 255)
-	private String description;
+	//@Column(name = "description", length = 255)
+	//private String description;
 
 	// my field
 	@Column(name = "assign_date")
@@ -104,10 +104,9 @@ public class Assignment implements Serializable {
 		this.task = task;
 	}
 
-	public String getDescription() {
-		return description;
+	/*public String getDescription() {
+		return this.description;
 	}
-
 	public void setDescription(String description) throws DaoException {
 		if (description == null) {
 			throw new DaoException(ConstantsError.descriptionNull);
@@ -115,7 +114,7 @@ public class Assignment implements Serializable {
 		if (description.equals(ConstantsError.Empty)) {
 			throw new DaoException(ConstantsError.descriptionEmpty);
 		}
-	}
+	}*/
 
 	/*
 	 * public Date getPlannedStartDate() { return plannedStartDate; }

@@ -24,6 +24,7 @@ import by.epam.consts.ConstantsError;
 import by.epam.consts.ConstantsJSP;
 import by.epam.dao.DaoException;
 import by.epam.dao.WorkServiceDAO;
+import by.epam.services.ActivityService;
 
 @Controller
 public class TaskController {
@@ -31,6 +32,9 @@ public class TaskController {
 			.getLogger(TaskController.class);
 	@Autowired
 	private WorkServiceDAO workService;
+
+	@Autowired
+	private ActivityService activityService;
 
 	@RequestMapping(value = "/task.do")
 	public String task(HttpServletRequest req, HttpServletResponse res,
@@ -41,7 +45,7 @@ public class TaskController {
 			Task task = workService.getTaskById(id);
 			logger.info("task " + task);
 			if (task != null) {
-				Assignment assignee = workService.getLastAssignmentByTaskId(task
+				Assignment assignee = workService.getLastAssigneeByTaskId(task
 						.getId());
 				req.setAttribute(ConstantsJSP.ASSIGNEE, assignee);
 				req.setAttribute(ConstantsJSP.TASK, task);
@@ -93,20 +97,21 @@ public class TaskController {
 				}
 				task.setStatus(taskStatus);
 				req.setAttribute(ConstantsJSP.TASK, task);
-				task = workService.save(task);// get Id in db
+				task = workService.save(task);
 				HttpSession session = req.getSession();
 				Employee employee = (Employee) session
 						.getAttribute(ConstantsJSP.EMPLOYEE);
 				int assignMemberId = Integer.parseInt(assign_member_id);
 				Member member = workService.getMemberById(assignMemberId);
-				String assignDescription = employee.getFirstName() + " "
-						+ employee.getLastName() + ConstantsJSP.CREATE_ASSIGN;
 				Assignment assignment = new Assignment();
 				assignment.setAssignDate(Assignment.getCurrentDateTime());
-				assignment.setDescription(assignDescription);
 				assignment.setMember(member);
 				assignment.setTask(task);
 				workService.save(assignment);
+				Member activityMember = workService.getProjectMember(
+						project.getId(), employee.getId());
+				activityService.activityCreateAssignee(assignment,
+						activityMember);
 				pageReturn = "forward:/" + ConstantsJSP.projectController;
 			} catch (DaoException e1) {
 				req.setAttribute(ConstantsJSP.ERROR, e1.getMessage());
@@ -140,41 +145,51 @@ public class TaskController {
 			Project project = workService.getProjectById(projectId);
 			req.setAttribute(ConstantsJSP.PROJECT, project);
 			int taskId = Integer.parseInt(task_id);
-			Task task = new Task();
-			try {
-				task.setId(taskId);
-				task.setProject(project);
-				task.setDescription(description);
-				task.setPlannedStartDate(psd);
-				task.setPlannedEndDate(ped);
-				task.setActualStartDate(asd);
-				task.setActualEndDate(aed);
-				Status taskStatus = null;
-				for (Status s : statuses) {
-					if (s.getName().equals(status)) {
-						taskStatus = s;
-						break;
+			Task oldTask = workService.getTaskById(taskId);
+			if (oldTask != null) {
+				try {
+					Task task = new Task();
+					task.setId(oldTask.getId());
+					task.setProject(project);
+					task.setDescription(description);
+					task.setPlannedStartDate(psd);
+					task.setPlannedEndDate(ped);
+					task.setActualStartDate(asd);
+					task.setActualEndDate(aed);
+					Status taskStatus = null;
+					for (Status s : statuses) {
+						if (s.getName().equals(status)) {
+							taskStatus = s;
+							break;
+						}
 					}
+					task.setStatus(taskStatus);
+					req.setAttribute(ConstantsJSP.TASK, task);
+					workService.update(task);
+					HttpSession session = req.getSession();
+					Employee employee = (Employee) session
+							.getAttribute(ConstantsJSP.EMPLOYEE);
+					Member activityMember = workService.getProjectMember(task
+							.getProject().getId(), employee.getId());
+					activityService.activityChangeTask(oldTask, task,
+							activityMember);
+					int assignMemberId = Integer.parseInt(assign_member_id);
+					Assignment oldAssignment = workService
+							.getLastAssigneeByTaskId(task.getId());
+					Member currentMember = workService.getMemberById(assignMemberId);
+					if (oldAssignment.getMember().getId() != currentMember.getId()) {
+						Assignment assignment = new Assignment();
+						assignment.setAssignDate(Assignment
+								.getCurrentDateTime());
+						assignment.setMember(currentMember);
+						assignment.setTask(task);
+						workService.save(assignment);
+						activityService.activityChangeAssignee(assignment, activityMember);
+					}
+					pageReturn = "forward:/" + ConstantsJSP.projectController;
+				} catch (DaoException e1) {
+					req.setAttribute(ConstantsJSP.ERROR, e1.getMessage());
 				}
-				task.setStatus(taskStatus);
-				req.setAttribute(ConstantsJSP.TASK, task);
-				workService.update(task);
-				HttpSession session = req.getSession();
-				Employee employee = (Employee) session
-						.getAttribute(ConstantsJSP.EMPLOYEE);
-				int assignMemberId = Integer.parseInt(assign_member_id);
-				Member member = workService.getMemberById(assignMemberId);
-				String assignDescription = employee.getFirstName() + " "
-						+ employee.getLastName() + ConstantsJSP.CHANGE_ASSIGN;
-				Assignment assignment = new Assignment();
-				assignment.setAssignDate(Assignment.getCurrentDateTime());
-				assignment.setDescription(assignDescription);
-				assignment.setMember(member);
-				assignment.setTask(task);
-				workService.save(assignment);
-				pageReturn = "forward:/" + ConstantsJSP.projectController;
-			} catch (DaoException e1) {
-				req.setAttribute(ConstantsJSP.ERROR, e1.getMessage());
 			}
 		} catch (NumberFormatException e) {
 			req.setAttribute(ConstantsJSP.ERROR,
@@ -196,11 +211,13 @@ public class TaskController {
 			HttpSession session = req.getSession();
 			Employee employee = (Employee) session
 					.getAttribute(ConstantsJSP.EMPLOYEE);
-			Member member = workService.getProjectMember(task.getProject().getId(),
-					employee.getId());
-			req.setAttribute(ConstantsJSP.MEMBER_ID, member.getId());
-			List<Member> memberList = workService
-					.getMembersByProjectId(task.getProject().getId());
+			Member member = workService.getProjectMember(task.getProject()
+					.getId(), employee.getId());
+			if (member != null) {
+				req.setAttribute(ConstantsJSP.MEMBER_ID, member.getId());
+			}
+			List<Member> memberList = workService.getMembersByProjectId(task
+					.getProject().getId());
 			req.setAttribute(ConstantsJSP.PROJECT_MEMBERS, memberList);
 		} catch (NumberFormatException e) {
 			req.setAttribute(ConstantsJSP.ERROR,
@@ -223,9 +240,11 @@ public class TaskController {
 					.getAttribute(ConstantsJSP.EMPLOYEE);
 			Member member = workService.getProjectMember(projectId,
 					employee.getId());
-			req.setAttribute(ConstantsJSP.MEMBER_ID, member.getId());
-			List<Member> memberList = workService
-					.getMembersByProjectId(project.getId());
+			if (member != null) {
+				req.setAttribute(ConstantsJSP.MEMBER_ID, member.getId());
+			}
+			List<Member> memberList = workService.getMembersByProjectId(project
+					.getId());
 			req.setAttribute(ConstantsJSP.PROJECT_MEMBERS, memberList);
 		} catch (NumberFormatException e) {
 			req.setAttribute(ConstantsJSP.ERROR,

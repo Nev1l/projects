@@ -37,51 +37,42 @@ public class HomeController {
 	@Autowired
 	private WorkServiceDAO workService;
 
-	public final static int MAX_RESULTS = 10;
-
 	@RequestMapping(value = "/home.do")
 	public String home(HttpServletRequest req, HttpServletResponse res,
 			@RequestParam(value = "page", required = false) String page) {
 		logger.info(ConstantsJSP.EMPTY);
-		// workService.getProjectById(id);
-		// workService.save(new Position(ProjectPosition.MANAGER));
 		int start = 0;
 		if (page != null) {
+			//parse IN BLOCK TRY CATCH!!!!!
 			start = Integer.parseInt(page);
 			if (start > 0) {
-				start = (start - 1) * MAX_RESULTS;
+				start = (start - 1) * ConstantsJSP.RESULTS_ON_LOAD;
 			}
 		}
-		HttpSession session = req.getSession(true);
-		SecurityContext context = SecurityContextHolder.getContext();
-		Authentication authenticate = context.getAuthentication();
-		String userName = authenticate.getName();
-		Employee employee = null;
-		List<Member> members = null;
 		List<Assignment> listAssignments = null;
 		List<Activity> listActivity = null;
 		int maxPageCount = 0;
 		try {
-			employee = workService.getEmployeeByUserName(userName);
-			session.setAttribute(ConstantsJSP.EMPLOYEE, employee);
-			members = workService.getMembersByEmployeeId(employee.getId());
-			//==========HARDCODE===================
-			//member.setRole(new Role(RoleAccess.DEVELOPER));
-			//=============[Member-a больше нет работать со списком для получения прав для разных проектов]
-			session.setAttribute(ConstantsJSP.MEMBERS, members);
+			HttpSession session = req.getSession(false);
+			Employee employee = (Employee) session
+					.getAttribute(ConstantsJSP.EMPLOYEE);
+			//logger.info("e="+employee);
 			maxPageCount = workService.getCountAssignmentsByEmployeeId(employee.getId());
-			start = Math.min(start,maxPageCount);
-			listAssignments = workService.getEmployeeAssignments(employee.getId(), start,
-					MAX_RESULTS);
+			//logger.info("after method getCountAssignmentsByEmployeeId maxPageCount="+maxPageCount);
+			start = Math.min(start,maxPageCount);//start
+			listAssignments = workService.getEmployeeAssignments(employee.getId(), 1,
+					ConstantsJSP.RESULTS_ON_LOAD);
+			logger.info("after method getEmployeeAssignments="+listAssignments);
 			req.setAttribute(ConstantsJSP.EMPLOYEE_ASSIGNMENT, listAssignments);
-			//продумать прогрузку AJAX(B)-ом
-			listActivity = workService.getLastActivity(MAX_RESULTS);
+			//продумать прогрузку AJAX-ом
+			listActivity = workService.getLastActivity(ConstantsJSP.RESULTS_ON_LOAD);
+			//logger.info("after method getLastActivity");
 			req.setAttribute(ConstantsJSP.LAST_ACTIVITY, listActivity);
 		} catch (Exception e) {
 			logger.info(e.getMessage());
 		}
 		//pagination
-		req.setAttribute(ConstantsJSP.RECORD_ON_PAGE,MAX_RESULTS);
+		req.setAttribute(ConstantsJSP.RECORD_ON_PAGE,ConstantsJSP.RESULTS_ON_LOAD);
 		req.setAttribute(ConstantsJSP.RECORD_COUNT,maxPageCount);
 		req.setAttribute(ConstantsJSP.CUR_PAGE,start);
 		return ConstantsJSP.homePage;

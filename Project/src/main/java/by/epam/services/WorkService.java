@@ -334,9 +334,9 @@ public class WorkService implements WorkServiceDAO {
 	}
 
 	@Transactional
-	public Assignment getLastAssignmentByTaskId(int id) {
+	public Assignment getLastAssigneeByTaskId(int id) {
 		// TODO Auto-generated method stub
-		return workDAO.getLastAssignmentByTaskId(id);
+		return workDAO.getLastAssigneeByTaskId(id);
 	}
 
 }

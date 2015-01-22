@@ -1,11 +1,11 @@
 package by.epam.consts;
 
 public class ConstantsJSP {
+	public final static int RESULTS_ON_LOAD = 10;
+	public final static String FILE_ERROR = "Error(File)";
+	
 	public final static String DATE_FORMAT = "yyyy-MM-dd";
 	public final static String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-	
-	public final static String CREATE_ASSIGN = "assigned";
-	public final static String CHANGE_ASSIGN = "changed the assignee";
 	
 	public final static String homeController = "home.do";
 	public final static String projectController = "project.do";

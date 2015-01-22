@@ -46,7 +46,7 @@
 		<table width="35%" border="solid 1 px">
 			<tr>
 				<td>Project name</td>
-				<td>Assignment description</td>
+				<td>Task status</td>
 				<td>Task description</td>
 			</tr>
 			<c:forEach var="assignment" items="${EMPLOYEE_ASSIGNMENT}"
@@ -55,7 +55,7 @@
 					<td><a href="#"
 						onClick="sendPost('/project/project.do','${assignment.task.project.id}')">${assignment.task.project.name}</a>
 					</td>
-					<td>${assignment.description}</td>
+					<td>${assignment.task.status.name}</td>
 					<td><a href="#"
 						onClick="sendPost('/project/task.do','${assignment.task.id}')">${assignment.task.description}</a>
 					</td>
@@ -63,20 +63,21 @@
 			</c:forEach>
 		</table>
 	   </c:if>
-		<table width="35%" border="solid 1 px">
+	   <input type="hidden" id="count" value="10">
+		<table id="complete-table"  width="35%" border="solid 1 px" >
 			<tr>
 				<td>Last Activity</td>
 				<td>Member</td>
 				<td>Comment</td>
-				<td>Task description</td>
 			</tr>
 			<c:forEach var="activity" items="${LAST_ACTIVITY}" varStatus="status">
 				<tr>
 					<td>${activity.date}</td>
-					<td>${activity.assignment.member.employee.firstName}
-						${activity.assignment.member.employee.lastName}</td>
+					<td>
+					    ${activity.member.employee.firstName}
+						${activity.member.employee.lastName}
+					</td>
 					<td>${activity.comment}</td>
-					<td>${activity.assignment.task.description}</td>
 				</tr>
 			</c:forEach>
 		</table>

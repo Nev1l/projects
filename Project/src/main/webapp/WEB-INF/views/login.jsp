@@ -12,8 +12,8 @@
  <!-- header -->
  <%--<jsp:include page="login.jsp" flush="true" />--%>
  <div class="loginbox">
-  <c:if test="${not empty errorMessage}">
-   <p class="error">${errorMessage}</p>
+  <c:if test="${not empty ERROR}">
+   <p class="error">${ERROR}</p>
   </c:if>
   <c:url var="loginUrl" value='/login.do' />
   <!-- "${loginUrl}" "<c:url value="/j_spring_security_check" />" -->
