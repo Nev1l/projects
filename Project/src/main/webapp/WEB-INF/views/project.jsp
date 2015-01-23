@@ -76,13 +76,14 @@
 						<td><a href="#"
 							onClick="sendPost('/project/member.do','${member.project.id}')">Members</a></td>
 						<td><c:choose>
+						<%--by default member is not null (because this is element of list)--%>
 								<c:when test="${not member.role.isDeveloper()}">
 									<input type="button" value="Change"
 										onClick="sendPost('/project/projectUpdate.do','${member.project.id}')" />
 								</c:when>
 								<c:otherwise>
-						   	No available
-						   </c:otherwise>
+								   	No available
+							    </c:otherwise>
 							</c:choose></td>
 					</tr>
 				</c:forEach>
