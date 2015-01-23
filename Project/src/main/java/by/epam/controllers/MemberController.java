@@ -76,6 +76,7 @@ public class MemberController {
 			HttpServletResponse res,
 			@RequestParam(value = "id", required = false) String project_id,
 			@RequestParam(value = "employee_id", required = false) String employee_id) {
+		logger.info("=====[memberDelete]=====");
 		String pageReturn = "forward:/" + ConstantsJSP.memberController;
 		try {
 			int projectId = Integer.parseInt(project_id);
@@ -84,7 +85,10 @@ public class MemberController {
 			int employeeId = Integer.parseInt(employee_id);
 			Member member = workService.getProjectMember(projectId, employeeId);
 			if (member != null) {
-				workService.delete(member);
+				if(!workService.delete(member)){
+					req.setAttribute(ConstantsJSP.ERROR,
+							ConstantsError.memberDeleteError);
+				}
 			}
 		} catch (NumberFormatException e) {
 			logger.info("error:" + e);

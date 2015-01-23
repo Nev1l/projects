@@ -28,8 +28,9 @@ var load = function() {
 	};
 
 	var clearTable = function() {
-		if (completeTable.getElementsByTagName("tr").length > 1) {
-			for (var loop = completeTable.childNodes.length - 1; loop >= 1; loop--) {
+		//>1 >=1 (now if > 0  ... loop >= 0)
+		if (completeTable.getElementsByTagName("tr").length > 0) {
+			for (var loop = completeTable.childNodes.length - 1; loop >= 0; loop--) {
 				completeTable.removeChild(completeTable.childNodes[loop]);
 			}
 		}

@@ -13,6 +13,7 @@
 <title>Edit task</title>
 </head>
 <body>
+    <jsp:include page="header.jsp"/>
 	<c:url var="home" value="/home.do" />
 	<a href="${home}">Home</a>
 	<div align="center">
@@ -20,6 +21,7 @@
 			<div class="error">${ERROR}<br>
 			</div>
 		</c:if>
+		<c:set var="assign_member_value" value="(Automatic)"/>
 		<c:set var="psd" value="" />
 		<c:set var="ped" value="" />
 		<c:set var="asd" value="" />

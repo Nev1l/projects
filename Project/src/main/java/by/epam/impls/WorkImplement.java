@@ -63,9 +63,10 @@ public class WorkImplement implements WorkDAO {
 	}
 
 	@Override
-	public void delete(Member member) {
+	public boolean delete(Member member) {
 		// TODO Auto-generated method stub
 		sessionFactory.getCurrentSession().delete(member);
+		return true;
 	}
 
 	@Override
@@ -138,9 +139,11 @@ public class WorkImplement implements WorkDAO {
 	}
 
 	@Override
-	public void save(Member object) {
+	public Member save(Member object) {
 		// TODO Auto-generated method stub
-		sessionFactory.getCurrentSession().save(object);
+		Session session = sessionFactory.getCurrentSession();
+		session.save(object);
+		return (Member) session.get(Member.class, object.getId());
 	}
 
 	@Override
@@ -421,7 +424,25 @@ public class WorkImplement implements WorkDAO {
 		SQLQuery sqlquery = sessionFactory.getCurrentSession()
 				.createSQLQuery("select * from assignment where task_id=" + id+" order by assign_date desc")
 				.addEntity(Assignment.class);
-		return (Assignment) sqlquery.list().get(0);
+		List<Assignment> list = sqlquery.list();
+		return list.isEmpty() ? null : list.get(0);
+	}
+
+	@Override
+	public boolean hasActivity(int member_id) {
+		// TODO Auto-generated method stub
+		SQLQuery sqlquery = sessionFactory.getCurrentSession()
+				.createSQLQuery("select count(*) from activity where member_id=" + member_id);
+		return (Integer)sqlquery.uniqueResult()>0 ? true : false;
+	}
+
+	@Override
+	public boolean hasAssignment(int member_id) {
+		// TODO Auto-generated method stub
+		SQLQuery sqlquery = sessionFactory.getCurrentSession()
+				.createSQLQuery("select count(*) from assignment where member_id=" + member_id);
+		logger.info("res="+sqlquery.uniqueResult());
+		return (Integer)sqlquery.uniqueResult()>0 ? true : false;
 	}
 
 }

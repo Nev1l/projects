@@ -13,6 +13,10 @@
 <title>Member</title>
 </head>
 <body>
+    <jsp:include page="header.jsp"/>
+	<c:if test="${not empty ERROR}">
+		<p class="error">${ERROR}</p>
+	</c:if>
 	<c:choose>
 		<c:when test="${EMPLOYEE.position.isAdmin()}">
 			<c:set var="hasAccess" value="true" />
@@ -67,7 +71,7 @@
 			</c:if>
 		</c:when>
 		<c:otherwise>
-			<p class="error">${ERROR}</p>
+			
 		</c:otherwise>
 	</c:choose>
 </body>

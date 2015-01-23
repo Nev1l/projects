@@ -2,6 +2,7 @@ package by.epam.consts;
 
 public interface ConstantsError {
 	String Empty = "";
+	String memberDeleteError = "Can't delete(Member has assignments or some history of activity).";
 	String taskAttachmentError = "File doesn't attach to task";
 	String projectAttachmentError = "File doesn't attach to project";
 	String projectNameIsEmpty = "Project name is empty.";

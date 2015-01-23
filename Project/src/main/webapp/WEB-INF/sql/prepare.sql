@@ -46,7 +46,7 @@ ALTER TABLE assignment ADD CONSTRAINT assignment_task_FK
 Foreign Key (task_id) REFERENCES task (id);
 ALTER TABLE assignment ADD CONSTRAINT assignment_member_FK
 Foreign Key (member_id) REFERENCES member (id);
-ALTER TABLE activity ADD CONSTRAINT activity_assignment_FK
+ALTER TABLE activity ADD CONSTRAINT activity_member_FK
 Foreign Key (member_id) REFERENCES member (id);
 
 insert into position(name)values ('Administrator');
@@ -93,6 +93,10 @@ insert into assignment(member_id,task_id,assign_date)values(1,1,CURRENT_TIMESTAM
 insert into assignment(member_id,task_id,assign_date)values(2,1,CURRENT_TIMESTAMP);
 insert into assignment(member_id,task_id,assign_date)values(2,2,CURRENT_TIMESTAMP);
 insert into assignment(member_id,task_id,assign_date)values(1,2,CURRENT_TIMESTAMP);
+
+insert into assignment(member_id,task_id,assign_date)values(1,3,CURRENT_TIMESTAMP);
+insert into assignment(member_id,task_id,assign_date)values(2,4,CURRENT_TIMESTAMP);
+insert into assignment(member_id,task_id,assign_date)values(2,5,CURRENT_TIMESTAMP);
 
 
 select * from member;

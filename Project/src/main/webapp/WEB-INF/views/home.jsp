@@ -12,10 +12,7 @@
 <title>Home</title>
 </head>
 <body>
-	<!-- header -->
-	<%--<jsp:include page="login.jsp" flush="true" />--%>
-	<h1>HOME</h1>
-	<p>Dashboards</p>
+	<%@ include file="header.jsp" %>
 	<table width="15%">
 		<%-- employee not empty!This is controled by spring security filter--%>
 		<tr>
@@ -42,7 +39,9 @@
 			<a href="${project}">Projects</a>
 	</div>
 	<div>
-	   <c:if test="${not empty EMPLOYEE_ASSIGNMENT}">
+	<c:choose>
+	   <c:when test="${not empty EMPLOYEE_ASSIGNMENT}">
+	    <div>Assigned to me</div>
 		<table width="35%" border="solid 1 px">
 			<tr>
 				<td>Project name</td>
@@ -62,27 +61,32 @@
 				</tr>
 			</c:forEach>
 		</table>
-	   </c:if>
-	   <input type="hidden" id="count" value="10">
-		<table id="complete-table"  width="35%" border="solid 1 px" >
-			<tr>
-				<td>Last Activity</td>
-				<td>Member</td>
-				<td>Comment</td>
-			</tr>
+	   </c:when>
+	   <c:otherwise>
+	     <div>No tasks assigned to me</div>
+	   </c:otherwise>
+	   </c:choose>
+	   <input type="hidden" id="count" value="20"/>
+       <c:choose>
+	   <c:when test="${not empty LAST_ACTIVITY}">
+	 	  <div>Activity stream</div>
+	 	  <table id="complete-table"  width="35%" border="solid 1 px">
 			<c:forEach var="activity" items="${LAST_ACTIVITY}" varStatus="status">
 				<tr>
-					<td>${activity.date}</td>
-					<td>
-					    ${activity.member.employee.firstName}
-						${activity.member.employee.lastName}
+					<td>${activity.date}
+						<a href="#">${activity.member.employee.firstName} ${activity.member.employee.lastName} </a>
+						${activity.comment}
 					</td>
-					<td>${activity.comment}</td>
 				</tr>
 			</c:forEach>
 		</table>
 		<input type="button" name="showMore" onClick="load()"
 			value="Show more.." />
+	   </c:when>
+	   <c:otherwise>
+	  		 <div>Activity stream is empty</div>
+	   </c:otherwise>
+	   </c:choose>
 	</div>
 	<%-- <p> ${sessionScope}</p> --%>
 	<!-- footer -->

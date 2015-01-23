@@ -97,7 +97,19 @@ public class ProjectController {
 			Project projectOld = workService.getProjectById(id);
 			if (projectOld != null) {
 				id = projectOld.getId();
+				HttpSession session = req.getSession();
+				Employee employee = (Employee) session
+						.getAttribute(ConstantsJSP.EMPLOYEE);
+				Member activityMember = workService.getProjectMember(id, employee.getId());
 				try {
+					if(activityMember==null){
+						activityMember = new Member();
+						activityMember.setEmployee(employee);
+						activityMember.setProject(projectOld);
+						Role role = workService.getRoleName(ProjectPosition.ADMIN);
+						activityMember.setRole(role);
+						activityMember = workService.save(activityMember);//update id for activity
+					}
 					Project project = new Project();
 					project.setDescription(description);
 					project.setPlannedStartDate(psd);
@@ -108,10 +120,6 @@ public class ProjectController {
 					project.setStatus(st);
 					project.setId(id);// id for update
 					workService.update(project);
-					HttpSession session = req.getSession();
-					Employee employee = (Employee) session
-							.getAttribute(ConstantsJSP.EMPLOYEE);
-					Member activityMember = workService.getProjectMember(project.getId(), employee.getId());
 					activityService.activityChangeProject(projectOld,project,activityMember);
 					pageReturn = "redirect:/" + ConstantsJSP.projectController;
 					req.setAttribute(ConstantsJSP.PROJECT, project);

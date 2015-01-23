@@ -16,6 +16,7 @@
 <title>Task</title>
 </head>
 <body>
+    <jsp:include page="header.jsp"/>
 	<c:url var="home" value="/home.do" />
 	<a href="${home}">Home</a>
 	<c:url var="projects" value="/project.do" />
@@ -35,9 +36,8 @@
 					<td>Project description</td>
 					<td>Status</td>
 					<td>Team</td>
-					<c:if test="${EMPLOYEE.position.isAdmin()}">
-						<td>Actions</td>
-					</c:if>
+					<%-- <c:if test="${EMPLOYEE.position.isAdmin()}"> </c:if>--%>
+					<td>Actions</td>
 				</tr>
 				<c:forEach var="project" items="${PROJECT_LIST}" varStatus="status">
 					<tr>
@@ -47,6 +47,7 @@
 						<td>${project.status.name}</td>
 						<td><a href="#"
 							onClick="sendPost('/project/member.do','${project.id}')">Members</a></td>
+						<%-- role > developer --%>
 						<c:if test="${EMPLOYEE.position.isAdmin()}">
 							<td><input type="button" value="Change"
 								onClick="sendPost('/project/projectUpdate.do','${project.id}')" />
@@ -89,7 +90,7 @@
 		</c:when>
 		<%-- if user send id of project VIEW PROJECT WITH ID --%>
 		<c:when test="${not empty PROJECT}">
-			<c:choose>
+			<%-- <c:choose>
 				<c:when test="${EMPLOYEE.position.isAdmin()}">
 					<c:set var="hasAccess" value="true" />
 				</c:when>
@@ -101,22 +102,22 @@
 				<c:otherwise>
 					<c:set var="hasAccess" value="false" />
 				</c:otherwise>
-			</c:choose>
-			<c:set var="hasCreateTaskAccess" value="false" />
+			</c:choose> --%>
+			<c:set var="hasMemberAccess" value="false" />
 			<c:if test="${not empty MEMBER}">
 				<c:if test="${not MEMBER.role.isDeveloper()}">
-					<c:set var="hasCreateTaskAccess" value="true" />
+					<c:set var="hasMemberAccess" value="true" />
 				</c:if>
 			</c:if>
 			<P>Project name:${PROJECT.name}</P>
-			<c:if test="${hasCreateTaskAccess}">
+			<c:if test="${hasMemberAccess}">
 				<div>
 					<input size="25" type="button"
 						onClick="sendPost('/project/taskNew.do','${PROJECT.id}')"
 						value="New task">
 				</div>
 			</c:if>
-			<c:if test="${hasAccess}">
+			<c:if test="${hasMemberAccess}">
 				<div>
 					<input size="25" type="button"
 						onClick="sendPost('/project/memberNew.do','${PROJECT.id}')"
@@ -130,9 +131,7 @@
 						<tr>
 							<td>Task description</td>
 							<td>Status</td>
-							<c:if test="${not MEMBER.role.isDeveloper()}">
-								<td>Actions</td>
-							</c:if>
+							<td>Actions</td>
 						</tr>
 						<c:forEach var="task" items="${PROJECT_TASKS}" varStatus="status">
 							<tr>
@@ -140,11 +139,17 @@
 									onClick="sendPost('/project/task.do','${task.id}')">${task.description}</a>
 								</td>
 								<td>${task.status.name}</td>
-								<td><c:if test="${not MEMBER.role.isDeveloper()}">
-										<input type="button"
-											onClick="sendPost('/project/taskUpdate.do','${task.id}')"
-											value="Change">
-									</c:if></td>
+								<td>
+									<c:choose>
+										<c:when test="${hasMemberAccess}">
+											<input type="button"
+												onClick="sendPost('/project/taskUpdate.do','${task.id}')"
+												value="Change">
+										</c:when>
+										<c:otherwise>
+											No available
+										</c:otherwise>
+									</c:choose></td>
 							</tr>
 						</c:forEach>
 					</table>

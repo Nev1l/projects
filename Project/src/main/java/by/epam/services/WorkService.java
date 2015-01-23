@@ -109,9 +109,8 @@ public class WorkService implements WorkServiceDAO {
 	}
 
 	@Transactional
-	public void save(Member object) {
-		// TODO Auto-generated method stub
-		workDAO.save(object);
+	public Member save(Member object) {
+		return workDAO.save(object);
 	}
 
 	@Transactional
@@ -315,10 +314,12 @@ public class WorkService implements WorkServiceDAO {
 	}
 
 	@Transactional
-	public void delete(Member member) {
+	public boolean delete(Member member) {
 		// TODO Auto-generated method stub
-		workDAO.delete(member);
-		
+		if(workDAO.hasActivity(member.getId()) || workDAO.hasAssignment(member.getId())){
+			return false;
+		}
+		return workDAO.delete(member);
 	}
 
 	@Transactional
@@ -337,6 +338,18 @@ public class WorkService implements WorkServiceDAO {
 	public Assignment getLastAssigneeByTaskId(int id) {
 		// TODO Auto-generated method stub
 		return workDAO.getLastAssigneeByTaskId(id);
+	}
+
+	@Transactional
+	public boolean hasActivity(int member_id) {
+		// TODO Auto-generated method stub
+		return workDAO.hasActivity(member_id);
+	}
+
+	@Transactional
+	public boolean hasAssignment(int member_id) {
+		// TODO Auto-generated method stub
+		return workDAO.hasAssignment(member_id);
 	}
 
 }

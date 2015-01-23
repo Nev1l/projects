@@ -13,6 +13,7 @@
 <title>New task</title>
 </head>
 <body>
+    <jsp:include page="header.jsp"/>
 	<c:url var="home" value="/home.do" />
 	<a href="${home}">Home</a>
 	<div align="center">

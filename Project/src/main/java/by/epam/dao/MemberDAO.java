@@ -6,9 +6,11 @@ import by.epam.beans.Member;
 
 
 public interface MemberDAO {
-	void save(Member p);
+	boolean hasActivity(int member_id);
+	boolean hasAssignment(int member_id);
+	Member save(Member p);
 	void update(Member p);
-	void delete(Member member);
+	boolean delete(Member member);
 	Member getMemberById(int id);
 	Member getProjectMember(int projectId,int employeeId);
 	List<Member> getMembersByEmployeeId(int id);//for get roles of all projects of the employee

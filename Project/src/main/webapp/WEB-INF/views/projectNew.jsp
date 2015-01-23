@@ -13,6 +13,7 @@
 <title>New project</title>
 </head>
 <body>
+   <jsp:include page="header.jsp"/>
    <c:url var="home" value="/home.do" />
    <a href="${home}">Home</a>
    <c:url var="projects" value="/project.do" />

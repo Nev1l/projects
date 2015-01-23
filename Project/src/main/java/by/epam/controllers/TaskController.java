@@ -136,7 +136,7 @@ public class TaskController {
 			@RequestParam(value = "asd", required = false) String asd,
 			@RequestParam(value = "aed", required = false) String aed,
 			@RequestParam(value = "status", required = false) String status) {
-		logger.info("=============[taskAdd");
+		logger.info("=============[taskEdit");
 		String pageReturn = ConstantsJSP.taskNewPage;
 		List<Status> statuses = workService.getStatusList();
 		req.setAttribute(ConstantsJSP.STATUS_LIST, statuses);

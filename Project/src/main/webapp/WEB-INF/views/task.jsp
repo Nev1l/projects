@@ -16,6 +16,7 @@
 <title>Task</title>
 </head>
 <body>
+    <jsp:include page="header.jsp"/>
 	<c:url var="project" value="/project.do" />
 	<a href="${project}">Projects</a>
 	<c:choose>

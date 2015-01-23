@@ -36,6 +36,9 @@ public class Member implements Serializable{
 	@JoinColumn(name = "role_id")
 	private Role role;
 
+	//@Column(name = "is_enabled",columnDefinition = "smallint DEFAULT 1", nullable = false)
+	//private boolean isEnabled=true; 
+	
 	public int getId() {
 		return id;
 	}
