@@ -121,9 +121,9 @@ public class Project implements Serializable {
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat(
 					ConstantsJSP.DATE_FORMAT);
-			Date aed = sdf.parse(plannedEndDate);
+			Date ped = sdf.parse(plannedEndDate);
 			if (!plannedStartDate.equals(ConstantsError.Empty)) {
-				if (sdf.parse(plannedStartDate).before(aed)) {
+				if (sdf.parse(plannedStartDate).before(ped)  || sdf.parse(plannedStartDate).equals(ped)) {
 					this.plannedEndDate = plannedEndDate;
 				} else {
 					throw new DaoException(ConstantsError.actualErrorDate);
@@ -160,7 +160,7 @@ public class Project implements Serializable {
 					ConstantsJSP.DATE_FORMAT);// yyyy/MM/dd
 			Date aed = sdf.parse(actualEndDate);
 			if (!actualStartDate.equals(ConstantsError.Empty)) {
-				if (sdf.parse(actualStartDate).before(aed)) {
+				if (sdf.parse(actualStartDate).before(aed)  || sdf.parse(actualStartDate).equals(aed)) {
 					this.actualEndDate = actualEndDate;
 				} else {
 					throw new DaoException(ConstantsError.actualErrorDate);

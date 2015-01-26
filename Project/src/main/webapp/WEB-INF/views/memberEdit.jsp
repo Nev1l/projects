@@ -13,28 +13,33 @@
 <title>Edit member</title>
 </head>
 <body>
-    <jsp:include page="header.jsp"/>
-	<c:url var="home" value="/home.do" />
-	<a href="${home}">Home</a>
-	<div align="center">
+    <%@ include file="header.jsp" %>
+	<div class="row well">
 		<c:if test="${not empty ERROR}">
 			<div class="error">${ERROR}<br>
 			</div>
 		</c:if>
 		<c:if test="${not empty PROJECT}">
-			<div>
-				Select members for project:<a href="#"
+		<div class="panel panel-default">
+			<div class="panel-heading">
+			<h4>
+				Select members for project: <a href="#"
 					onClick="sendPost('/project/project.do','${PROJECT.id}')">${PROJECT.name}</a>
+			</h4>
 			</div>
+			<div class="panel-body">
 				<form method="post" action="<c:url value='/memberEdit.do'/>">
 			    <input type="hidden" name="id" value="${PROJECT.id}" />
-				<table border="solid 1px">
+				<table class="table table-bordered">
+				<thead>
 					<tr>
-						<td>Name</td>
-						<td>Position</td>
-						<td>Project role</td>
-						<td>Select</td>
+						<th>Name</th>
+						<th>Position</th>
+						<th>Project role</th>
+						<th>Select</th>
 					</tr>
+				</thead>
+				<tbody>
 					<c:forEach var="member" items="${PROJECT_MEMBERS}"	varStatus="status">
 					  <input type="hidden" name="member_id[]" value="${member.id}" />
 					  <input type="hidden" name="employee_id[]" value="${member.employee.id}" />
@@ -58,12 +63,15 @@
 						<td><input type="checkBox" onClick="selectOption(this,'cb${member.employee.id}')"/></td>
 					  </tr>
 				   </c:forEach>
+				   </tbody>
 				</table>
 				<div>
-				    <input type="submit" value="Edit member list"/>
-					<input type="button" onClick="sendPost('/project/project.do','${PROJECT.id}')" value="Cancel"/>
+				    <input class="btn btn-default"  type="submit" value="Edit member list"/>
+					<input class="btn btn-default" type="button" onClick="window.history.go(-1)" value="Cancel"/>
 				</div>
 				</form>
+				</div>
+			</div>
 		</c:if>
 	</div>
 </body>

@@ -16,76 +16,111 @@
 <title>Task</title>
 </head>
 <body>
-    <jsp:include page="header.jsp"/>
-	<c:url var="project" value="/project.do" />
-	<a href="${project}">Projects</a>
-	<c:choose>
-		<c:when test="${empty TASK}">
-			<p class="error">${ERROR}</p>
-		</c:when>
-		<c:otherwise>
-			<table>
-				<c:set var="assignee" value="No assignee" />
-				<c:if test="${not empty ASSIGNEE}">
-					<c:set var="assignee"
-						value="${ASSIGNEE.member.employee.firstName} ${ASSIGNEE.member.employee.lastName}" />
-				</c:if>
-				<tr>
-					<td align="right">Assignee:</td>
-					<td>${assignee}</td>
-				</tr>
-				<tr>
-					<td align="right">Project name:</td>
-					<td><a href="#"
-						onClick="sendPost('/project/project.do','${TASK.project.id}')">${TASK.project.name}</a></td>
-				</tr>
-				<tr>
-					<td align="right">Task description:</td>
-					<td>${TASK.description}</td>
-				</tr>
-				<tr>
-					<td align="right">Status:</td>
-					<td>${TASK.status.name}</td>
-				</tr>
-				<tr>
-					<td align="right">Planned date of start:</td>
-					<td>${TASK.plannedStartDate}</td>
-				</tr>
-				<tr>
-					<td align="right">Planned date of end:</td>
-					<td>${TASK.plannedEndDate}</td>
-				</tr>
-				<tr>
-					<td align="right">Actual date of start:</td>
-					<td>${TASK.actualStartDate}</td>
-				</tr>
-				<tr>
-					<td align="right">Actual date of end:</td>
-					<td>${TASK.actualEndDate}</td>
-				</tr>
-			</table>
-			<div>
-				<input type="button" value="Reassignee"
-					onClick="sendPost('/project/assignee.do','${ASSIGNEE.task.id}')" />
-				<input type="button" value="Activity"
-					onClick="sendPost('/project/activity.do','${ASSIGNEE.task.id}')" />
-			</div>
-			<form method="POST" enctype="multipart/form-data"
-				action="<c:url value="/fileupload.do"/>">
-				<input type="hidden" name="task_id" value="1"/>
-				<input type="hidden" name="description" value="atachment !!!!!"/>
-				<table class="bounty">
-					<tr>
-						<td>File to upload:</td>
-						<td><input type="file" name="file" required></td>
-					</tr>
-					<tr>
-						<td><input type="submit" value="Upload">
-						<td></td>
-					</tr>
-				</table>
-			</form>
-		</c:otherwise>
-	</c:choose>
+	<%@ include file="header.jsp"%>
+	<div class="row well">
+		<c:choose>
+			<c:when test="${empty TASK}">
+				<p class="error">${ERROR}</p>
+			</c:when>
+			<c:otherwise>
+				<div class="span8">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4>Task</h4>
+						</div>
+						<div class="panel-body">
+							<table class="table table-bordered">
+								<tbody>
+									<c:set var="assignee" value="No assignee" />
+									<c:if test="${not empty ASSIGNEE}">
+										<c:set var="assignee"
+											value="${ASSIGNEE.member.employee.firstName} ${ASSIGNEE.member.employee.lastName}" />
+									</c:if>
+									<tr>
+										<td align="right">Assignee:</td>
+										<td>${assignee}</td>
+									</tr>
+									<tr>
+										<td align="right">Project name:</td>
+										<td><a href="#"
+											onClick="sendPost('/project/project.do','${TASK.project.id}')">${TASK.project.name}</a></td>
+									</tr>
+									<tr>
+										<td align="right">Task description:</td>
+										<td>${TASK.description}</td>
+									</tr>
+									<tr>
+										<td align="right">Status:</td>
+										<td>${TASK.status.name}</td>
+									</tr>
+									<tr>
+										<td align="right">Planned date of start:</td>
+										<td>${TASK.plannedStartDate}</td>
+									</tr>
+									<tr>
+										<td align="right">Planned date of end:</td>
+										<td>${TASK.plannedEndDate}</td>
+									</tr>
+									<tr>
+										<td align="right">Actual date of start:</td>
+										<td>${TASK.actualStartDate}</td>
+									</tr>
+									<tr>
+										<td align="right">Actual date of end:</td>
+										<td>${TASK.actualEndDate}</td>
+									</tr>
+								</tbody>
+							</table>
+							<div>
+							<a href="#" class="btn btn-default"
+									onClick="sendPost('/project/task.do','${TASK.id}')">Change</a>
+								<input class="btn btn-default" type="button" value="Activity"
+									onClick="sendPost('/project/activity.do','${ASSIGNEE.task.id}')" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="span8">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4>Attachment</h4>
+						</div>
+						<div class="panel-body">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>File name</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+							<form method="POST" enctype="multipart/form-data"
+								action="<c:url value="/fileupload.do"/>">
+								<input type="hidden" name="task_id" value="${TASK.id}" />
+								<table class="table">
+									<tbody>
+										<tr class="form-group">
+											<td><input id="exampleInputFile" type="file" name="file" required></td>
+											<td><input class="btn btn-default" type="submit"
+												value="Upload">
+										</tr>
+										<tr class="form-group">
+											<td colspan="2"><input class="form-control" type="text"
+												name="description" value="" placeholder="description"
+												required /></td>
+										</tr>
+									</tbody>
+								</table>
+							</form>
+						</div>
+					</div>
+				</div>
+			</c:otherwise>
+		</c:choose>
+	</div>
 </body>
 </html>

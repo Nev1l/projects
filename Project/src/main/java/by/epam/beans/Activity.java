@@ -92,4 +92,9 @@ public class Activity implements Serializable {
 	    return strDate;
 	}
 
+	@Override
+	public String toString() {
+		return "Activity [member=" + member + "]";
+	}
+
 }

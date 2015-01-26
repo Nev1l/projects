@@ -113,7 +113,7 @@ public class Task implements Serializable {
 					ConstantsJSP.DATE_FORMAT);
 			Date aed = sdf.parse(plannedEndDate);
 			if (!plannedStartDate.equals(ConstantsError.Empty)) {
-				if (sdf.parse(plannedStartDate).before(aed)) {
+				if (sdf.parse(plannedStartDate).before(aed) || sdf.parse(plannedStartDate).equals(aed)) {
 					this.plannedEndDate = plannedEndDate;
 				} else {
 					throw new DaoException(ConstantsError.actualErrorDate);
@@ -150,7 +150,7 @@ public class Task implements Serializable {
 					ConstantsJSP.DATE_FORMAT);// yyyy/MM/dd
 			Date aed = sdf.parse(actualEndDate);
 			if (!actualStartDate.equals(ConstantsError.Empty)) {
-				if (sdf.parse(actualStartDate).before(aed)) {
+				if (sdf.parse(actualStartDate).before(aed) || sdf.parse(actualStartDate).equals(aed)) {
 					this.actualEndDate = actualEndDate;
 				} else {
 					throw new DaoException(ConstantsError.actualErrorDate);

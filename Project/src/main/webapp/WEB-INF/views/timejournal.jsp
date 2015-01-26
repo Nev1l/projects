@@ -16,6 +16,7 @@
 <title>Task</title>
 </head>
 <body>
+  <%@ include file="header.jsp" %>
   <c:choose>
     <c:when test="${empty curent_task}">
       <p class="error">${errorMessage}</p>

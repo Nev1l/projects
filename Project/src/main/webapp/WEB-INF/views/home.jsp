@@ -3,51 +3,29 @@
 <%@ page import="by.epam.consts.ConstantsJSP"%>
 <%@ page import="by.epam.consts.ConstantsError"%>
 <%@ page session="true"%>
-<link href="${pageContext.request.contextPath}/resources/css/style.css"
-	rel="stylesheet" type="text/css" />
 <html>
 <head>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/script.js"></script>
-<title>Home</title>
 </head>
 <body>
 	<%@ include file="header.jsp" %>
-	<table width="15%">
-		<%-- employee not empty!This is controled by spring security filter--%>
-		<tr>
-			<td>
-		<tr>
-			<td><c:out value="${EMPLOYEE.position.name}" /></td>
-		</tr>
-		<tr>
-			<td>
-			   <c:out value="${EMPLOYEE.firstName} ${EMPLOYEE.lastName}" />
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<form method="POST" name="loginForm"
-					action="<c:url value="/logout.do"/>">
-					<input type="submit" value="Logout">
-				</form>
-			</td>
-		</tr>
-	</table>
-	<div>
-			<c:url var="project" value="/project.do" />
-			<a href="${project}">Projects</a>
-	</div>
-	<div>
+	<div class="row well">
+	<div class="span8">
 	<c:choose>
 	   <c:when test="${not empty EMPLOYEE_ASSIGNMENT}">
-	    <div>Assigned to me</div>
-		<table width="35%" border="solid 1 px">
+	   <div class="panel panel-default">
+        <div class="panel-heading"><h4>Assigned to me</h4></div>
+        <div class="panel-body">
+			<table class="table table-bordered">
+			<thead>
 			<tr>
-				<td>Project name</td>
-				<td>Task status</td>
-				<td>Task description</td>
+				<th>Project name</th>
+				<th>Task status</th>
+				<th>Task description</th>
 			</tr>
+			</thead>
+			<tbody>
 			<c:forEach var="assignment" items="${EMPLOYEE_ASSIGNMENT}"
 				varStatus="status">
 				<tr>
@@ -60,33 +38,61 @@
 					</td>
 				</tr>
 			</c:forEach>
-		</table>
+			</tbody>
+			</table>
+        </div>
+      </div>
 	   </c:when>
 	   <c:otherwise>
-	     <div>No tasks assigned to me</div>
+	    <div class="panel panel-default">
+         <div class="panel-heading"><h4>Assigned to me</h4></div>
+         <div class="panel-body">You haven't assigned tasks</div>
+        </div>
 	   </c:otherwise>
 	   </c:choose>
+	   </div>
+	   <div class="span8">
 	   <input type="hidden" id="count" value="20"/>
        <c:choose>
 	   <c:when test="${not empty LAST_ACTIVITY}">
-	 	  <div>Activity stream</div>
-	 	  <table id="complete-table"  width="35%" border="solid 1 px">
+	   <div class="panel panel-default">
+        <div class="panel-heading"><h4>Activity stream</h4></div>
+        <div class="panel-body">
+	 	  <table class="table table-striped table-advance table-hover">
+	 	    <tbody id="complete-table"><%-- remove id from table --%>
+	 	    <tr>
+	 	       <th><i class="icon_calendar"></i> Date</th>
+	 	 	   <th><i class="icon_profile"></i> Full Name</th>
+	 	 	   <th><i class="icon_cogs"></i> Action</th>
+	 	    </tr>
 			<c:forEach var="activity" items="${LAST_ACTIVITY}" varStatus="status">
 				<tr>
-					<td>${activity.date}
-						<a href="#">${activity.member.employee.firstName} ${activity.member.employee.lastName} </a>
+					<td>${activity.date}</td>
+					<td>	
+					   <a href="#" onClick="sendPost('/project/userprofile.do','${activity.member.employee.id}')">${activity.member.employee.firstName} ${activity.member.employee.lastName} </a>
+					</td>
+					<td>
 						${activity.comment}
 					</td>
 				</tr>
 			</c:forEach>
+			</tbody>
 		</table>
-		<input type="button" name="showMore" onClick="load()"
+		</div>
+		</div>
+		<input class="btn btn-default"  type="button" name="showMore" onClick="load()"
 			value="Show more.." />
 	   </c:when>
 	   <c:otherwise>
-	  		 <div>Activity stream is empty</div>
+	    <div class="panel panel-default">
+	        <div class="panel-heading"><h4>Activity stream</h4></div>
+        	<div class="panel-body">
+	  			 <div>Activity stream is empty</div>
+	  		 </div>
+	  	</div>
 	   </c:otherwise>
 	   </c:choose>
+	   </div>
 	</div>
 	<%-- <p> ${sessionScope}</p> --%>
 	<!-- footer -->

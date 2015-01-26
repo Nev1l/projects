@@ -64,9 +64,8 @@ public class HomeController {
 					ConstantsJSP.RESULTS_ON_LOAD);
 			logger.info("after method getEmployeeAssignments="+listAssignments);
 			req.setAttribute(ConstantsJSP.EMPLOYEE_ASSIGNMENT, listAssignments);
-			//продумать прогрузку AJAX-ом
 			listActivity = workService.getLastActivity(ConstantsJSP.RESULTS_ON_LOAD);
-			//logger.info("after method getLastActivity");
+			logger.info("after method getLastActivity"+listActivity);
 			req.setAttribute(ConstantsJSP.LAST_ACTIVITY, listActivity);
 		} catch (Exception e) {
 			logger.info(e.getMessage());

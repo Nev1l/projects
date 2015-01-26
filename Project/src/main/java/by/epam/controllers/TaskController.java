@@ -73,7 +73,7 @@ public class TaskController {
 			@RequestParam(value = "asd", required = false) String asd,
 			@RequestParam(value = "aed", required = false) String aed,
 			@RequestParam(value = "status", required = false) String status) {
-		String pageReturn = ConstantsJSP.taskNewPage;
+		String pageReturn = "forward:/"+ConstantsJSP.taskNewPage;
 		List<Status> statuses = workService.getStatusList();
 		req.setAttribute(ConstantsJSP.STATUS_LIST, statuses);
 		try {
@@ -115,6 +115,7 @@ public class TaskController {
 				pageReturn = "forward:/" + ConstantsJSP.projectController;
 			} catch (DaoException e1) {
 				req.setAttribute(ConstantsJSP.ERROR, e1.getMessage());
+				return "forward:/"+ConstantsJSP.taskNewController;
 			}
 		} catch (NumberFormatException e) {
 			req.setAttribute(ConstantsJSP.ERROR,
@@ -137,7 +138,7 @@ public class TaskController {
 			@RequestParam(value = "aed", required = false) String aed,
 			@RequestParam(value = "status", required = false) String status) {
 		logger.info("=============[taskEdit");
-		String pageReturn = ConstantsJSP.taskNewPage;
+		String pageReturn = ConstantsJSP.taskEditPage;//"forward:/"+
 		List<Status> statuses = workService.getStatusList();
 		req.setAttribute(ConstantsJSP.STATUS_LIST, statuses);
 		try {
@@ -164,7 +165,6 @@ public class TaskController {
 						}
 					}
 					task.setStatus(taskStatus);
-					req.setAttribute(ConstantsJSP.TASK, task);
 					workService.update(task);
 					HttpSession session = req.getSession();
 					Employee employee = (Employee) session
@@ -189,6 +189,8 @@ public class TaskController {
 					pageReturn = "forward:/" + ConstantsJSP.projectController;
 				} catch (DaoException e1) {
 					req.setAttribute(ConstantsJSP.ERROR, e1.getMessage());
+					req.setAttribute(ConstantsJSP.id, task_id);
+					return "forward:/"+ConstantsJSP.taskUpdateController;
 				}
 			}
 		} catch (NumberFormatException e) {
@@ -204,20 +206,23 @@ public class TaskController {
 		logger.info("=============[taskUpdate");
 		try {
 			List<Status> statuses = workService.getStatusList();
-			req.setAttribute(ConstantsJSP.STATUS_LIST, statuses);
 			int taskId = Integer.parseInt(task_id);
 			Task task = workService.getTaskById(taskId);
-			req.setAttribute(ConstantsJSP.TASK, task);
 			HttpSession session = req.getSession();
 			Employee employee = (Employee) session
 					.getAttribute(ConstantsJSP.EMPLOYEE);
 			Member member = workService.getProjectMember(task.getProject()
 					.getId(), employee.getId());
+			List<Member> memberList = workService.getMembersByProjectId(task
+					.getProject().getId());
 			if (member != null) {
 				req.setAttribute(ConstantsJSP.MEMBER_ID, member.getId());
 			}
-			List<Member> memberList = workService.getMembersByProjectId(task
-					.getProject().getId());
+			Assignment assignee = workService.getLastAssigneeByTaskId(task
+					.getId());
+			req.setAttribute(ConstantsJSP.ASSIGNEE, assignee);
+			req.setAttribute(ConstantsJSP.STATUS_LIST, statuses);
+			req.setAttribute(ConstantsJSP.TASK, task);
 			req.setAttribute(ConstantsJSP.PROJECT_MEMBERS, memberList);
 		} catch (NumberFormatException e) {
 			req.setAttribute(ConstantsJSP.ERROR,
@@ -232,19 +237,19 @@ public class TaskController {
 		try {
 			int projectId = Integer.parseInt(project_id);
 			Project project = workService.getProjectById(projectId);
-			req.setAttribute(ConstantsJSP.PROJECT, project);
 			List<Status> statuses = workService.getStatusList();
-			req.setAttribute(ConstantsJSP.STATUS_LIST, statuses);
 			HttpSession session = req.getSession();
 			Employee employee = (Employee) session
 					.getAttribute(ConstantsJSP.EMPLOYEE);
 			Member member = workService.getProjectMember(projectId,
 					employee.getId());
+			List<Member> memberList = workService.getMembersByProjectId(project
+					.getId());
 			if (member != null) {
 				req.setAttribute(ConstantsJSP.MEMBER_ID, member.getId());
 			}
-			List<Member> memberList = workService.getMembersByProjectId(project
-					.getId());
+			req.setAttribute(ConstantsJSP.PROJECT, project);
+			req.setAttribute(ConstantsJSP.STATUS_LIST, statuses);
 			req.setAttribute(ConstantsJSP.PROJECT_MEMBERS, memberList);
 		} catch (NumberFormatException e) {
 			req.setAttribute(ConstantsJSP.ERROR,

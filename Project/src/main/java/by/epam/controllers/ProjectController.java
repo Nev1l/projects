@@ -36,7 +36,7 @@ public class ProjectController {
 	private WorkServiceDAO workService;
 	@Autowired
 	private ActivityService activityService;
-	
+
 	@RequestMapping(value = "/projectUpdate.do", method = RequestMethod.POST)
 	public String projectUpdate(
 			HttpServletRequest req,
@@ -95,22 +95,28 @@ public class ProjectController {
 		try {
 			int id = Integer.parseInt(identity);
 			Project projectOld = workService.getProjectById(id);
+			Project project = null;
 			if (projectOld != null) {
 				id = projectOld.getId();
 				HttpSession session = req.getSession();
 				Employee employee = (Employee) session
 						.getAttribute(ConstantsJSP.EMPLOYEE);
-				Member activityMember = workService.getProjectMember(id, employee.getId());
+				Member activityMember = workService.getProjectMember(id,
+						employee.getId());
 				try {
-					if(activityMember==null){
+					if (activityMember == null) {
 						activityMember = new Member();
 						activityMember.setEmployee(employee);
 						activityMember.setProject(projectOld);
-						Role role = workService.getRoleName(ProjectPosition.ADMIN);
+						Role role = workService
+								.getRoleName(ProjectPosition.ADMIN);
 						activityMember.setRole(role);
-						activityMember = workService.save(activityMember);//update id for activity
+						activityMember = workService.save(activityMember);// update
+																			// id
+																			// for
+																			// activity
 					}
-					Project project = new Project();
+					project = new Project();
 					project.setDescription(description);
 					project.setPlannedStartDate(psd);
 					project.setPlannedEndDate(ped);
@@ -120,12 +126,14 @@ public class ProjectController {
 					project.setStatus(st);
 					project.setId(id);// id for update
 					workService.update(project);
-					activityService.activityChangeProject(projectOld,project,activityMember);
+					activityService.activityChangeProject(projectOld, project,
+							activityMember);
 					pageReturn = "redirect:/" + ConstantsJSP.projectController;
-					req.setAttribute(ConstantsJSP.PROJECT, project);
 				} catch (DaoException e1) {
 					req.setAttribute(ConstantsJSP.ERROR, e1.getMessage());
+					return "forward:/" + ConstantsJSP.projectUpdateController;
 				}
+				req.setAttribute(ConstantsJSP.PROJECT, project);
 			} else {
 				req.setAttribute(ConstantsJSP.ERROR,
 						ConstantsError.errorNotFound);
@@ -160,8 +168,9 @@ public class ProjectController {
 				break;
 			}
 		}
+		Project project = null;
 		try {
-			Project project = new Project();
+			project = new Project();
 			project.setDescription(description);
 			project.setPlannedStartDate(psd);
 			project.setPlannedEndDate(ped);
@@ -171,26 +180,24 @@ public class ProjectController {
 			project.setStatus(st);
 			logger.info("project(without id)=" + project);
 			project = workService.save(project); // get New project with id
-			req.setAttribute(ConstantsJSP.PROJECT, project);
 			logger.info("project(with id)=" + project);
 			HttpSession session = req.getSession();
 			Employee employee = (Employee) session
 					.getAttribute(ConstantsJSP.EMPLOYEE);
-			try {
-				Member member = new Member();
-				member.setEmployee(employee);
-				member.setProject(project);
-				Role role = workService.getRoleName(ProjectPosition.ADMIN);
-				member.setRole(role);
-				workService.save(member);
-				Member activityMember = workService.getProjectMember(project.getId(), employee.getId());
-				activityService.activityCreateProject(project, activityMember);
-			} catch (DaoException e) {
-				e.printStackTrace();
-			}
+			Member member = new Member();
+			member.setEmployee(employee);
+			member.setProject(project);
+			Role role = workService.getRoleName(ProjectPosition.ADMIN);
+			member.setRole(role);
+			workService.save(member);
+			Member activityMember = workService.getProjectMember(
+					project.getId(), employee.getId());
+			activityService.activityCreateProject(project, activityMember);
+			req.setAttribute(ConstantsJSP.PROJECT, project);
 			pageReturn = "redirect:/" + ConstantsJSP.projectController;
 		} catch (DaoException e1) {
 			req.setAttribute(ConstantsJSP.ERROR, e1.getMessage());
+			return "forward:/"+ConstantsJSP.projectUpdateController;
 		}
 		return pageReturn;
 	}
