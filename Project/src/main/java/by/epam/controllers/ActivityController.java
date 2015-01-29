@@ -42,7 +42,7 @@ public class ActivityController {
 				for (Activity activity : activityList) {
 					Employee e = activity.getMember().getEmployee();
 					sb.append("<activity>");
-					sb.append("<id>" + activity.getId() + "</id>");
+					sb.append("<id>" + activity.getMember().getEmployee().getId() + "</id>");
 					sb.append("<date>" + activity.getDate() + "</date>");
 					sb.append("<firstName>" + e.getFirstName() + "</firstName>");
 					sb.append("<lastName>" + e.getLastName() + "</lastName>");

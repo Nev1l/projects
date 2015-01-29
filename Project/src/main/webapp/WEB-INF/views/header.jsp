@@ -1,6 +1,6 @@
  <link
 	href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css"
-	rel="stylesheet">
+	rel="stylesheet"/>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/> 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css"/>
 <link href="${pageContext.request.contextPath}/resources/css/elegant-icons-style.css" rel="stylesheet" />	

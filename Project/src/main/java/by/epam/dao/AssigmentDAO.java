@@ -14,4 +14,11 @@ public interface AssigmentDAO {
 	int getCountAssignmentsByEmployeeId(int employeeId);//Работает не правильно переписать
 	Assignment getLastAssigneeByTaskId(int id);
 	//List<Assignment> getLastActivity(); Наверно эт не нужно делать здесь
+	
+	
+	
+	
+	
+	
+	//List<Assignment> getAssignments(int employee_id,int task_id, String date);
 }

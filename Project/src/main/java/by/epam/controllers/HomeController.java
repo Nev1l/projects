@@ -12,9 +12,6 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import by.epam.beans.Activity;
 import by.epam.beans.Assignment;
 import by.epam.beans.Employee;
-import by.epam.beans.Member;
 import by.epam.consts.ConstantsJSP;
 import by.epam.dao.WorkServiceDAO;
+import by.epam.utils.PageNavigator;
 
 /**
  * Handles requests for the application home page.
@@ -41,39 +38,51 @@ public class HomeController {
 	public String home(HttpServletRequest req, HttpServletResponse res,
 			@RequestParam(value = "page", required = false) String page) {
 		logger.info(ConstantsJSP.EMPTY);
-		int start = 0;
-		if (page != null) {
-			//parse IN BLOCK TRY CATCH!!!!!
-			start = Integer.parseInt(page);
-			if (start > 0) {
-				start = (start - 1) * ConstantsJSP.RESULTS_ON_LOAD;
-			}
-		}
 		List<Assignment> listAssignments = null;
 		List<Activity> listActivity = null;
-		int maxPageCount = 0;
+		int start = 0;
+		int cur_page = 1;
+		try {
+			cur_page = Integer.parseInt(page);
+			if (cur_page > 1) {
+				start = (cur_page - 1) * ConstantsJSP.RESULTS_ON_LOAD;
+			}
+		} catch (NumberFormatException e) {
+			logger.info(e.getMessage());
+		}
+		logger.info("cur_page=" + cur_page);
+		logger.info("select start=" + start);
+		int recordCount = 0;
 		try {
 			HttpSession session = req.getSession(false);
 			Employee employee = (Employee) session
 					.getAttribute(ConstantsJSP.EMPLOYEE);
-			//logger.info("e="+employee);
-			maxPageCount = workService.getCountAssignmentsByEmployeeId(employee.getId());
-			//logger.info("after method getCountAssignmentsByEmployeeId maxPageCount="+maxPageCount);
-			start = Math.min(start,maxPageCount);//start
-			listAssignments = workService.getEmployeeAssignments(employee.getId(), 1,
-					ConstantsJSP.RESULTS_ON_LOAD);
-			logger.info("after method getEmployeeAssignments="+listAssignments);
+			recordCount = workService.getCountAssignmentsByEmployeeId(employee
+					.getId());
+			//=======================[pagination]========================
+			int total = (int) Math.ceil(recordCount * (1.0d)
+					/ ConstantsJSP.RESULTS_ON_LOAD * (1.0d));
+			if (start > recordCount) {
+				start = recordCount - ConstantsJSP.RESULTS_ON_LOAD;
+				cur_page = total;
+				req.setAttribute("page", cur_page);
+			}
+			logger.info("change select start=" + start);
+			listAssignments = workService.getEmployeeAssignments(
+					employee.getId(), start, ConstantsJSP.RESULTS_ON_LOAD);
+			logger.info("after method getEmployeeAssignments="
+					+ listAssignments);
 			req.setAttribute(ConstantsJSP.EMPLOYEE_ASSIGNMENT, listAssignments);
-			listActivity = workService.getLastActivity(ConstantsJSP.RESULTS_ON_LOAD);
-			logger.info("after method getLastActivity"+listActivity);
+			PageNavigator pageNavigator = new PageNavigator(total, cur_page);
+			req.setAttribute(ConstantsJSP.PAGE_NAVIGATOR, pageNavigator);
+			//=========================[Activity]=========================
+			listActivity = workService
+					.getLastActivity(ConstantsJSP.ACTIVITY_ON_LOAD);
+			logger.info("after method getLastActivity" + listActivity);
 			req.setAttribute(ConstantsJSP.LAST_ACTIVITY, listActivity);
 		} catch (Exception e) {
 			logger.info(e.getMessage());
 		}
-		//pagination
-		req.setAttribute(ConstantsJSP.RECORD_ON_PAGE,ConstantsJSP.RESULTS_ON_LOAD);
-		req.setAttribute(ConstantsJSP.RECORD_COUNT,maxPageCount);
-		req.setAttribute(ConstantsJSP.CUR_PAGE,start);
 		return ConstantsJSP.homePage;
 	}
 

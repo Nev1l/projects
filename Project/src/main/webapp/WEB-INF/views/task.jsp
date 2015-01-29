@@ -80,7 +80,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="span8">
+				<div class="span7">
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h4>Attachment</h4>

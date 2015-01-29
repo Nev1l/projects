@@ -45,10 +45,9 @@ public class UserController {
 			listAssignments = workService.getEmployeeAssignments(
 					employee.getId(), 0, ConstantsJSP.RESULTS_ON_LOAD);
 			req.setAttribute(ConstantsJSP.EMPLOYEE_ASSIGNMENT, listAssignments);
-			req.setAttribute(ConstantsJSP.RECORD_ON_PAGE,
-					ConstantsJSP.RESULTS_ON_LOAD);
-			req.setAttribute(ConstantsJSP.RECORD_COUNT, maxPageCount);
-			req.setAttribute(ConstantsJSP.CUR_PAGE, start);
+			
+			
+			
 		} catch (NumberFormatException e) {
 			logger.info("error:"+e.getMessage());
 			req.setAttribute(ConstantsJSP.ERROR, ConstantsError.paramError);

@@ -84,13 +84,6 @@ public class Activity implements Serializable {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	public static String getCurrentDateTime() {
-	    SimpleDateFormat sdfDate = new SimpleDateFormat(ConstantsJSP.DATE_TIME_FORMAT);
-	    java.util.Date now = new java.util.Date();
-	    String strDate = sdfDate.format(now);
-	    return strDate;
-	}
 
 	@Override
 	public String toString() {

@@ -22,7 +22,7 @@ var load = function() {
 		
 		var linkElement = document.createElement("a");
 		linkElement.setAttribute("href", "#");
-		// linkElement.setAttribute("onClick","sendPost('/project/taskNew.do','"+composerId+"')");
+		linkElement.setAttribute("onClick","sendPost('/project/userprofile.do','"+id+"')");
 		linkElement.appendChild(document.createTextNode(firstName + " "
 				+ lastName+" "));
 		
@@ -90,8 +90,8 @@ var load = function() {
 	return function() {
 		req = initRequest();
 		var countInput = document.getElementById("count");
+		countInput.value = +countInput.value + 5;
 		var url = "/project/activity.do?count=" + countInput.value;
-		countInput.value = +countInput.value + 10;
 		req.open("GET", url, true);
 		req.setRequestHeader('Content-Type', 'text/xml');// commend
 		req.onreadystatechange = callback;

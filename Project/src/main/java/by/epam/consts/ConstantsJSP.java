@@ -10,7 +10,8 @@ public class ConstantsJSP {
 */
 	public final static String id = "id";
 	
-	public final static int RESULTS_ON_LOAD = 10;
+	public final static int RESULTS_ON_LOAD = 5;
+	public final static int ACTIVITY_ON_LOAD = 6;
 	public final static String FILE_ERROR = "Error(File)";
 
 	public final static String DATE_FORMAT = "yyyy-MM-dd";
@@ -77,9 +78,8 @@ public class ConstantsJSP {
 	public final static String PROJECT_MEMBERS = "PROJECT_MEMBERS";
 	public final static String ALL_MEMBERS = "ALL_MEMBERS";
 	public final static String LAST_ACTIVITY = "LAST_ACTIVITY";
-	public final static String RECORD_ON_PAGE = "RECORD_ON_PAGE";
-	public final static String RECORD_COUNT = "RECORD_COUNT";
-	public final static String CUR_PAGE = "CUR_PAGE";
+	
+	public final static String PAGE_NAVIGATOR = "PAGE_NAVIGATOR";
 	public final static String CHECKED = "true";
 
 	public static String getGuest() {
@@ -144,18 +144,6 @@ public class ConstantsJSP {
 
 	public static String getLastActivity() {
 		return LAST_ACTIVITY;
-	}
-
-	public static String getRecordOnPage() {
-		return RECORD_ON_PAGE;
-	}
-
-	public static String getRecordCount() {
-		return RECORD_COUNT;
-	}
-
-	public static String getCurPage() {
-		return CUR_PAGE;
 	}
 
 }

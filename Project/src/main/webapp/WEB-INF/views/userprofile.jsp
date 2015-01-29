@@ -11,7 +11,7 @@
 <body>
 	<%@ include file="header.jsp"%>
 	<div class="row well">
-		<div class="span8">
+		<div class="span7">
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h4>User profile</h4>

@@ -10,6 +10,7 @@ import by.epam.beans.Project;
 import by.epam.beans.Task;
 import by.epam.dao.DaoException;
 import by.epam.dao.WorkServiceDAO;
+import by.epam.utils.Convert;
 
 @Service
 public class ActivityService {
@@ -26,7 +27,7 @@ public class ActivityService {
 					+ " to " + projectNew.getName();
 			Activity activity = new Activity();
 			activity.setComment(comment);
-			activity.setDate(Activity.getCurrentDateTime());
+			activity.setDate(Convert.getCurrentDateTime());
 			activity.setMember(activityMember);
 			workService.save(activity);
 		}
@@ -35,7 +36,7 @@ public class ActivityService {
 					+ projectNew.getDescription();
 			Activity activity = new Activity();
 			activity.setComment(comment);
-			activity.setDate(Activity.getCurrentDateTime());
+			activity.setDate(Convert.getCurrentDateTime());
 			activity.setMember(activityMember);
 			workService.save(activity);
 		}
@@ -46,7 +47,7 @@ public class ActivityService {
 					+ projectNew.getStatus().getName();
 			Activity activity = new Activity();
 			activity.setComment(comment);
-			activity.setDate(Activity.getCurrentDateTime());
+			activity.setDate(Convert.getCurrentDateTime());
 			activity.setMember(activityMember);
 			workService.save(activity);
 		}
@@ -57,12 +58,12 @@ public class ActivityService {
 		String comment = "created project " + project.getName();
 		Activity activity = new Activity();
 		activity.setComment(comment);
-		activity.setDate(Activity.getCurrentDateTime());
+		activity.setDate(Convert.getCurrentDateTime());
 		activity.setMember(activityMember);
 		comment = "was added to member list of " + project.getName();
 		activity = new Activity();
 		activity.setComment(comment);
-		activity.setDate(Activity.getCurrentDateTime());
+		activity.setDate(Convert.getCurrentDateTime());
 		activity.setMember(activityMember);
 		workService.save(activity);
 	}
@@ -76,7 +77,7 @@ public class ActivityService {
 					+ " to " + t2.getDescription();
 			Activity activity = new Activity();
 			activity.setComment(comment);
-			activity.setDate(Activity.getCurrentDateTime());
+			activity.setDate(Convert.getCurrentDateTime());
 			activity.setMember(activityMember);
 			workService.save(activity);
 		}
@@ -86,7 +87,7 @@ public class ActivityService {
 					+ t2.getStatus().getName();
 			Activity activity = new Activity();
 			activity.setComment(comment);
-			activity.setDate(Activity.getCurrentDateTime());
+			activity.setDate(Convert.getCurrentDateTime());
 			activity.setMember(activityMember);
 			workService.save(activity);
 		}
@@ -98,7 +99,7 @@ public class ActivityService {
 		String comment = "changed the Assignee to " + assignee +" of task("+assignment.getTask().getDescription()+")";
 		Activity activity = new Activity();
 		activity.setComment(comment);
-		activity.setDate(Activity.getCurrentDateTime());
+		activity.setDate(Convert.getCurrentDateTime());
 		activity.setMember(activityMember);
 		workService.save(activity);
 	}
@@ -107,7 +108,7 @@ public class ActivityService {
 		String comment = "created task " + task.getDescription();
 		Activity activity = new Activity();
 		activity.setComment(comment);
-		activity.setDate(Activity.getCurrentDateTime());
+		activity.setDate(Convert.getCurrentDateTime());
 		activity.setMember(activityMember);
 		workService.save(activity);
 	}
@@ -119,7 +120,7 @@ public class ActivityService {
 		String comment = "assigned task(" + assignment.getTask().getDescription()+") to "+assignee;
 		Activity activity = new Activity();
 		activity.setComment(comment);
-		activity.setDate(Activity.getCurrentDateTime());
+		activity.setDate(Convert.getCurrentDateTime());
 		activity.setMember(activityMember);
 		workService.save(activity);
 	}
