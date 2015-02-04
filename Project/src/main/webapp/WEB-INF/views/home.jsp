@@ -5,14 +5,26 @@
 <%@ page session="true"%>
 <html>
 <head>
-<%-- 	<script data-require="jquery" data-semver="2.1.1" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-	<script data-require="jqueryui" data-semver="1.10.0" src="http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.0/jquery-ui.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/js/jquery.simplePagination.js"></script> --%>
+<!-- <script data-require="angular.js@1.3.x"
+	src="https://code.angularjs.org/1.3.10/angular.js" data-semver="1.3.10"></script> -->
+<script data-require="angular.js@*" data-semver="1.3.4"
+	src="https://code.angularjs.org/1.3.4/angular.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/script.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/app.js"></script>
 </head>
 <body>
 	<%@ include file="header.jsp"%>
+	<div ng-app="app">
+		<div ng-controller="Controller">
+			<select ng-model="project" ng-options="c.name for c in projects"></select>
+			<input type="text" ng-model="project" /> <select ng-model="member"
+				ng-options="c.employee.firstName for c in members"></select> <input
+				type="text" ng-model="member" /> <input type="button"
+				ng-click="loadForm()" value="Button" />
+		</div>
+	</div>
 	<div class="row well">
 		<div class="span7">
 			<c:choose>
@@ -58,31 +70,40 @@
 				</c:otherwise>
 			</c:choose>
 			<c:if test="${PAGE_NAVIGATOR.total>1}">
-				<c:set var="url" value="/project/home.do?page="/>				
-				<ul class="pagination">
-					<c:if test="${PAGE_NAVIGATOR.hasPrev1()}">
-						<li><a  class="page-link" href="${url}${PAGE_NAVIGATOR.current-1}">Prev</a></li>
-					</c:if>
-					<c:if test="${PAGE_NAVIGATOR.hasPrev2()}">
-						<li><a class="page-link" href="${url}${PAGE_NAVIGATOR.current-2}">${PAGE_NAVIGATOR.current-2}</a></li>
-					</c:if>
+				<div class="page-bar">
+					<c:set var="url" value="/project/home.do?page=" />
+					<ul class="pagination">
+						<c:if test="${PAGE_NAVIGATOR.hasPrev1()}">
+							<li><a class="page-link"
+								href="${url}${PAGE_NAVIGATOR.current-1}">Prev</a></li>
+						</c:if>
+						<c:if test="${PAGE_NAVIGATOR.hasPrev2()}">
+							<li><a class="page-link"
+								href="${url}${PAGE_NAVIGATOR.current-2}">${PAGE_NAVIGATOR.current-2}</a></li>
+						</c:if>
 
-					<c:if test="${PAGE_NAVIGATOR.hasPrev1()}">
-						<li><a class="page-link" href="${url}${PAGE_NAVIGATOR.current-1}">${PAGE_NAVIGATOR.current-1}</a></li>
-					</c:if>
-					<c:if test="${PAGE_NAVIGATOR.hasPrev1() || PAGE_NAVIGATOR.hasPrev2() || PAGE_NAVIGATOR.hasNext1() || PAGE_NAVIGATOR.hasNext2()}">
-						<li class="active"><span >${PAGE_NAVIGATOR.current}</span></li>
-					</c:if>
-					<c:if test="${PAGE_NAVIGATOR.hasNext1()}">
-						<li><a class="page-link" href="${url}${PAGE_NAVIGATOR.current+1}">${PAGE_NAVIGATOR.current+1}</a></li>
-					</c:if>
-					<c:if test="${PAGE_NAVIGATOR.hasNext2()}">
-						<li><a class="page-link" href="${url}${PAGE_NAVIGATOR.current+2}">${PAGE_NAVIGATOR.current+2}</a></li>
-					</c:if>
-					<c:if test="${PAGE_NAVIGATOR.hasNext1()}">
-						<li><a class="page-link" href="${url}${PAGE_NAVIGATOR.current+1}">Next</a></li>
-					</c:if>
-				</ul>
+						<c:if test="${PAGE_NAVIGATOR.hasPrev1()}">
+							<li><a class="page-link"
+								href="${url}${PAGE_NAVIGATOR.current-1}">${PAGE_NAVIGATOR.current-1}</a></li>
+						</c:if>
+						<c:if
+							test="${PAGE_NAVIGATOR.hasPrev1() || PAGE_NAVIGATOR.hasPrev2() || PAGE_NAVIGATOR.hasNext1() || PAGE_NAVIGATOR.hasNext2()}">
+							<li class="active"><span>${PAGE_NAVIGATOR.current}</span></li>
+						</c:if>
+						<c:if test="${PAGE_NAVIGATOR.hasNext1()}">
+							<li><a class="page-link"
+								href="${url}${PAGE_NAVIGATOR.current+1}">${PAGE_NAVIGATOR.current+1}</a></li>
+						</c:if>
+						<c:if test="${PAGE_NAVIGATOR.hasNext2()}">
+							<li><a class="page-link"
+								href="${url}${PAGE_NAVIGATOR.current+2}">${PAGE_NAVIGATOR.current+2}</a></li>
+						</c:if>
+						<c:if test="${PAGE_NAVIGATOR.hasNext1()}">
+							<li><a class="page-link"
+								href="${url}${PAGE_NAVIGATOR.current+1}">Next</a></li>
+						</c:if>
+					</ul>
+				</div>
 			</c:if>
 		</div>
 		<div class="span7">

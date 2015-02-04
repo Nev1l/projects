@@ -23,9 +23,6 @@ import by.epam.consts.ConstantsJSP;
 import by.epam.dao.WorkServiceDAO;
 import by.epam.utils.PageNavigator;
 
-/**
- * Handles requests for the application home page.
- */
 @Controller
 public class HomeController {
 
@@ -38,8 +35,6 @@ public class HomeController {
 	public String home(HttpServletRequest req, HttpServletResponse res,
 			@RequestParam(value = "page", required = false) String page) {
 		logger.info(ConstantsJSP.EMPTY);
-		List<Assignment> listAssignments = null;
-		List<Activity> listActivity = null;
 		int start = 0;
 		int cur_page = 1;
 		try {
@@ -59,7 +54,7 @@ public class HomeController {
 					.getAttribute(ConstantsJSP.EMPLOYEE);
 			recordCount = workService.getCountAssignmentsByEmployeeId(employee
 					.getId());
-			//=======================[pagination]========================
+			// =======================[pagination]========================
 			int total = (int) Math.ceil(recordCount * (1.0d)
 					/ ConstantsJSP.RESULTS_ON_LOAD * (1.0d));
 			if (start > recordCount) {
@@ -68,20 +63,22 @@ public class HomeController {
 				req.setAttribute("page", cur_page);
 			}
 			logger.info("change select start=" + start);
-			listAssignments = workService.getEmployeeAssignments(
+			List<Assignment> listAssignments = workService.getEmployeeAssignments(
 					employee.getId(), start, ConstantsJSP.RESULTS_ON_LOAD);
 			logger.info("after method getEmployeeAssignments="
 					+ listAssignments);
 			req.setAttribute(ConstantsJSP.EMPLOYEE_ASSIGNMENT, listAssignments);
 			PageNavigator pageNavigator = new PageNavigator(total, cur_page);
 			req.setAttribute(ConstantsJSP.PAGE_NAVIGATOR, pageNavigator);
-			//=========================[Activity]=========================
-			listActivity = workService
+			// =========================[Activity]=========================
+			logger.info("param="
+					+ req.getParameter(ConstantsJSP.PAGE_NAVIGATOR));
+			 List<Activity> listActivity = workService
 					.getLastActivity(ConstantsJSP.ACTIVITY_ON_LOAD);
 			logger.info("after method getLastActivity" + listActivity);
 			req.setAttribute(ConstantsJSP.LAST_ACTIVITY, listActivity);
 		} catch (Exception e) {
-			logger.info(e.getMessage());
+			logger.info("Error:" + e.getMessage());
 		}
 		return ConstantsJSP.homePage;
 	}

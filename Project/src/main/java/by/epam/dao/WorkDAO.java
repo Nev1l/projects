@@ -9,5 +9,5 @@ public interface WorkDAO extends ActivityDAO, AssigmentDAO, AttachmentDAO,
 	public void setSessionFactory(SessionFactory sessionFactory);
 
 	public SessionFactory getSessionFactory();
-
+	
 }

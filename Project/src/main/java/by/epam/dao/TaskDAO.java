@@ -11,4 +11,7 @@ public interface TaskDAO {
 	void delete(int id);
 	Task getTaskById(int id);
 	List<Task> getTasksByProjectId(int id);
+	List<Task> getTasks();
+	List<Task> getTasks(int start,int count);
+	
 }

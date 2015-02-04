@@ -13,11 +13,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import by.epam.beans.Activity;
 import by.epam.beans.Assignment;
 import by.epam.beans.Employee;
 import by.epam.consts.ConstantsError;
 import by.epam.consts.ConstantsJSP;
 import by.epam.dao.WorkServiceDAO;
+import by.epam.utils.PageNavigator;
 
 @Controller
 public class UserController {
@@ -30,27 +32,43 @@ public class UserController {
 	public String user(HttpServletRequest req, HttpServletResponse res,
 			@RequestParam(value = "id", required = false) String identity,
 			@RequestParam(value = "page", required = false) String page) {
-		List<Assignment> listAssignments = null;
 		int start = 0;
+		int cur_page = 1;
+		try {
+			cur_page = Integer.parseInt(page);
+			if (cur_page > 1) {
+				start = (cur_page - 1) * ConstantsJSP.RESULTS_ON_LOAD;
+			}
+		} catch (NumberFormatException e) {
+			logger.info(e.getMessage());
+		}
+		logger.info("cur_page=" + cur_page);
+		logger.info("select start=" + start);
+		int recordCount = 0;
 		try {
 			Employee employee = workService.getEmployee(Integer
 					.parseInt(identity));
 			req.setAttribute(ConstantsJSP.EMPLOYEE_PROFILE, employee);
-			int maxPageCount = workService
-					.getCountAssignmentsByEmployeeId(employee.getId());
-			start = 0;//Integer.parseInt(page);
-			if (start > 0) {
-				start = (start - 1) * ConstantsJSP.RESULTS_ON_LOAD;
+			recordCount = workService.getCountAssignmentsByEmployeeId(employee
+					.getId());
+			// =======================[pagination]========================
+			int total = (int) Math.ceil(recordCount * (1.0d)
+					/ ConstantsJSP.RESULTS_ON_LOAD * (1.0d));
+			if (start > recordCount) {
+				start = recordCount - ConstantsJSP.RESULTS_ON_LOAD;
+				cur_page = total;
+				req.setAttribute("page", cur_page);
 			}
-			listAssignments = workService.getEmployeeAssignments(
-					employee.getId(), 0, ConstantsJSP.RESULTS_ON_LOAD);
+			logger.info("change select start=" + start);
+			List<Assignment> listAssignments = workService.getEmployeeAssignments(
+					employee.getId(), start, ConstantsJSP.RESULTS_ON_LOAD);
+			logger.info("after method getEmployeeAssignments="
+					+ listAssignments);
 			req.setAttribute(ConstantsJSP.EMPLOYEE_ASSIGNMENT, listAssignments);
-			
-			
-			
-		} catch (NumberFormatException e) {
-			logger.info("error:"+e.getMessage());
-			req.setAttribute(ConstantsJSP.ERROR, ConstantsError.paramError);
+			PageNavigator pageNavigator = new PageNavigator(total, cur_page);
+			req.setAttribute(ConstantsJSP.PAGE_NAVIGATOR, pageNavigator);
+		} catch (Exception e) {
+			logger.info("Error:" + e.getMessage());
 		}
 		return ConstantsJSP.userProfilePage;
 	}

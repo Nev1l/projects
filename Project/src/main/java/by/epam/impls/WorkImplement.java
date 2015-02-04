@@ -72,7 +72,9 @@ public class WorkImplement implements WorkDAO {
 	@Override
 	public Activity getActivityById(int id) {
 		// TODO Auto-generated method stub
-		return (Activity)sessionFactory.getCurrentSession().createCriteria(Activity.class).add(Restrictions.eq("id", id)).uniqueResult();
+		return (Activity) sessionFactory.getCurrentSession()
+				.createCriteria(Activity.class).add(Restrictions.eq("id", id))
+				.uniqueResult();
 	}
 
 	@Override
@@ -257,8 +259,8 @@ public class WorkImplement implements WorkDAO {
 	public List<Assignment> getEmployeeAssignments(int employeeId, int start,
 			int count) {
 		// TODO Auto-generated method stub
-		String sql ="select * from assignment where assignment.member_id in (select member_id from assignment,member,employee where assignment.member_id=member.id and member.employee_id="+
-				+ employeeId+")";
+		String sql = "select * from assignment where assignment.member_id in (select member_id from assignment,member,employee where assignment.member_id=member.id and member.employee_id="
+				+ +employeeId + ")";
 		SQLQuery sqlquery = sessionFactory.getCurrentSession()
 				.createSQLQuery(sql).addEntity(Assignment.class);
 		sqlquery.setFirstResult(start);
@@ -418,11 +420,15 @@ public class WorkImplement implements WorkDAO {
 				.addEntity(Member.class);
 		return (Member) sqlquery.uniqueResult();
 	}
+
 	@Override
 	public Assignment getLastAssigneeByTaskId(int id) {
 		// TODO Auto-generated method stub
-		SQLQuery sqlquery = sessionFactory.getCurrentSession()
-				.createSQLQuery("select * from assignment where task_id=" + id+" order by assign_date desc")
+		SQLQuery sqlquery = sessionFactory
+				.getCurrentSession()
+				.createSQLQuery(
+						"select * from assignment where task_id=" + id
+								+ " order by assign_date desc")
 				.addEntity(Assignment.class);
 		List<Assignment> list = sqlquery.list();
 		return list.isEmpty() ? null : list.get(0);
@@ -431,18 +437,41 @@ public class WorkImplement implements WorkDAO {
 	@Override
 	public boolean hasActivity(int member_id) {
 		// TODO Auto-generated method stub
-		SQLQuery sqlquery = sessionFactory.getCurrentSession()
-				.createSQLQuery("select count(*) from activity where member_id=" + member_id);
-		return (Integer)sqlquery.uniqueResult()>0 ? true : false;
+		SQLQuery sqlquery = sessionFactory.getCurrentSession().createSQLQuery(
+				"select count(*) from activity where member_id=" + member_id);
+		return (Integer) sqlquery.uniqueResult() > 0 ? true : false;
 	}
 
 	@Override
 	public boolean hasAssignment(int member_id) {
 		// TODO Auto-generated method stub
-		SQLQuery sqlquery = sessionFactory.getCurrentSession()
-				.createSQLQuery("select count(*) from assignment where member_id=" + member_id);
-		logger.info("res="+sqlquery.uniqueResult());
-		return (Integer)sqlquery.uniqueResult()>0 ? true : false;
+		SQLQuery sqlquery = sessionFactory.getCurrentSession().createSQLQuery(
+				"select count(*) from assignment where member_id=" + member_id);
+		logger.info("res=" + sqlquery.uniqueResult());
+		return (Integer) sqlquery.uniqueResult() > 0 ? true : false;
+	}
+
+	public WorkImplement(SessionFactory sessionFactory) {
+		super();
+		this.sessionFactory = sessionFactory;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Task> getTasks() {
+		// TODO Auto-generated method stub
+		return sessionFactory.getCurrentSession()
+				.createSQLQuery("select * from task").list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Task> getTasks(int start, int count) {
+		SQLQuery sqlquery = sessionFactory.getCurrentSession().createSQLQuery(
+				"select * from task");
+		sqlquery.setFirstResult(start);
+		sqlquery.setMaxResults(count);
+		return sqlquery.list();
 	}
 
 }

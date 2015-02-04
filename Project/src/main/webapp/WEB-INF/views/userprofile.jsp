@@ -22,7 +22,8 @@
 							<%-- remove id from table --%>
 							<tr>
 								<th><i class="icon_profile"></i> Full Name</th>
-								<td>${EMPLOYEE_PROFILE.firstName} ${EMPLOYEE_PROFILE.lastName}</td>
+								<td>${EMPLOYEE_PROFILE.firstName}
+									${EMPLOYEE_PROFILE.lastName}</td>
 							</tr>
 							<tr>
 								<th><i class="icon_cogs"></i> Position</th>
@@ -38,7 +39,8 @@
 				<c:when test="${not empty EMPLOYEE_ASSIGNMENT}">
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<h4>Assigned to ${EMPLOYEE_PROFILE.firstName} ${EMPLOYEE_PROFILE.lastName}</h4>
+							<h4>Assigned to ${EMPLOYEE_PROFILE.firstName}
+								${EMPLOYEE_PROFILE.lastName}</h4>
 						</div>
 						<div class="panel-body">
 							<table class="table table-bordered">
@@ -64,13 +66,51 @@
 									</c:forEach>
 								</tbody>
 							</table>
+							<c:if test="${PAGE_NAVIGATOR.total>1}">
+							    <div class="page-bar">
+								<c:set var="url"
+									value="/project/userprofile.do?id=${EMPLOYEE_PROFILE.id}&page=" />
+								<ul class="pagination">
+									<c:if test="${PAGE_NAVIGATOR.hasPrev1()}">
+										<li><a class="page-link"
+											href="${url}${PAGE_NAVIGATOR.current-1}">Prev</a></li>
+									</c:if>
+									<c:if test="${PAGE_NAVIGATOR.hasPrev2()}">
+										<li><a class="page-link"
+											href="${url}${PAGE_NAVIGATOR.current-2}">${PAGE_NAVIGATOR.current-2}</a></li>
+									</c:if>
+
+									<c:if test="${PAGE_NAVIGATOR.hasPrev1()}">
+										<li><a class="page-link"
+											href="${url}${PAGE_NAVIGATOR.current-1}">${PAGE_NAVIGATOR.current-1}</a></li>
+									</c:if>
+									<c:if
+										test="${PAGE_NAVIGATOR.hasPrev1() || PAGE_NAVIGATOR.hasPrev2() || PAGE_NAVIGATOR.hasNext1() || PAGE_NAVIGATOR.hasNext2()}">
+										<li class="active"><span>${PAGE_NAVIGATOR.current}</span></li>
+									</c:if>
+									<c:if test="${PAGE_NAVIGATOR.hasNext1()}">
+										<li><a class="page-link"
+											href="${url}${PAGE_NAVIGATOR.current+1}">${PAGE_NAVIGATOR.current+1}</a></li>
+									</c:if>
+									<c:if test="${PAGE_NAVIGATOR.hasNext2()}">
+										<li><a class="page-link"
+											href="${url}${PAGE_NAVIGATOR.current+2}">${PAGE_NAVIGATOR.current+2}</a></li>
+									</c:if>
+									<c:if test="${PAGE_NAVIGATOR.hasNext1()}">
+										<li><a class="page-link"
+											href="${url}${PAGE_NAVIGATOR.current+1}">Next</a></li>
+									</c:if>
+								</ul>
+								</div>
+							</c:if>
 						</div>
 					</div>
 				</c:when>
 				<c:otherwise>
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<h4>Assigned to ${EMPLOYEE_PROFILE.firstName} ${EMPLOYEE_PROFILE.lastName}</h4>
+							<h4>Assigned to ${EMPLOYEE_PROFILE.firstName}
+								${EMPLOYEE_PROFILE.lastName}</h4>
 						</div>
 						<div class="panel-body">User haven't assigned tasks</div>
 					</div>
