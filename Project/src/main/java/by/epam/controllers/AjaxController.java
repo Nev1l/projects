@@ -27,19 +27,20 @@ public class AjaxController {
 	@Autowired
 	private WorkServiceDAO workService;
 
-	// headers = "Accept=application/json"
-	@RequestMapping(value = "/ajax/projects", method = RequestMethod.GET)
+	// headers = "Accept=application/json" ,
+	@RequestMapping(value = "/ajax.projects.do", method = RequestMethod.GET)
 	public @ResponseBody
 	List<Project> projects(HttpServletRequest req, HttpServletResponse res) {
 		logger.info(ConstantsJSP.EMPTY);
+		res.setHeader("Accept", "application/json");
 		return workService.getAllProjects();
 	}
 
-	// headers = "Accept=application/json"
-	@RequestMapping(value = "/ajax/members", method = RequestMethod.GET)
+	//
+	@RequestMapping(value = "/ajax.members.do", method = RequestMethod.GET)
 	public @ResponseBody
-	List<Member> members(HttpServletRequest req, HttpServletResponse res,
-			@RequestParam(value = "id", required = false) int id) {
+	List<Member> members(@RequestParam(value = "id", required = false) int id,
+			HttpServletRequest req, HttpServletResponse res) {
 		res.setHeader("Accept", "application/json");
 		logger.info(ConstantsJSP.EMPTY);
 		return workService.getMembersByProjectId(id);

@@ -7,21 +7,23 @@
 <head>
 <!-- <script data-require="angular.js@1.3.x"
 	src="https://code.angularjs.org/1.3.10/angular.js" data-semver="1.3.10"></script> -->
-<script data-require="angular.js@*" data-semver="1.3.4"
-	src="https://code.angularjs.org/1.3.4/angular.js"></script>
+<!-- <script data-require="angular.js@*" data-semver="1.3.4"
+	src="https://code.angularjs.org/1.3.4/angular.js"></script> -->
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/script.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/angular.min.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/app.js"></script>
 </head>
 <body>
 	<%@ include file="header.jsp"%>
 	<div ng-app="app">
-		<div ng-controller="Controller">
+		<div ng-controller="SetController">
 			<select ng-model="project" ng-options="c.name for c in projects"></select>
 			<input type="text" ng-model="project" /> <select ng-model="member"
-				ng-options="c.employee.firstName for c in members"></select> <input
-				type="text" ng-model="member" /> <input type="button"
+				ng-options="c.employee.firstName for c in members">
+			</select> <input type="text" ng-model="member" /> <input type="button"
 				ng-click="loadForm()" value="Button" />
 		</div>
 	</div>

@@ -41,7 +41,7 @@
 		<security:intercept-url pattern="/project*"
 			access="Administrator,Manager,Lead,Developer" />
 			
-			<security:intercept-url pattern="/ajax/*"
+			<security:intercept-url pattern="/ajax*"
 			access="Administrator,Manager,Lead,Developer" />
 			
 	<security:intercept-url pattern="/fileupload*"
