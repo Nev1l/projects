@@ -3,7 +3,6 @@ package by.epam.dao;
 import java.util.List;
 
 import by.epam.beans.Project;
-import by.epam.beans.Task;
 
 
 public interface ProjectDAO {

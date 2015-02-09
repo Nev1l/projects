@@ -18,15 +18,6 @@
 </head>
 <body>
 	<%@ include file="header.jsp"%>
-	<div ng-app="app">
-		<div ng-controller="SetController">
-			<select ng-model="project" ng-options="c.name for c in projects"></select>
-			<input type="text" ng-model="project" /> <select ng-model="member"
-				ng-options="c.employee.firstName for c in members">
-			</select> <input type="text" ng-model="member" /> <input type="button"
-				ng-click="loadForm()" value="Button" />
-		</div>
-	</div>
 	<div class="row well">
 		<div class="span7">
 			<c:choose>

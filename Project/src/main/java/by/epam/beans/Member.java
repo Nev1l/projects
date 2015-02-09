@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import by.epam.consts.ConstantsError;
 import by.epam.dao.DaoException;
 
@@ -32,6 +34,7 @@ public class Member implements Serializable{
 	@JoinColumn(name = "employee_id")
 	private Employee employee;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "role_id")
 	private Role role;
@@ -44,9 +47,6 @@ public class Member implements Serializable{
 	}
 
 	public void setId(int id)  {
-		/*throws DaoException if (id < 0) {
-			throw new DaoException(ConstantsError.wrondId);
-		}*/
 		this.id = id;
 	}
 

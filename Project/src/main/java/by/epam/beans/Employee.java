@@ -11,9 +11,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @Entity
 @Table(name = "Employee")
-public class Employee implements Serializable{
+public class Employee implements Serializable {
 	private static final long serialVersionUID = 3526661671398495089L;
 
 	@Id
@@ -27,13 +29,16 @@ public class Employee implements Serializable{
 	@Column(name = "last_name", length = 30)
 	private String lastName;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "position_id")
 	private Position position;
 
-	@Column(name = "login", nullable = false, length = 50)
+	@JsonIgnore
+	@Column(name = "login",  length = 50, nullable = false)
 	private String login;
-
+	
+	@JsonIgnore
 	@Column(name = "password", nullable = false, length = 50)
 	private String password;
 
@@ -93,8 +98,8 @@ public class Employee implements Serializable{
 	@Override
 	public String toString() {
 		return "Employee [id=" + id + ", firstName=" + firstName
-				+ ", lastName=" + lastName +", position="+ position +", login=" + login + ", password="
-				+ password + "]";
+				+ ", lastName=" + lastName + ", position=" + position
+				+ ", login=" + login + ", password=" + password + "]";
 	}
 
 }

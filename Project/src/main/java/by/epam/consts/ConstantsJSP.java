@@ -8,6 +8,8 @@ public class ConstantsJSP {
 	public final static String description = "description";
 	public final static String status = "st";
 */
+	public final static String hasAccessCreateGlobalTask = "hasAccessCreateGlobalTask";
+	
 	public final static String id = "id";
 	
 	public final static int RESULTS_ON_LOAD = 5;

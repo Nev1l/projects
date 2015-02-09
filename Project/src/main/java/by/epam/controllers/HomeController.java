@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import by.epam.beans.Activity;
 import by.epam.beans.Assignment;
 import by.epam.beans.Employee;
+import by.epam.beans.Member;
 import by.epam.consts.ConstantsJSP;
 import by.epam.dao.WorkServiceDAO;
 import by.epam.utils.PageNavigator;
+import by.epam.utils.ProjectByMemberAccess;
 
 @Controller
 public class HomeController {
@@ -63,8 +65,9 @@ public class HomeController {
 				req.setAttribute("page", cur_page);
 			}
 			logger.info("change select start=" + start);
-			List<Assignment> listAssignments = workService.getEmployeeAssignments(
-					employee.getId(), start, ConstantsJSP.RESULTS_ON_LOAD);
+			List<Assignment> listAssignments = workService
+					.getEmployeeAssignments(employee.getId(), start,
+							ConstantsJSP.RESULTS_ON_LOAD);
 			logger.info("after method getEmployeeAssignments="
 					+ listAssignments);
 			req.setAttribute(ConstantsJSP.EMPLOYEE_ASSIGNMENT, listAssignments);
@@ -73,10 +76,18 @@ public class HomeController {
 			// =========================[Activity]=========================
 			logger.info("param="
 					+ req.getParameter(ConstantsJSP.PAGE_NAVIGATOR));
-			 List<Activity> listActivity = workService
+			List<Activity> listActivity = workService
 					.getLastActivity(ConstantsJSP.ACTIVITY_ON_LOAD);
 			logger.info("after method getLastActivity" + listActivity);
 			req.setAttribute(ConstantsJSP.LAST_ACTIVITY, listActivity);
+			// ======================[Access to button create new task]
+			// ===============
+			List<Member> memberProjectAccess = workService
+					.getMembersByEmployeeId(employee.getId());
+			boolean hasAccess = ProjectByMemberAccess
+					.hasProjectsWhereAccessMoreThanDeveloper(memberProjectAccess);
+			req.setAttribute(ConstantsJSP.hasAccessCreateGlobalTask, hasAccess);
+
 		} catch (Exception e) {
 			logger.info("Error:" + e.getMessage());
 		}
