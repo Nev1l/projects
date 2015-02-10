@@ -15,11 +15,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import by.epam.beans.Activity;
+import by.epam.beans.Assignment;
 import by.epam.beans.Employee;
 import by.epam.beans.Member;
 import by.epam.beans.Project;
 import by.epam.consts.ConstantsJSP;
+import by.epam.dao.TaskFilterDAO;
 import by.epam.dao.WorkServiceDAO;
+import by.epam.filter.TaskFilter;
+import by.epam.filter.TaskFilterDecorator;
+import by.epam.utils.PageNavigator;
 import by.epam.utils.ProjectByMemberAccess;
 
 @Controller
@@ -42,8 +48,10 @@ public class AngularController {
 		if (employee.getPosition().isAdmin()) {
 			list = workService.getAllProjects();
 		} else {
-			List<Member> memberProjectAccess = workService.getMembersByEmployeeId(employee.getId());
-			list = ProjectByMemberAccess.getProjectsWhereAccessMoreThanDeveloper(memberProjectAccess);
+			List<Member> memberProjectAccess = workService
+					.getMembersByEmployeeId(employee.getId());
+			list = ProjectByMemberAccess
+					.getProjectsWhereAccessMoreThanDeveloper(memberProjectAccess);
 		}
 		return list;
 	}
@@ -55,6 +63,46 @@ public class AngularController {
 		res.setHeader("Accept", "application/json");
 		logger.info(ConstantsJSP.EMPTY);
 		return workService.getMembersByProjectId(id);
+	}
+
+	@RequestMapping(value = "/ajax.tasks.do", method = RequestMethod.GET)
+	public @ResponseBody
+	List<Member> tasks(
+			@RequestParam(value = "page", required = false) String page,
+			HttpServletRequest req, HttpServletResponse res) {
+		res.setHeader("Accept", "application/json");
+		logger.info(ConstantsJSP.EMPTY);
+		int start = 0;
+		int cur_page = 1;
+		try {
+			cur_page = Integer.parseInt(page);
+			if (cur_page > 1) {
+				start = (cur_page - 1) * ConstantsJSP.RESULTS_ON_LOAD;
+			}
+		} catch (NumberFormatException e) {
+			logger.info(e.getMessage());
+		}
+		int recordCount = 0;
+		try {
+			recordCount = 0;//work.getCount
+			int total = (int) Math.ceil(recordCount * (1.0d)
+					/ ConstantsJSP.RESULTS_ON_LOAD * (1.0d));
+			if (start > recordCount) {
+				start = recordCount - ConstantsJSP.RESULTS_ON_LOAD;
+				cur_page = total;
+				req.setAttribute("page", cur_page);
+			}
+			TaskFilterDecorator filter = new TaskFilterDecorator(new TaskFilter());
+			List<Assignment> listAssignments = workService.getAssignment(filter, start, ConstantsJSP.RESULTS_ON_LOAD)
+			logger.info("after method getEmployeeAssignments="
+					+ listAssignments);
+			req.setAttribute(ConstantsJSP.EMPLOYEE_ASSIGNMENT, listAssignments);
+			PageNavigator pageNavigator = new PageNavigator(total, cur_page);
+			req.setAttribute(ConstantsJSP.PAGE_NAVIGATOR, pageNavigator);
+		} catch (Exception e) {
+			logger.info("Error:" + e.getMessage());
+		}
+		return listAssignments;
 	}
 }
 

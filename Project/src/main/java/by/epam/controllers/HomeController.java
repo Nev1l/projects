@@ -37,6 +37,8 @@ public class HomeController {
 	public String home(HttpServletRequest req, HttpServletResponse res,
 			@RequestParam(value = "page", required = false) String page) {
 		logger.info(ConstantsJSP.EMPTY);
+		//List<Assignment> assignments = workService.getAssignment(null, 0, 10);
+		//logger.info("list:"+assignments);
 		int start = 0;
 		int cur_page = 1;
 		try {

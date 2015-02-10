@@ -13,5 +13,4 @@ public interface TaskDAO {
 	List<Task> getTasksByProjectId(int id);
 	List<Task> getTasks();
 	List<Task> getTasks(int start,int count);
-	
 }

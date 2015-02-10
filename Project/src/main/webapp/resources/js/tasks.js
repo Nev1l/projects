@@ -1,12 +1,10 @@
-var tasks = angular.module('tasks', []);
-//<div ng-init="loadInitData()">content</div>
-//var Filter = function(){}
+var app = angular.module('app', []);
 
-tasks.controller('TasksController', function($scope, $http) {
+app.controller('SetController', function($scope, $http) {
 		$scope.isInit = false;
 		$scope.loadForm = function() {
-			$http.get("/project/ajax.tasks.do").success(function(response) {
-				$scope.tasks = response;
+			$http.get("/project/ajax.projects.do").success(function(response) {
+				$scope.projects = response;
 				$scope.project = $scope.projects[0];
 				$scope.isInit = true;
 			});
@@ -21,5 +19,3 @@ tasks.controller('TasksController', function($scope, $http) {
 			}
 		});
 });
-
-

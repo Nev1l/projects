@@ -143,4 +143,10 @@ public class Assignment implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "[task="+task.getDescription()+" status="+task.getStatus().getName()+" project="+task.getProject().getName()+"]";
+	}
+
 }

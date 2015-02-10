@@ -21,6 +21,7 @@ import by.epam.beans.Role;
 import by.epam.beans.Status;
 import by.epam.beans.Task;
 import by.epam.beans.User;
+import by.epam.dao.TaskFilterDAO;
 import by.epam.dao.WorkDAO;
 import by.epam.dao.WorkServiceDAO;
 
@@ -363,6 +364,12 @@ public class WorkService implements WorkServiceDAO {
 	public List<Task> getTasks(int start, int count) {
 		// TODO Auto-generated method stub
 		return workDAO.getTasks(start, count);
+	}
+
+	@Transactional
+	public List<Assignment> getAssignment(TaskFilterDAO filter,int start, int count){
+		// TODO Auto-generated method stub
+		return workDAO.getAssignment(filter, start, count);
 	}
 
 }

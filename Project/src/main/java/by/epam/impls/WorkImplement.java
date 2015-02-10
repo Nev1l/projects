@@ -6,6 +6,8 @@ import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,7 @@ import by.epam.beans.Role;
 import by.epam.beans.Status;
 import by.epam.beans.Task;
 import by.epam.beans.User;
+import by.epam.dao.TaskFilterDAO;
 import by.epam.dao.WorkDAO;
 
 @Repository
@@ -255,6 +258,7 @@ public class WorkImplement implements WorkDAO {
 		sessionFactory.getCurrentSession().update(object);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Assignment> getEmployeeAssignments(int employeeId, int start,
 			int count) {
@@ -268,6 +272,7 @@ public class WorkImplement implements WorkDAO {
 		return (List<Assignment>) sqlquery.list();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Member> getAllMembers() {
 		// TODO Auto-generated method stub
@@ -430,6 +435,7 @@ public class WorkImplement implements WorkDAO {
 						"select * from assignment where task_id=" + id
 								+ " order by assign_date desc")
 				.addEntity(Assignment.class);
+		@SuppressWarnings("unchecked")
 		List<Assignment> list = sqlquery.list();
 		return list.isEmpty() ? null : list.get(0);
 	}
@@ -474,4 +480,31 @@ public class WorkImplement implements WorkDAO {
 		return sqlquery.list();
 	}
 
+	/*
+	 * @ManyToOne
+	 * 
+	 * @JoinColumn(name="address_id",
+	 * referencedColumnName="addrUniqueFieldName") private Address address; and
+	 * then you can create criteria:
+	 * criteria.add(restriction.eq("address.addrUniqueFieldName", 123);
+	 * //assignment.member_id=member.id //assignment.task_id=task.id
+	 * //task.project_id=project.id //member.employee_id=employee.id
+	 * //------//crit.createCriteria("students", "s");---//createAlias
+	 * //crit.add(Restrictions.eq("a.member_id","m.id"));
+	 * //crit.add(Restrictions.eq("a.task_id","t.id"));
+	 * //crit.add(Restrictions.eq("t.project_id","p.id"));
+	 * //crit.add(Restrictions.eq("m.employee_id","e.id"));
+	 * //.add(Projections.max("assign_date"))
+	 * //crit.createAlias("assignment.assign_date", "assign_date");
+	 */
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Assignment> getAssignment(TaskFilterDAO filter, int start,
+			int count) {
+		Criteria criteria = filter.doFilter(sessionFactory.getCurrentSession());
+		criteria.setFirstResult(start);
+		criteria.setMaxResults(count);
+		return criteria.list();
+	}
 }
