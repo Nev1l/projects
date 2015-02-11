@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import by.epam.beans.Assignment;
 import by.epam.beans.Employee;
@@ -24,7 +25,13 @@ import by.epam.consts.ConstantsError;
 import by.epam.consts.ConstantsJSP;
 import by.epam.dao.DaoException;
 import by.epam.dao.WorkServiceDAO;
+import by.epam.filter.TaskFilter;
+import by.epam.filter.TaskFilterByProjectDecorator;
+import by.epam.filter.TaskFilterByStatusDecorator;
+import by.epam.filter.TaskFilterByTaskNameDecorator;
+import by.epam.filter.TaskFilterDecorator;
 import by.epam.services.ActivityService;
+import by.epam.utils.PageNavigator;
 
 @Controller
 public class TaskController {
@@ -68,12 +75,13 @@ public class TaskController {
 			@RequestParam(value = "id", required = false) String project_id,
 			@RequestParam(value = "assign_member_id", required = false) String assign_member_id,
 			@RequestParam(value = "description", required = false) String description,
+			//@RequestParam(value = "summary", required = false) String summary,
 			@RequestParam(value = "psd", required = false) String psd,
 			@RequestParam(value = "ped", required = false) String ped,
 			@RequestParam(value = "asd", required = false) String asd,
 			@RequestParam(value = "aed", required = false) String aed,
 			@RequestParam(value = "status", required = false) String status) {
-		String pageReturn = "forward:/"+ConstantsJSP.taskNewPage;
+		String pageReturn = "forward:/" + ConstantsJSP.taskNewPage;
 		List<Status> statuses = workService.getStatusList();
 		req.setAttribute(ConstantsJSP.STATUS_LIST, statuses);
 		try {
@@ -107,6 +115,7 @@ public class TaskController {
 				assignment.setAssignDate(Assignment.getCurrentDateTime());
 				assignment.setMember(member);
 				assignment.setTask(task);
+				//assignment.setDescription(summary);
 				workService.save(assignment);
 				Member activityMember = workService.getProjectMember(
 						project.getId(), employee.getId());
@@ -115,7 +124,7 @@ public class TaskController {
 				pageReturn = "forward:/" + ConstantsJSP.projectController;
 			} catch (DaoException e1) {
 				req.setAttribute(ConstantsJSP.ERROR, e1.getMessage());
-				return "forward:/"+ConstantsJSP.taskNewController;
+				return "forward:/" + ConstantsJSP.taskNewController;
 			}
 		} catch (NumberFormatException e) {
 			req.setAttribute(ConstantsJSP.ERROR,
@@ -138,7 +147,7 @@ public class TaskController {
 			@RequestParam(value = "aed", required = false) String aed,
 			@RequestParam(value = "status", required = false) String status) {
 		logger.info("=============[taskEdit");
-		String pageReturn = ConstantsJSP.taskEditPage;//"forward:/"+
+		String pageReturn = ConstantsJSP.taskEditPage;// "forward:/"+
 		List<Status> statuses = workService.getStatusList();
 		req.setAttribute(ConstantsJSP.STATUS_LIST, statuses);
 		try {
@@ -176,21 +185,24 @@ public class TaskController {
 					int assignMemberId = Integer.parseInt(assign_member_id);
 					Assignment oldAssignment = workService
 							.getLastAssigneeByTaskId(task.getId());
-					Member currentMember = workService.getMemberById(assignMemberId);
-					if (oldAssignment.getMember().getId() != currentMember.getId()) {
+					Member currentMember = workService
+							.getMemberById(assignMemberId);
+					if (oldAssignment.getMember().getId() != currentMember
+							.getId()) {
 						Assignment assignment = new Assignment();
 						assignment.setAssignDate(Assignment
 								.getCurrentDateTime());
 						assignment.setMember(currentMember);
 						assignment.setTask(task);
 						workService.save(assignment);
-						activityService.activityChangeAssignee(assignment, activityMember);
+						activityService.activityChangeAssignee(assignment,
+								activityMember);
 					}
 					pageReturn = "forward:/" + ConstantsJSP.projectController;
 				} catch (DaoException e1) {
 					req.setAttribute(ConstantsJSP.ERROR, e1.getMessage());
 					req.setAttribute(ConstantsJSP.id, task_id);
-					return "forward:/"+ConstantsJSP.taskUpdateController;
+					return "forward:/" + ConstantsJSP.taskUpdateController;
 				}
 			}
 		} catch (NumberFormatException e) {
@@ -258,4 +270,64 @@ public class TaskController {
 		return ConstantsJSP.taskNewPage;
 	}
 
+	@RequestMapping(value = "/tasks.do")
+	public String tasks(
+			@RequestParam(value = "page", required = false) String page,
+			@RequestParam(value = "fs", required = false) String filterStatus,
+			@RequestParam(value = "fp", required = false) String filterProject,
+			@RequestParam(value = "ftn", required = false) String filterTaskName,
+			HttpServletRequest req, HttpServletResponse res) {
+		logger.info("tasks.do");
+		//workService.getCountAssignment(null);
+		int start = 0;
+		int cur_page = 1;
+		try {
+			cur_page = Integer.parseInt(page);
+			if (cur_page > 1) {
+				start = (cur_page - 1) * ConstantsJSP.RESULTS_ON_LOAD;
+			}
+		} catch (NumberFormatException e) {
+			logger.info("ErrorParsePage:"+e.getMessage());
+		}
+		int recordCount = 0;
+		try {
+			TaskFilterDecorator filter = new TaskFilterDecorator(
+					new TaskFilter());
+			if (filterStatus != null) {
+				filter = new TaskFilterByStatusDecorator(filter, filterStatus);
+				req.setAttribute("fs", filterStatus);
+			}
+			if (filterProject != null) {
+				filter = new TaskFilterByProjectDecorator(filter, filterProject);
+				req.setAttribute("fp", filterProject);
+			}
+			if (filterTaskName != null) {
+				filter = new TaskFilterByTaskNameDecorator(filter,
+						filterTaskName);
+				req.setAttribute("ftn", filterTaskName);
+			}
+			recordCount = workService.getCountAssignment(filter);
+			logger.info("recordCount="+recordCount);
+			int total = (int) Math.ceil(recordCount * (1.0d)
+					/ ConstantsJSP.RESULTS_ON_LOAD * (1.0d));
+			if (start > recordCount) {
+				start = recordCount - ConstantsJSP.RESULTS_ON_LOAD;
+				cur_page = total;
+				req.setAttribute("page", cur_page);
+			}
+			List<Assignment> listAssignments = workService.getAssignment(
+					filter, start, ConstantsJSP.RESULTS_ON_LOAD);
+			logger.info("list:"+listAssignments);
+			req.setAttribute(ConstantsJSP.ASSIGNMENTS, listAssignments);
+			PageNavigator pageNavigator = new PageNavigator(total, cur_page);
+			req.setAttribute(ConstantsJSP.PAGE_NAVIGATOR, pageNavigator);
+			req.setAttribute(ConstantsJSP.PROJECT_LIST,
+					workService.getAllProjects());
+			req.setAttribute(ConstantsJSP.STATUS_LIST,
+					workService.getStatusList());
+		} catch (Exception e) {
+			logger.info("Error:" + e.getMessage());
+		}
+		return ConstantsJSP.tasksPage;//ConstantsJSP.tasksPage;
+	}
 }

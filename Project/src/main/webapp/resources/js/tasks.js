@@ -8,14 +8,14 @@ app.controller('SetController', function($scope, $http) {
 				$scope.project = $scope.projects[0];
 				$scope.isInit = true;
 			});
+			$http.get("/project/ajax.members.do?id=" + $scope.project.id)
+			.success(function(response) {
+				$scope.members = response;
+				$scope.member = $scope.members[0];
+			});
 		};
 		$scope.$watch('project', function() {
 			if ($scope.isInit) {
-				$http.get("/project/ajax.members.do?id=" + $scope.project.id)
-						.success(function(response) {
-							$scope.members = response;
-							$scope.member = $scope.members[0];
-						});
 			}
 		});
 });

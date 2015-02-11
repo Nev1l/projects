@@ -73,7 +73,7 @@
 							</table>
 							<div>
 							<a href="#" class="btn btn-default"
-									onClick="sendPost('/project/task.do','${TASK.id}')">Change</a>
+									onClick="sendPost('/project/taskUpdate.do','${TASK.id}')">Change</a>
 								<input class="btn btn-default" type="button" value="Activity"
 									onClick="sendPost('/project/activity.do','${ASSIGNEE.task.id}')" />
 							</div>

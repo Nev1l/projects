@@ -14,11 +14,13 @@ public class TaskFilterByStatusDecorator extends TaskFilterDecorator{
 	}
 
 	@Override
-	public Criteria doFilter(Session session) {
+	public String doFilter(Session session) {
 		// TODO Auto-generated method stub
-		Criteria crit = super.doFilter(session);
-		crit.add(Restrictions.eq("s.name", param));
-		return crit;
+		//Criteria crit = super.doFilter(session);
+		//crit.add(Restrictions.eq("s.name", param));
+		String sql = super.doFilter(session);
+		sql += " and status.name='"+param+"'";
+		return sql;
 	}
 
 }

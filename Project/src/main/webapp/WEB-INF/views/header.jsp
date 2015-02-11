@@ -20,7 +20,7 @@
 			<li><a href="<c:url value="/home.do"/>">Dashboard</a></li>
 			<li><a href="<c:url value="/project.do"/>">Projects</a></li>
 			<c:if test="${hasAccessCreateGlobalTask}">
-				<li><a href="<c:url value="#"/>">Issues</a></li>
+				<li><a href="<c:url value="/tasks.do"/>">Issues</a></li>
 			</c:if>
 			<li><a href="<c:url value="/logout.do"/>" ng-click="loadForm()">Logout</a></li>
 		</ul>

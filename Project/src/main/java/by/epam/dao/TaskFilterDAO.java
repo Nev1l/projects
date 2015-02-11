@@ -5,5 +5,5 @@ import org.hibernate.SQLQuery;
 import org.hibernate.classic.Session;
 
 public interface TaskFilterDAO {
-	Criteria doFilter(Session session);
+	String doFilter(Session session);
 }

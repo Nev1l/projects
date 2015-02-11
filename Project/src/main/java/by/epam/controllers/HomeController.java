@@ -88,7 +88,7 @@ public class HomeController {
 					.getMembersByEmployeeId(employee.getId());
 			boolean hasAccess = ProjectByMemberAccess
 					.hasProjectsWhereAccessMoreThanDeveloper(memberProjectAccess);
-			req.setAttribute(ConstantsJSP.hasAccessCreateGlobalTask, hasAccess);
+			session.setAttribute(ConstantsJSP.hasAccessCreateGlobalTask, hasAccess);
 
 		} catch (Exception e) {
 			logger.info("Error:" + e.getMessage());

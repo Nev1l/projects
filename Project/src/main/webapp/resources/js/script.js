@@ -104,21 +104,57 @@ var load = function() {
 
 // =================[Form angular]=====================
 // check urls names project or projects & etc
-/*var qweqweqwe = function() {
-	$.ajax({
-		type : "post",
-		url : "/project/ajax/projects", 
-		contentType : "application/json", 
-		data : JSON.stringify(jsonobject),
-		success : function(result) {
-			console.log("result:"+result);
-		},
-		error : function() {
-			alert('Error: Data does not load!');
-		}
-	});
-};*/
+/*
+ * var qweqweqwe = function() { $.ajax({ type : "post", url :
+ * "/project/ajax/projects", contentType : "application/json", data :
+ * JSON.stringify(jsonobject), success : function(result) {
+ * console.log("result:"+result); }, error : function() { alert('Error: Data
+ * does not load!'); } }); };
+ */
 // ======================================================
+var sendTasksPageReq = function(page) {
+	console.log("================sendTasksPageReq=============");
+	var form = document.createElement("form");
+	form.setAttribute("method", "post");
+	form.setAttribute("action", "/project/tasks.do");
+	var pageField = document.createElement("input");
+	pageField.setAttribute("type", "hidden");
+	pageField.setAttribute("name", "page");
+	pageField.setAttribute("value", page);
+	console.log("page="+page);
+	form.appendChild(pageField);
+	var e = document.getElementById("status");
+	var statusValue = e.options[e.selectedIndex].value;
+	if (statusValue !== 'All') {
+		console.log("statusValue="+statusValue);
+		var filterStatus = document.createElement("input");
+		filterStatus.setAttribute("type", "hidden");
+		filterStatus.setAttribute("name", "fs");
+		filterStatus.setAttribute("value", statusValue);
+		form.appendChild(filterStatus);
+	}
+	e = document.getElementById("project");
+	var projectValue = e.options[e.selectedIndex].value;
+	if (projectValue !== 'All') {
+		console.log("projectValue="+projectValue);
+		var filterProject = document.createElement("input");
+		filterProject.setAttribute("type", "hidden");
+		filterProject.setAttribute("name", "fp");
+		filterProject.setAttribute("value", projectValue);
+		form.appendChild(filterProject);
+	}
+	var taskNameValue = document.getElementById("taskName").value;
+	if (taskNameValue.length > 0) {
+		console.log("taskNameValue="+taskNameValue);
+		var filterTaskName = document.createElement("input");
+		filterTaskName.setAttribute("type", "hidden");
+		filterTaskName.setAttribute("name", "ftn");
+		filterTaskName.setAttribute("value", taskNameValue);
+		form.appendChild(filterTaskName);
+	}
+	document.body.appendChild(form);
+	form.submit();
+};
 
 var sendPost = function(action, id) {
 	var form = document.createElement("form");

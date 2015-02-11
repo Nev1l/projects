@@ -14,11 +14,13 @@ public class TaskFilterByProjectDecorator extends TaskFilterDecorator{
 	}
 
 	@Override
-	public Criteria doFilter(Session session) {
+	public String doFilter(Session session) {
 		// TODO Auto-generated method stub
-		Criteria crit = super.doFilter(session);
-		crit.add(Restrictions.eq("p.name", param));
-		return crit;
+		//Criteria crit = super.doFilter(session);
+		//rit.add(Restrictions.eq("p.name", param));
+		String sql = super.doFilter(session);
+		sql += " and project.name='"+param+"'";
+		return sql;
 	}
 
 }

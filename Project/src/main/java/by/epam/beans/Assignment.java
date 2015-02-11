@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 import by.epam.consts.ConstantsError;
 import by.epam.consts.ConstantsJSP;
 import by.epam.dao.DaoException;
@@ -35,22 +37,12 @@ public class Assignment implements Serializable {
 	@JoinColumn(name = "task_id")
 	private Task task;
 
-	//@Column(name = "description", length = 255)
-	//private String description;
+	@Column(name = "description", length = 255)
+	private String description;
 
-	// my field
 	@Column(name = "assign_date")
+	//@Type(type="timestamp") 
 	private String assignDate;
-
-	/*
-	 * @Column(name = "psd") private Date plannedStartDate;
-	 * 
-	 * @Column(name = "ped") private Date plannedEndDate;
-	 * 
-	 * @Column(name = "asd") private Date actualStartDate;
-	 * 
-	 * @Column(name = "aed") private Date actualEndDate;
-	 */
 
 	public int getId() {
 		return id;
@@ -104,7 +96,7 @@ public class Assignment implements Serializable {
 		this.task = task;
 	}
 
-	/*public String getDescription() {
+	public String getDescription() {
 		return this.description;
 	}
 	public void setDescription(String description) throws DaoException {
@@ -114,29 +106,7 @@ public class Assignment implements Serializable {
 		if (description.equals(ConstantsError.Empty)) {
 			throw new DaoException(ConstantsError.descriptionEmpty);
 		}
-	}*/
-
-	/*
-	 * public Date getPlannedStartDate() { return plannedStartDate; }
-	 * 
-	 * public void setPlannedStartDate(Date plannedStartDate) {
-	 * this.plannedStartDate = plannedStartDate; }
-	 * 
-	 * public Date getPlannedEndDate() { return plannedEndDate; }
-	 * 
-	 * public void setPlannedEndDate(Date plannedEndDate) { this.plannedEndDate
-	 * = plannedEndDate; }
-	 * 
-	 * public Date getActualStartDate() { return actualStartDate; }
-	 * 
-	 * public void setActualStartDate(Date actualStartDate) {
-	 * this.actualStartDate = actualStartDate; }
-	 * 
-	 * public Date getActualEndDate() { return actualEndDate; }
-	 * 
-	 * public void setActualEndDate(Date actualEndDate) { this.actualEndDate =
-	 * actualEndDate; }
-	 */
+	}
 
 	public Assignment() {
 		super();

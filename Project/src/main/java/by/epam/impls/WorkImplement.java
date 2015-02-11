@@ -497,14 +497,37 @@ public class WorkImplement implements WorkDAO {
 	 * //.add(Projections.max("assign_date"))
 	 * //crit.createAlias("assignment.assign_date", "assign_date");
 	 */
-
+	/*
+	 * Criteria crit = sessionFactory.getCurrentSession().createCriteria(
+	 * Assignment.class,"a"); crit.addOrder(Order.desc("assign_date"));
+	 * crit.createAlias("member", "m"); crit.createAlias("task", "t");
+	 * crit.createAlias("t.project", "p"); crit.createAlias("t.status", "s");
+	 * crit.createAlias("m.employee", "e");
+	 * crit.setProjection(Projections.projectionList().add(
+	 * Projections.distinct(
+	 * Projections.property("t.id"))));//add(Projections.max("a.assign_date"))
+	 * crit.add(Restrictions.eq("p.name", "Airport1"));
+	 * crit.add(Restrictions.eq("s.name", "No started"));
+	 * crit.add(Restrictions.like("t.description", "%dat%"));
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Assignment> getAssignment(TaskFilterDAO filter, int start,
 			int count) {
-		Criteria criteria = filter.doFilter(sessionFactory.getCurrentSession());
-		criteria.setFirstResult(start);
-		criteria.setMaxResults(count);
-		return criteria.list();
+		SQLQuery sqlquery = sessionFactory.getCurrentSession().createSQLQuery(
+				filter.doFilter(sessionFactory.getCurrentSession())).addEntity(Assignment.class);
+		sqlquery.setFirstResult(start);
+		sqlquery.setMaxResults(count);
+		List<Assignment> list = sqlquery.list();
+		return list;
+	}
+
+	@Override
+	public int getCountAssignment(TaskFilterDAO filter) {
+		// TODO Auto-generated method stub
+		//crit = filter.doFilter(sessionFactory.getCurrentSession());
+		SQLQuery sqlquery = sessionFactory.getCurrentSession().createSQLQuery(
+				filter.doFilter(sessionFactory.getCurrentSession())).addEntity(Assignment.class);
+		return sqlquery.list().size();
 	}
 }

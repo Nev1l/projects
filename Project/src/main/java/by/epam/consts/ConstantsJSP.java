@@ -33,7 +33,8 @@ public class ConstantsJSP {
 	public final static String userProfilePage = "userprofile";
 	public final static String loginPage = "login";
 	public final static String logoutPage = "logout";
-
+	public final static String tasksPage = "tasks";
+	
 	public final static String memberPage = "member";
 	public final static String memberNewPage = "memberNew";
 	public final static String memberEditPage = "memberEdit";
@@ -69,6 +70,7 @@ public class ConstantsJSP {
 	public final static String MEMBER_LIST = "MEMBER_LIST";
 	public final static String PROJECT_TASKS = "PROJECT_TASKS";
 	public final static String ASSIGNEE = "ASSIGNEE";
+	public final static String ASSIGNMENTS = "ASSIGNMENTS";
 	public final static String ERROR = "ERROR";
 
 	public final static String MEMBER_ID = "MEMBER_ID";

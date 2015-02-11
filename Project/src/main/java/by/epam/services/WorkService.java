@@ -372,4 +372,10 @@ public class WorkService implements WorkServiceDAO {
 		return workDAO.getAssignment(filter, start, count);
 	}
 
+	@Transactional
+	public int getCountAssignment(TaskFilterDAO filter) {
+		// TODO Auto-generated method stub
+		return workDAO.getCountAssignment(filter);
+	}
+
 }
