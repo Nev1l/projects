@@ -32,10 +32,9 @@
 				<c:set var="aed" value="${aed}" />
 				<c:set var="description" value="${description}" />
 				<c:set var="st" value="${status}" />
-				<c:if test="${not empty ASSIGNEE}">
-					<c:set var="assign_member_value"
-						value="${ASSIGNEE.member.employee.firstName} ${ASSIGNEE.member.employee.lastName}" />
-				</c:if>
+				<c:set var="assign_member_value"
+					value="${ASSIGNEE.member.employee.firstName} ${ASSIGNEE.member.employee.lastName}" />
+				<c:set var="summary" value="${ASSIGNEE.description}" />
 				<c:if test="${not empty TASK}">
 					<c:set var="psd" value="${TASK.plannedStartDate}" />
 					<c:set var="ped" value="${TASK.plannedEndDate}" />
@@ -45,10 +44,10 @@
 					<c:set var="st" value="${TASK.status}" />
 				</c:if>
 				<form method="POST" action="<c:url value='/taskEdit.do'/>">
-					<input type="hidden" name="id" value="${TASK.project.id}" /> 
-					<input id="assignee" type="hidden" name="assign_member_id"
-						value="${MEMBER_ID}" /> 
-						<input type="hidden" name="task_id"	value="${TASK.id}" />
+					<input type="hidden" name="id" value="${TASK.project.id}" /> <input
+						id="assignee" type="hidden" name="assign_member_id"
+						value="${MEMBER_ID}" /> <input type="hidden" name="task_id"
+						value="${TASK.id}" />
 					<table class="table-responsive">
 						<tbody>
 							<tr class="form-group">
@@ -59,8 +58,8 @@
 							</tr>
 							<tr class="form-group">
 								<td class="control-label col-lg-5">Assignee</td>
-								<td class="col-lg-10">
-								<c:if test="${not empty PROJECT_MEMBERS}">
+								<td class="col-lg-10"><c:if
+										test="${not empty PROJECT_MEMBERS}">
 										<select class="form-control m-bot15" id="selectAssigneeBox"
 											onchange="selectAssignee();">
 											<option value="${MEMBER_ID}" selected>${assign_member_value}</option>
@@ -70,6 +69,11 @@
 											</c:forEach>
 										</select>
 									</c:if></td>
+							</tr>
+								<tr class="form-group">
+								<td class="control-label col-lg-5">Summary</td>
+								<td class="col-lg-12"><input type="text" size="30" name="summary" value="${summary}"/>
+								<td>
 							</tr>
 							<tr class="form-group">
 								<td class="control-label col-lg-5">Planned Start Date</td>

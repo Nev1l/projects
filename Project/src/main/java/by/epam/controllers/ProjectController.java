@@ -197,7 +197,7 @@ public class ProjectController {
 			pageReturn = "redirect:/" + ConstantsJSP.projectController;
 		} catch (DaoException e1) {
 			req.setAttribute(ConstantsJSP.ERROR, e1.getMessage());
-			return "forward:/"+ConstantsJSP.projectUpdateController;
+			return "forward:/" + ConstantsJSP.projectUpdateController;
 		}
 		return pageReturn;
 	}
@@ -234,10 +234,13 @@ public class ProjectController {
 				HttpSession session = req.getSession();
 				Employee employee = (Employee) session
 						.getAttribute(ConstantsJSP.EMPLOYEE);
-				req.setAttribute(
-						ConstantsJSP.MEMBER,
-						workService.getProjectMember(project.getId(),
-								employee.getId()));
+				Member m = workService.getProjectMember(project.getId(),
+						employee.getId());
+				/*if(m==null){
+					req.setAttribute(ConstantsJSP.ERROR,ConstantsError.projectErrorAccess);
+					return "forward:/"+ConstantsJSP.error403Page;
+				}*/
+				req.setAttribute(ConstantsJSP.MEMBER, m);
 				java.util.List<Task> list = workService
 						.getTasksByProjectId(project.getId());
 				logger.info("list=" + list);
@@ -252,5 +255,4 @@ public class ProjectController {
 		}
 		return ConstantsJSP.projectPage;
 	}
-
 }

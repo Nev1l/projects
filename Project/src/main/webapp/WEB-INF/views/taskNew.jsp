@@ -27,6 +27,7 @@
 				</c:if>
 				<c:if test="${not empty PROJECT}">
 					<c:set var="assign_member_value" value="(Automatic)" />
+					<c:set var="summary" value="${ASSIGNEE.description}" />
 					<c:if test="${not empty TASK}">
 						<c:set var="psd" value="${TASK.plannedStartDate}" />
 						<c:set var="ped" value="${TASK.plannedEndDate}" />
@@ -61,6 +62,12 @@
 												</c:forEach>
 											</select>
 										</c:if></td>
+								</tr>
+								<tr class="form-group">
+									<td class="control-label col-lg-5">Summary</td>
+									<td class="col-lg-12"><input class="form-control" type="text" size="30"
+										name="summary" value="${summary}" />
+									<td>
 								</tr>
 								<tr class="form-group">
 									<td class="control-label col-lg-5">Planned Start Date</td>

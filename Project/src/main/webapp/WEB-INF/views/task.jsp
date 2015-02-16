@@ -31,15 +31,22 @@
 						<div class="panel-body">
 							<table class="table table-bordered">
 								<tbody>
+									<%-- assignee always exist by default auto
 									<c:set var="assignee" value="No assignee" />
 									<c:if test="${not empty ASSIGNEE}">
-										<c:set var="assignee"
-											value="${ASSIGNEE.member.employee.firstName} ${ASSIGNEE.member.employee.lastName}" />
+									<c:set var="assignee"
+											value="" />
 									</c:if>
+									 --%>
 									<tr>
 										<td align="right">Assignee:</td>
-										<td>${assignee}</td>
+										<td>${ASSIGNEE.member.employee.firstName}
+											${ASSIGNEE.member.employee.lastName}</td>
 									</tr>
+									<tr>
+										<td align="right">Summary</td>
+										<td>${ASSIGNEE.description}</td>
+									</tr>			   
 									<tr>
 										<td align="right">Project name:</td>
 										<td><a href="#"
@@ -72,7 +79,7 @@
 								</tbody>
 							</table>
 							<div>
-							<a href="#" class="btn btn-default"
+								<a href="#" class="btn btn-default"
 									onClick="sendPost('/project/taskUpdate.do','${TASK.id}')">Change</a>
 								<input class="btn btn-default" type="button" value="Activity"
 									onClick="sendPost('/project/activity.do','${ASSIGNEE.task.id}')" />
@@ -104,7 +111,8 @@
 								<table class="table">
 									<tbody>
 										<tr class="form-group">
-											<td><input id="exampleInputFile" type="file" name="file" required></td>
+											<td><input class="btn-default" id="exampleInputFile"
+												type="file" name="file" required></td>
 											<td><input class="btn btn-default" type="submit"
 												value="Upload">
 										</tr>

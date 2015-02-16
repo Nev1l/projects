@@ -17,12 +17,12 @@
 </head>
 <body>
 	<div class="container">
-		<c:if test="${not empty ERROR}">
-			<p class="error">${ERROR}</p>
-		</c:if>
 		<form method="POST" name="loginForm" class="form-signin"
 			action="<c:url value='/j_spring_security_check' />">
 			<h4 class="form-signin-heading">Please sign in</h4>
+			<c:if test="${not empty ERROR}">
+				<p class="error"><font color="red"><b>${ERROR}</b></font></p>
+			</c:if>
 			<input type="text" id="inputLogin" name="j_username"
 				class="form-control" placeholder="Login" required autofocus>
 			<input type="password" id="inputPassword" name="j_password"

@@ -29,6 +29,7 @@ public class ConstantsJSP {
 	public final static String taskUpdateController = "taskUpdate.do";
 	public final static String taskNewController = "taskNew.do";
 	
+	public final static String error403Page = "error403";
 	public final static String homePage = "home";
 	public final static String userProfilePage = "userprofile";
 	public final static String loginPage = "login";

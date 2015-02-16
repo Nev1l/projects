@@ -526,8 +526,10 @@ public class WorkImplement implements WorkDAO {
 	public int getCountAssignment(TaskFilterDAO filter) {
 		// TODO Auto-generated method stub
 		//crit = filter.doFilter(sessionFactory.getCurrentSession());
+		String sql = filter.doFilter(sessionFactory.getCurrentSession());
+		logger.info("sql:"+sql);
 		SQLQuery sqlquery = sessionFactory.getCurrentSession().createSQLQuery(
-				filter.doFilter(sessionFactory.getCurrentSession())).addEntity(Assignment.class);
+				sql).addEntity(Assignment.class);
 		return sqlquery.list().size();
 	}
 }

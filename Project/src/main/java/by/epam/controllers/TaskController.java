@@ -74,7 +74,7 @@ public class TaskController {
 			@RequestParam(value = "id", required = false) String project_id,
 			@RequestParam(value = "assign_member_id", required = false) String assign_member_id,
 			@RequestParam(value = "description", required = false) String description,
-			//@RequestParam(value = "summary", required = false) String summary,
+			@RequestParam(value = "summary", required = false) String summary,
 			@RequestParam(value = "psd", required = false) String psd,
 			@RequestParam(value = "ped", required = false) String ped,
 			@RequestParam(value = "asd", required = false) String asd,
@@ -114,7 +114,8 @@ public class TaskController {
 				assignment.setAssignDate(Assignment.getCurrentDateTime());
 				assignment.setMember(member);
 				assignment.setTask(task);
-				//assignment.setDescription(summary);
+				logger.info("======================summary:"+summary);
+				assignment.setDescription(summary);
 				workService.save(assignment);
 				Member activityMember = workService.getProjectMember(
 						project.getId(), employee.getId());
@@ -138,6 +139,7 @@ public class TaskController {
 			HttpServletResponse res,
 			@RequestParam(value = "id", required = false) String project_id,
 			@RequestParam(value = "assign_member_id", required = false) String assign_member_id,
+			@RequestParam(value = "summary", required = false) String summary,
 			@RequestParam(value = "task_id", required = false) String task_id,
 			@RequestParam(value = "description", required = false) String description,
 			@RequestParam(value = "psd", required = false) String psd,
@@ -187,12 +189,14 @@ public class TaskController {
 					Member currentMember = workService
 							.getMemberById(assignMemberId);
 					if (oldAssignment.getMember().getId() != currentMember
-							.getId()) {
+							.getId() || !oldAssignment.getDescription().equals(summary)) {
 						Assignment assignment = new Assignment();
 						assignment.setAssignDate(Assignment
 								.getCurrentDateTime());
 						assignment.setMember(currentMember);
 						assignment.setTask(task);
+						assignment.setDescription(summary);
+						logger.info("=====================summary:"+summary);
 						workService.save(assignment);
 						activityService.activityChangeAssignee(assignment,
 								activityMember);
@@ -310,7 +314,8 @@ public class TaskController {
 			int total = (int) Math.ceil(recordCount * (1.0d)
 					/ ConstantsJSP.RESULTS_ON_LOAD * (1.0d));
 			if (start > recordCount) {
-				start = recordCount - ConstantsJSP.RESULTS_ON_LOAD;
+				start = total-1>+0 ? total-1 : 0;
+				start*= ConstantsJSP.RESULTS_ON_LOAD;
 				cur_page = total;
 				req.setAttribute("page", cur_page);
 			}

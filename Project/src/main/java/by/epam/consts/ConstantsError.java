@@ -20,7 +20,8 @@ public interface ConstantsError {
 	String descriptionNull = "Description is null";
 	String descriptionEmpty = "Description is empty";
 	String wrondId = "Incorrect id.";
-	
+	String projectErrorAccess = "Project isn't available for you.";
+	String taskErrorAccess = "Task isn't available for you.";
 	String errorLoginPage = "Wrong input data(login/password)";
 	String errorNull = "Field has null value.";
 	String errorUserNotExist = "User doesn't exist in database.";

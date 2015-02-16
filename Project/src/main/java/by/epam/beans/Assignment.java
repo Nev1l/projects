@@ -38,7 +38,7 @@ public class Assignment implements Serializable {
 	private Task task;
 
 	@Column(name = "description", length = 255)
-	private String description;
+	private String description="";
 
 	@Column(name = "assign_date")
 	//@Type(type="timestamp") 
@@ -106,6 +106,7 @@ public class Assignment implements Serializable {
 		if (description.equals(ConstantsError.Empty)) {
 			throw new DaoException(ConstantsError.descriptionEmpty);
 		}
+		this.description=description;
 	}
 
 	public Assignment() {
@@ -116,7 +117,7 @@ public class Assignment implements Serializable {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "[task="+task.getDescription()+" status="+task.getStatus().getName()+" project="+task.getProject().getName()+"]";
+		return "[summary" +description+" task="+task.getDescription()+" status="+task.getStatus().getName()+" project="+task.getProject().getName()+"]";
 	}
 
 }

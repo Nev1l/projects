@@ -152,25 +152,28 @@
 																value="Change">
 														</c:when>
 														<c:otherwise>
-											No available
-										</c:otherwise>
+														No available
+														</c:otherwise>
 													</c:choose></td>
 											</tr>
 										</c:forEach>
 									</tbody>
 								</table>
-								<c:if test="${hasMemberAccess}">
-									<div>
-										<input size="25" class="btn btn-default" type="button"
-											onClick="sendPost('/project/taskNew.do','${PROJECT.id}')"
-											value="New task">
-									</div>
-								</c:if>
 							</c:when>
 							<c:otherwise>
 								<p>No tasks</p>
 							</c:otherwise>
 						</c:choose>
+						<c:if test="${hasMemberAccess}">
+							<div>
+								<input class="btn btn-default" type="button"
+									onClick="sendPost('/project/projectUpdate.do','${PROJECT.id}')"
+									value="Change"> <input size="25"
+									class="btn btn-default" type="button"
+									onClick="sendPost('/project/taskNew.do','${PROJECT.id}')"
+									value="New task">
+							</div>
+						</c:if>
 					</div>
 				</div>
 			</c:when>

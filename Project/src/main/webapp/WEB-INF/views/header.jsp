@@ -1,4 +1,3 @@
-
 <link
 	href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css"
 	rel="stylesheet" />
@@ -15,54 +14,43 @@
 	href="${pageContext.request.contextPath}/resources/css/mystyle.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/style.css">
+<%-- 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/app.js">
-	tasks.js
-</script>
-<div ng-app="app" ng-controller="Ctrl" class="navbar">
+</script> --%>
+<div class="navbar">
 	<div class="navbar-inner">
 		<div class="brand">Tracking system</div>
 		<ul class="nav">
 			<li><a href="<c:url value="/home.do"/>">Dashboard</a></li>
 			<li><a href="<c:url value="/project.do"/>">Projects</a></li>
-			<%--ng-init="loadForm()"  href="<c:url value="/tasks.do"/>" 
-			<button href="#" ng-click="loadForm()">Issues
-						;openWindow()</button>--%>
 			<c:if test="${hasAccessCreateGlobalTask}">
-				<li><button type="button" data-toggle="modal"
-						data-target="#myModal" class="btn btn-default">Issues</button></li>
+				<li><a href="<c:url value="/tasks.do"/>">Issues</a></li>
 			</c:if>
+			<li>
+				<button type="button" class="btn btn-default" data-toggle="modal"
+					data-target=".bs-example-modal-lg">Create new tas</button>
+			</li>
+			<li><a href="#"
+				onClick="sendPost('/project/userprofile.do','${EMPLOYEE.id}')">Profile </a></li>
 			<li><a href="<c:url value="/logout.do"/>">Logout</a></li>
 		</ul>
 	</div>
-	<%-- MODAL FORM PART1 style="display: none"--%>
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
+	<!-- Modal -->
+	<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+		aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="modal-title" id="myModalLabel">Modal title</h4>
-				</div>
-				<div class="modal-body">
-					<div>
-						<div>
-							<select ng-model="project" ng-options="c.name for c in projects"></select>
-							<select ng-model="member"
-								ng-options="c.employee.firstName + ' ' + c.employee.lastName for c in members"></select>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary">Save changes</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<div ng-app="app" ng-controller="Ctrl">
+					<select ng-model="project" ng-options="c.name for c in projects"></select>
+					<select ng-model="member"
+						ng-options="c.employee.firstName + ' ' + c.employee.lastName for c in members"></select>
 				</div>
 			</div>
 		</div>
 	</div>
-	<%-- MODAL FORM PART2--%>
-
 </div>
