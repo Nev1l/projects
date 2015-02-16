@@ -53,6 +53,12 @@ public class TaskController {
 			if (task != null) {
 				Assignment assignee = workService.getLastAssigneeByTaskId(task
 						.getId());
+				HttpSession session = req.getSession();
+				Employee employee = (Employee) session
+						.getAttribute(ConstantsJSP.EMPLOYEE);
+				Member m = workService.getProjectMember(task.getProject().getId(),
+						employee.getId());
+				req.setAttribute(ConstantsJSP.MEMBER, m);
 				req.setAttribute(ConstantsJSP.ASSIGNEE, assignee);
 				req.setAttribute(ConstantsJSP.TASK, task);
 			} else {
@@ -114,7 +120,7 @@ public class TaskController {
 				assignment.setAssignDate(Assignment.getCurrentDateTime());
 				assignment.setMember(member);
 				assignment.setTask(task);
-				logger.info("======================summary:"+summary);
+				logger.info("======================summary:" + summary);
 				assignment.setDescription(summary);
 				workService.save(assignment);
 				Member activityMember = workService.getProjectMember(
@@ -189,14 +195,15 @@ public class TaskController {
 					Member currentMember = workService
 							.getMemberById(assignMemberId);
 					if (oldAssignment.getMember().getId() != currentMember
-							.getId() || !oldAssignment.getDescription().equals(summary)) {
+							.getId()
+							|| !oldAssignment.getDescription().equals(summary)) {
 						Assignment assignment = new Assignment();
 						assignment.setAssignDate(Assignment
 								.getCurrentDateTime());
 						assignment.setMember(currentMember);
 						assignment.setTask(task);
 						assignment.setDescription(summary);
-						logger.info("=====================summary:"+summary);
+						logger.info("=====================summary:" + summary);
 						workService.save(assignment);
 						activityService.activityChangeAssignee(assignment,
 								activityMember);
@@ -281,7 +288,7 @@ public class TaskController {
 			@RequestParam(value = "ftn", required = false) String filterTaskName,
 			HttpServletRequest req, HttpServletResponse res) {
 		logger.info("tasks.do");
-		//workService.getCountAssignment(null);
+		// workService.getCountAssignment(null);
 		int start = 0;
 		int cur_page = 1;
 		try {
@@ -290,7 +297,7 @@ public class TaskController {
 				start = (cur_page - 1) * ConstantsJSP.RESULTS_ON_LOAD;
 			}
 		} catch (NumberFormatException e) {
-			logger.info("ErrorParsePage:"+e.getMessage());
+			logger.info("ErrorParsePage:" + e.getMessage());
 		}
 		int recordCount = 0;
 		try {
@@ -310,18 +317,18 @@ public class TaskController {
 				req.setAttribute("ftn", filterTaskName);
 			}
 			recordCount = workService.getCountAssignment(filter);
-			logger.info("recordCount="+recordCount);
+			logger.info("recordCount=" + recordCount);
 			int total = (int) Math.ceil(recordCount * (1.0d)
 					/ ConstantsJSP.RESULTS_ON_LOAD * (1.0d));
 			if (start > recordCount) {
-				start = total-1>+0 ? total-1 : 0;
-				start*= ConstantsJSP.RESULTS_ON_LOAD;
+				start = total - 1 > +0 ? total - 1 : 0;
+				start *= ConstantsJSP.RESULTS_ON_LOAD;
 				cur_page = total;
 				req.setAttribute("page", cur_page);
 			}
 			List<Assignment> listAssignments = workService.getAssignment(
 					filter, start, ConstantsJSP.RESULTS_ON_LOAD);
-			logger.info("list:"+listAssignments);
+			logger.info("list:" + listAssignments);
 			req.setAttribute(ConstantsJSP.ASSIGNMENTS, listAssignments);
 			PageNavigator pageNavigator = new PageNavigator(total, cur_page);
 			req.setAttribute(ConstantsJSP.PAGE_NAVIGATOR, pageNavigator);
@@ -332,6 +339,6 @@ public class TaskController {
 		} catch (Exception e) {
 			logger.info("Error:" + e.getMessage());
 		}
-		return ConstantsJSP.tasksPage;//ConstantsJSP.tasksPage;
+		return ConstantsJSP.tasksPage;// ConstantsJSP.tasksPage;
 	}
 }

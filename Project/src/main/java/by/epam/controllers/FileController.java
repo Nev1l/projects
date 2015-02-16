@@ -32,13 +32,13 @@ import by.epam.dao.WorkServiceDAO;
 //https://gist.github.com/keesun/1604411
 //http://www.mkyong.com/spring-mvc/spring-mvc-file-upload-example/
 @Controller
-public class FileUploadController {
+public class FileController {
 	private static final int MEMORY_THRESHOLD = 1024 * 1024 * 3; // 3MB
 	private static final int MAX_FILE_SIZE = 1024 * 1024 * 40; // 40MB
 	private static final int MAX_REQUEST_SIZE = 1024 * 1024 * 50; // 50MB
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(FileUploadController.class);
+			.getLogger(FileController.class);
 	@Autowired
 	private WorkServiceDAO workService;
 
@@ -139,7 +139,7 @@ public class FileUploadController {
 		return "uploadDisplay";
 	}
 
-	public String fileupload(HttpServletRequest req, HttpServletResponse res) {
+	/*public String fileupload(HttpServletRequest req, HttpServletResponse res) {
 		logger.info(ConstantsJSP.EMPTY);
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) req;
 		CommonsMultipartFile file = (CommonsMultipartFile) multipartRequest
@@ -180,7 +180,6 @@ public class FileUploadController {
 				logger.info(e.getMessage());
 			}
 		}
-
 		req.setAttribute("friendlyName", file.getName());
 		req.setAttribute("fileName", file.getOriginalFilename());
 		req.setAttribute("contentType", file.getContentType());
@@ -192,5 +191,5 @@ public class FileUploadController {
 				+ req.getRemoteUser() + "/";
 		req.setAttribute("link", link + file.getOriginalFilename());
 		return "uploadDisplay";//
-	}
+	}*/
 }

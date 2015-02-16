@@ -111,10 +111,7 @@ public class ProjectController {
 						Role role = workService
 								.getRoleName(ProjectPosition.ADMIN);
 						activityMember.setRole(role);
-						activityMember = workService.save(activityMember);// update
-																			// id
-																			// for
-																			// activity
+						activityMember = workService.save(activityMember);
 					}
 					project = new Project();
 					project.setDescription(description);
@@ -210,16 +207,8 @@ public class ProjectController {
 
 	@RequestMapping(value = "/project.do", method = RequestMethod.GET)
 	public String project(HttpServletRequest req, HttpServletResponse res) {
-		HttpSession session = req.getSession();
-		Employee employee = (Employee) session
-				.getAttribute(ConstantsJSP.EMPLOYEE);
-		if (employee.getPosition().isAdmin()) {
-			req.setAttribute(ConstantsJSP.PROJECT_LIST,
-					workService.getAllProjects());
-		} else {
-			req.setAttribute(ConstantsJSP.MEMBER_LIST,
-					workService.getMembersByEmployeeId(employee.getId()));
-		}
+		req.setAttribute(ConstantsJSP.PROJECT_LIST,
+				workService.getAllProjects());
 		return ConstantsJSP.projectPage;
 	}
 
@@ -236,10 +225,6 @@ public class ProjectController {
 						.getAttribute(ConstantsJSP.EMPLOYEE);
 				Member m = workService.getProjectMember(project.getId(),
 						employee.getId());
-				/*if(m==null){
-					req.setAttribute(ConstantsJSP.ERROR,ConstantsError.projectErrorAccess);
-					return "forward:/"+ConstantsJSP.error403Page;
-				}*/
 				req.setAttribute(ConstantsJSP.MEMBER, m);
 				java.util.List<Task> list = workService
 						.getTasksByProjectId(project.getId());

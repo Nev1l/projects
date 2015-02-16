@@ -23,6 +23,12 @@
 				<p class="error">${ERROR}</p>
 			</c:when>
 			<c:otherwise>
+				<c:set var="hasMemberAccess" value="false" />
+				<c:if test="${not empty MEMBER}">
+					<c:if test="${not MEMBER.role.isDeveloper()}">
+						<c:set var="hasMemberAccess" value="true" />
+					</c:if>
+				</c:if>
 				<div class="span8">
 					<div class="panel panel-default">
 						<div class="panel-heading">
@@ -31,13 +37,6 @@
 						<div class="panel-body">
 							<table class="table table-bordered">
 								<tbody>
-									<%-- assignee always exist by default auto
-									<c:set var="assignee" value="No assignee" />
-									<c:if test="${not empty ASSIGNEE}">
-									<c:set var="assignee"
-											value="" />
-									</c:if>
-									 --%>
 									<tr>
 										<td align="right">Assignee:</td>
 										<td>${ASSIGNEE.member.employee.firstName}
@@ -46,7 +45,7 @@
 									<tr>
 										<td align="right">Summary</td>
 										<td>${ASSIGNEE.description}</td>
-									</tr>			   
+									</tr>
 									<tr>
 										<td align="right">Project name:</td>
 										<td><a href="#"
@@ -79,10 +78,12 @@
 								</tbody>
 							</table>
 							<div>
-								<a href="#" class="btn btn-default"
-									onClick="sendPost('/project/taskUpdate.do','${TASK.id}')">Change</a>
-								<input class="btn btn-default" type="button" value="Activity"
-									onClick="sendPost('/project/activity.do','${ASSIGNEE.task.id}')" />
+								<c:if test="${hasMemberAccess}">
+									<a href="#" class="btn btn-default"
+										onClick="sendPost('/project/taskUpdate.do','${TASK.id}')">Change</a>
+								</c:if>
+								<%-- <input class="btn btn-default" type="button" value="Activity"
+									onClick="sendPost('/project/activity.do','${ASSIGNEE.task.id}')" /> --%>
 							</div>
 						</div>
 					</div>
@@ -100,6 +101,9 @@
 									</tr>
 								</thead>
 								<tbody>
+									<c:if test="${hasMemberAccess}">
+										<a href="#" class="btn btn-default" >Change</a>
+									</c:if>
 									<tr>
 										<td></td>
 									</tr>

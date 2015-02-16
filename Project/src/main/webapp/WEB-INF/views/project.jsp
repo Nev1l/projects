@@ -32,7 +32,7 @@
 									<th>Status</th>
 									<th>Team</th>
 									<%-- <c:if test="${EMPLOYEE.position.isAdmin()}"> </c:if>--%>
-									<th>Actions</th>
+									<!-- <th>Actions</th> -->
 								</tr>
 							</thead>
 							<tbody>
@@ -46,12 +46,12 @@
 										<td><a href="#"
 											onClick="sendPost('/project/member.do','${project.id}')">Members</a></td>
 										<%-- role > developer --%>
-										<c:if test="${EMPLOYEE.position.isAdmin()}">
+										<%-- <c:if test="${EMPLOYEE.position.isAdmin()}">
 											<td><input type="button" class="btn btn-default"
 												value="Change"
 												onClick="sendPost('/project/projectUpdate.do','${project.id}')" />
 											</td>
-										</c:if>
+										</c:if> --%>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -62,50 +62,6 @@
 								<input class="btn btn-default" type="submit" value="New project">
 							</form>
 						</c:if>
-					</div>
-				</div>
-			</c:when>
-			<%-- member list(with roles on projects) available for ALL --%>
-			<c:when test="${not empty MEMBER_LIST}">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4>Project list</h4>
-					</div>
-					<div class="panel-body">
-						<table class="table table-condensed">
-							<thead>
-								<tr>
-									<th>Project name</th>
-									<th>Project description</th>
-									<th>Status</th>
-									<th>Team</th>
-									<th>Actions</th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach var="member" items="${MEMBER_LIST}"
-									varStatus="status">
-									<tr>
-										<td><a href="#"
-											onClick="sendPost('/project/project.do','${member.project.id}')">${member.project.name}</a></td>
-										<td>${member.project.description}</td>
-										<td>${member.project.status.name}</td>
-										<td><a href="#"
-											onClick="sendPost('/project/member.do','${member.project.id}')">Members</a></td>
-										<td><c:choose>
-												<%--by default member is not null (because this is element of list)--%>
-												<c:when test="${not member.role.isDeveloper()}">
-													<input type="button" class="btn btn-default" value="Change"
-														onClick="sendPost('/project/projectUpdate.do','${member.project.id}')" />
-												</c:when>
-												<c:otherwise>
-								   	No available
-							    </c:otherwise>
-											</c:choose></td>
-									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
 					</div>
 				</div>
 			</c:when>
@@ -141,8 +97,7 @@
 										<c:forEach var="task" items="${PROJECT_TASKS}"
 											varStatus="status">
 											<tr>
-												<td><a href="#"
-													onClick="sendPost('/project/task.do','${task.id}')">${task.description}</a>
+												<td><a href="#"	onClick="sendPost('/project/task.do','${task.id}')">${task.description}</a>
 												</td>
 												<td>${task.status.name}</td>
 												<td><c:choose>

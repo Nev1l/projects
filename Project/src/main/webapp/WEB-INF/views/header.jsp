@@ -1,8 +1,8 @@
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
 <link
 	href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css"
 	rel="stylesheet" />
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css" />
 <script
@@ -36,7 +36,8 @@
 					data-target=".bs-example-modal-lg">Create new tas</button>
 			</li>
 			<li><a href="#"
-				onClick="sendPost('/project/userprofile.do','${EMPLOYEE.id}')">Profile </a></li>
+				onClick="sendPost('/project/userprofile.do','${EMPLOYEE.id}')">Profile
+			</a></li>
 			<li><a href="<c:url value="/logout.do"/>">Logout</a></li>
 		</ul>
 	</div>
